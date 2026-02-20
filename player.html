@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>プレイヤー詳細</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1 id="player-title"></h1>
+
+<div class="skin-container">
+  <img id="player-skin" alt="プレイヤースキン">
+</div>
+
+<div id="player-info"></div>
+<div id="match-history"></div>
+
+<a href="index.html" class="link-btn">戻る</a>
+
+<script src="data.js"></script>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const playerName = params.get("name");
+
+const player = players.find(p => p.name === playerName);
+
+const title = document.getElementById("player-title");
+const info = document.getElementById("player-info");
+const history = document.getElementById("match-history");
+const skinImg = document.getElementById("player-skin");
+
+if (!player) {
+  title.textContent = "プレイヤーが見つかりません";
+} else {
+
+  title.textContent = player.name;
+
+  // 🔥 スキン読み込み
+  skinImg.src = "skins/" + player.name + ".png";
+
+  // 画像が存在しない場合の対策
+  skinImg.onerror = function() {
+    skinImg.src = "skins/default.png";
+  };
+
+  const playerMatches = matches.filter(m =>
+    m.winner === player.name || m.loser === player.name
+  );
+
+  const wins = playerMatches.filter(m => m.winner === player.name).length;
+  const total = playerMatches.length;
+  const winRate = total === 0 ? 0 :
+    ((wins / total) * 100).toFixed(1);
+
+  info.innerHTML = `
+    <p>Tier: ${player.tier}</p>
+    <p>レート: ${player.rating}</p>
+    <p>勝率: ${winRate}%</p>
+    <p>試合数: ${total}</p>
+  `;
+
+  if (total === 0) {
+    history.innerHTML = "<p>試合履歴がありません</p>";
+  } else {
+    playerMatches.forEach(match => {
+
+      const card = document.createElement("div");
+      card.className = "player-card";
+
+      const isWin = match.winner === player.name;
+
+      card.innerHTML = `
+        <span>${match.date}</span>
+        <span>
+          <span class="${isWin ? 'win' : 'lose'}">
+            ${isWin ? "勝ち" : "負け"}
+          </span>
+          vs ${isWin ? match.loser : match.winner}
+        </span>
+        <span>${match.change}</span>
+      `;
+
+      history.appendChild(card);
+    });
+  }
+}
+</script>
+</body>
+</html>

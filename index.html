@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hive DeathRun Tier</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Hive DeathRun Tier Ranking</h1>
+  <input type="text" id="search" placeholder="プレイヤー検索..." />
+</header>
+
+<section>
+  <h2>🏆 Tier Ranking</h2>
+  <div id="tier-container"></div>
+</section>
+
+<section>
+  <h2>⚔ Rating Ranking</h2>
+  <div id="rating-container"></div>
+</section>
+
+<a href="match.html" class="link-btn">試合履歴を見る</a>
+
+<script src="data.js"></script>
+
+<script>
+const searchInput = document.getElementById("search");
+const tierContainer = document.getElementById("tier-container");
+const ratingContainer = document.getElementById("rating-container");
+
+/* ===== Tier並び順 ===== */
+function getTierOrder(tier) {
+  const isHT = tier.startsWith("HT") ? 0 : 1;
+  const number = parseInt(tier.replace(/[A-Z]/g, ""));
+  return number * 2 + isHT;
+}
+
+/* ===== 試合統計 ===== */
+function getMatchStats(playerName) {
+  const playerMatches = matches.filter(m =>
+    m.winner === playerName || m.loser === playerName
+  );
+
+  const total = playerMatches.length;
+  const wins = playerMatches.filter(m => m.winner === playerName).length;
+  const winRate = total === 0 ? 0 :
+    ((wins / total) * 100).toFixed(1);
+
+  return { total, winRate };
+}
+
+/* ===== 王冠表示 ===== */
+function getCrown(rank) {
+  if (rank === 1) return "👑";
+  if (rank === 2) return "🥈";
+  if (rank === 3) return "🥉";
+  return "";
+}
+
+/* ===== スキンHTML ===== */
+function getSkinHTML(name) {
+  return `
+    <img src="skins/${name}.png"
+         onerror="this.src='skins/default.png'"
+         class="skin">
+  `;
+}
+
+/* ===== 描画 ===== */
+function render() {
+  const searchValue = searchInput.value.toLowerCase();
+  tierContainer.innerHTML = "";
+  ratingContainer.innerHTML = "";
+
+  const filtered = players.filter(p =>
+    p.name.toLowerCase().includes(searchValue)
+  );
+
+  /* ===== Tier表示 ===== */
+  const tierSorted = [...filtered].sort((a, b) =>
+    getTierOrder(a.tier) - getTierOrder(b.tier)
+  );
+
+  tierSorted.forEach((player, index) => {
+    const rank = index + 1;
+    const crown = getCrown(rank);
+
+    const card = document.createElement("div");
+    card.className = "player-card";
+
+    if (rank <= 3) {
+      card.classList.add("top-rank");
+    }
+
+    card.innerHTML = `
+      <span class="rank">${rank}位 ${crown}</span>
+
+      <a href="player.html?name=${player.name}"
+         class="player-link">
+         ${getSkinHTML(player.name)}
+         ${player.name}
+      </a>
+
+      <span class="${player.tier} tier">${player.tier}</span>
+    `;
+
+    tierContainer.appendChild(card);
+  });
+
+  /* ===== Rating表示 ===== */
+  const ratingSorted = [...filtered].sort((a, b) =>
+    b.rating - a.rating
+  );
+
+  ratingSorted.forEach((player, index) => {
+    const stats = getMatchStats(player.name);
+    const rank = index + 1;
+    const crown = getCrown(rank);
+
+    const card = document.createElement("div");
+    card.className = "player-card";
+
+    if (rank <= 3) {
+      card.classList.add("top-rank");
+    }
+
+    card.innerHTML = `
+      <span class="rank">${rank}位 ${crown}</span>
+
+      <a href="player.html?name=${player.name}"
+         class="player-link">
+         ${getSkinHTML(player.name)}
+         ${player.name}
+      </a>
+
+      <span class="rating">⭐ ${player.rating}</span>
+      <span>勝率: ${stats.winRate}%</span>
+      <span>試合数: ${stats.total}</span>
+    `;
+
+    ratingContainer.appendChild(card);
+  });
+}
+
+searchInput.addEventListener("input", render);
+render();
+</script>
+
+</body>
+</html>
