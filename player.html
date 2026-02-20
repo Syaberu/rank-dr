@@ -8,11 +8,6 @@
 <body>
 
 <h1 id="player-title"></h1>
-
-<div class="skin-container">
-  <img id="player-skin" alt="プレイヤースキン">
-</div>
-
 <div id="player-info"></div>
 <div id="match-history"></div>
 
@@ -29,21 +24,19 @@ const player = players.find(p => p.name === playerName);
 const title = document.getElementById("player-title");
 const info = document.getElementById("player-info");
 const history = document.getElementById("match-history");
-const skinImg = document.getElementById("player-skin");
 
 if (!player) {
   title.textContent = "プレイヤーが見つかりません";
 } else {
 
-  title.textContent = player.name;
-
-  // 🔥 スキン読み込み
-  skinImg.src = "skins/" + player.name + ".png";
-
-  // 画像が存在しない場合の対策
-  skinImg.onerror = function() {
-    skinImg.src = "skins/default.png";
-  };
+  title.innerHTML = `
+    <span style="display:flex;align-items:center;gap:10px;">
+      <img src="skins/${player.name}.png"
+           onerror="this.src='skins/default.png'"
+           class="skin-title">
+      ${player.name}
+    </span>
+  `;
 
   const playerMatches = matches.filter(m =>
     m.winner === player.name || m.loser === player.name
@@ -65,20 +58,17 @@ if (!player) {
     history.innerHTML = "<p>試合履歴がありません</p>";
   } else {
     playerMatches.forEach(match => {
+      const isWin = match.winner === player.name;
 
       const card = document.createElement("div");
       card.className = "player-card";
 
-      const isWin = match.winner === player.name;
-
       card.innerHTML = `
         <span>${match.date}</span>
-        <span>
-          <span class="${isWin ? 'win' : 'lose'}">
-            ${isWin ? "勝ち" : "負け"}
-          </span>
-          vs ${isWin ? match.loser : match.winner}
+        <span class="${isWin ? 'win' : 'lose'}">
+          ${isWin ? "勝ち" : "負け"}
         </span>
+        <span>vs ${isWin ? match.loser : match.winner}</span>
         <span>${match.change}</span>
       `;
 
@@ -87,5 +77,6 @@ if (!player) {
   }
 }
 </script>
+
 </body>
 </html>
