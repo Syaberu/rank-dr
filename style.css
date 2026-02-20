@@ -1,203 +1,152 @@
-/* ===============================
+/* =========================
    全体設定
-================================= */
+========================= */
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #0f172a;   /* ← 赤強制削除 */
-  color: #f1f5f9;
+  font-family: Arial, sans-serif;
+  background-color: #0f0f0f;
+  color: white;
   margin: 0;
   padding: 20px;
 }
 
-h1 {
+h1, h2 {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 30px;
-  letter-spacing: 1px;
+  margin-bottom: 20px;
 }
 
-/* ===============================
-   コンテナ
-================================= */
-#player-container,
-#match-container {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-/* ===============================
-   カード共通デザイン
-================================= */
+/* =========================
+   ランキング共通カード
+========================= */
 .player-card {
-  background: #1e293b;
-  padding: 18px 24px;
-  margin-bottom: 18px;
-  border-radius: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  border: 1px solid #334155;
-  transition: all 0.25s ease;
+  background: #1a1a1a;
+  padding: 12px 16px;
+  margin: 8px auto;
+  border-radius: 10px;
+  max-width: 700px;
+  transition: 0.2s ease;
+  font-size: 16px;
 }
 
 .player-card:hover {
-  transform: translateY(-5px);
-  background: #334155;
+  background: #252525;
+  transform: translateY(-2px);
 }
 
-.player-card span {
-  margin: 6px 12px;
-}
-
-/* ===============================
-   上位3人特別表示（拡大）
-================================= */
-.top-rank {
+/* =========================
+   上位3人拡大表示
+========================= */
+.player-card.rank1 {
+  font-size: 22px;
   font-weight: bold;
-  font-size: 1.25rem;
-  transform: scale(1.05);
 }
 
-/* 🥇1位 */
-.top-rank.rank-1 {
-  background: linear-gradient(90deg, #ffd700, #ffb700);
-  color: black;
-  border: 2px solid #ffcc00;
-  font-size: 1.4rem;
-  transform: scale(1.1);
+.player-card.rank2 {
+  font-size: 20px;
+  font-weight: bold;
 }
 
-/* 🥈2位 */
-.top-rank.rank-2 {
-  border: 2px solid #c0c0c0;
+.player-card.rank3 {
+  font-size: 18px;
+  font-weight: bold;
 }
 
-/* 🥉3位 */
-.top-rank.rank-3 {
-  border: 2px solid #cd7f32;
-}
-
+/* =========================
+   順位表示
+========================= */
 .rank {
+  width: 90px;
   font-weight: bold;
-  margin-right: 10px;
-  font-size: 1.1rem;
 }
 
-/* ===============================
-   スキン画像
-================================= */
-.skin {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  margin-left: 10px;
-  vertical-align: middle;
-  border: 2px solid #475569;
+/* =========================
+   Tier色分け
+========================= */
+.tier {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: bold;
 }
 
-/* 上位3人はスキンも大きく */
-.rank-1 .skin,
-.rank-2 .skin,
-.rank-3 .skin {
-  width: 52px;
-  height: 52px;
+.HT1 { background: #ff4d4d; }
+.HT2 { background: #ff944d; }
+.HT3 { background: #ffd11a; color: black; }
+.HT4 { background: #66ccff; color: black; }
+.HT5 { background: #66ff99; color: black; }
+
+/* =========================
+   Rating表示
+========================= */
+.rating {
+  font-weight: bold;
 }
 
-/* ===============================
-   勝敗カラー
-================================= */
+/* =========================
+   勝ち負け色
+========================= */
 .win {
-  color: #00e676;
+  color: #00ff88;
   font-weight: bold;
 }
 
 .lose {
-  color: #ff5252;
+  color: #ff4d4d;
   font-weight: bold;
 }
 
-/* ===============================
-   Tier表示（順位付き対応）
-================================= */
-.tier {
+/* =========================
+   スキン画像（ランキング用）
+========================= */
+.skin {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid #444;
+}
+
+/* =========================
+   プレイヤーページ用スキン
+   → 文字と同じサイズ
+========================= */
+.player-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 24px;
   font-weight: bold;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 15px;
-  min-width: 80px;
-  text-align: center;
 }
 
-/* HT = 赤系 */
-.HT1, .HT2, .HT3, .HT4, .HT5,
-.HT6, .HT7, .HT8, .HT9, .HT10 {
-  background: #ff1744;
-  color: white;
+.player-header .skin {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #555;
 }
 
-/* LT = 青系 */
-.LT1, .LT2, .LT3, .LT4, .LT5,
-.LT6, .LT7, .LT8, .LT9, .LT10 {
-  background: #2979ff;
-  color: white;
+/* =========================
+   試合履歴
+========================= */
+#match-container {
+  max-width: 700px;
+  margin: 20px auto;
 }
 
-/* ===============================
-   ボタン
-================================= */
-.link-btn {
-  display: inline-block;
-  margin-top: 30px;
-  padding: 12px 24px;
-  background: #3b82f6;
+#match-container .player-card {
+  font-size: 14px;
+}
+
+/* =========================
+   リンク
+========================= */
+a {
   color: white;
   text-decoration: none;
-  border-radius: 10px;
-  transition: 0.2s;
-  font-weight: bold;
 }
 
-.link-btn:hover {
-  background: #2563eb;
-  transform: scale(1.05);
-}
-
-/* ===============================
-   検索バー
-================================= */
-#search {
-  display: block;
-  margin: 0 auto 25px auto;
-  padding: 10px 14px;
-  width: 320px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  font-size: 15px;
-}
-
-/* ===============================
-   中央寄せ
-================================= */
-.center {
-  text-align: center;
-}
-
-/* ===============================
-   スマホ対応
-================================= */
-@media (max-width: 600px) {
-  .player-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .player-card span {
-    margin: 6px 0;
-  }
-
-  #search {
-    width: 100%;
-  }
+a:hover {
+  text-decoration: underline;
 }
