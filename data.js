@@ -1,5 +1,5 @@
 const players = [
-  { name: "MCsyaberu", tier: "LT10", rating: 0 }
+  { name: "MCsyaberu", tier: "HT5", rating: 0 }
 ];
 
 const matches = [
@@ -11,3 +11,4 @@ const matches = [
   }
 
 ];
+
