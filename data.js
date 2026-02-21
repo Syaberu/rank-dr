@@ -1,5 +1,5 @@
 const players = [
-  { name: "MCsyaberu", tier: "HT4", rating: 25 },
+  { name: "MCsyaberu", tier: "HT4", rating: 50 },
   { name: "AntiUnlockJP", tier: "HT6", rating: 0 },
   { name: "Super Hiko14", tier: "LT7", rating: 25 },
   { name: "chikuwa03224837", tier: "LT7", rating: 0 },
@@ -18,9 +18,16 @@ const matches = [
     winner: "MCsyaberu",
     loser: "chikuwa03224837",
     change: "+25"
+  },
+  {
+    date: "2026-02-18",
+    winner: "MCsyaberu",
+    loser: "chikuwa03224837",
+    change: "+25"
   }
 
 ];
+
 
 
 
