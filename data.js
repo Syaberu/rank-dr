@@ -1,6 +1,6 @@
 const players = [
-  { name: "MCsyaberu", tier: "LT3", rating: 75 },
-  { name: "Kurobean1729", tier: "LT4", rating: 0 },
+  { name: "MCsyaberu", tier: "LT3", rating: 125 },
+  { name: "Kurobean1729", tier: "LT4", rating: 15 },
   { name: "ykgalleria", tier: "HT5", rating: 0 },
   { name: "tenntennyt", tier: "HT5", rating: 0 },
   { name: "AntiUnlockJP", tier: "HT6", rating: 0 },
@@ -34,9 +34,28 @@ const matches = [
     winner: "MCsyaberu",
     loser: "chikuwa03224837",
     change: "+25"
+  },
+  {
+    date: "2026-02-21",
+    winner: "Kurobean1729",
+    loser: "tenntennyt",
+    change: "+25"
+  },
+  {
+    date: "2026-02-21",
+    winner: "MCsyaberu",
+    loser: "Kurobean1729",
+    change: "+25"
+  },
+  {
+    date: "2026-02-21",
+    winner: "MCsyaberu",
+    loser: "tenntennyt",
+    change: "+25"
   }
 
 ];
+
 
 
 
