@@ -1,5 +1,6 @@
 const players = [
   { name: "MCsyaberu", tier: "LT3", rating: 75 },
+  { name: "Kurobean1729", tier: "LT4", rating: 0 },
   { name: "ykgalleria", tier: "HT5", rating: 0 },
   { name: "tenntennyt", tier: "HT5", rating: 0 },
   { name: "AntiUnlockJP", tier: "HT6", rating: 0 },
@@ -36,6 +37,7 @@ const matches = [
   }
 
 ];
+
 
 
 
