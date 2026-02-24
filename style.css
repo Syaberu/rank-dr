@@ -1,152 +1,101 @@
-/* =========================
-   全体設定
-========================= */
+:root {
+    --bg-color: #050508;
+    --card-bg: rgba(20, 20, 35, 0.7);
+    --neon-cyan: #00f3ff;
+    --neon-pink: #ff00ff;
+    --tier-ht: #ff2a2a;
+    --tier-lt: #2a75ff;
+    --gold: #ffd700;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #0f0f0f;
-  color: white;
-  margin: 0;
-  padding: 20px;
+    background-color: var(--bg-color);
+    color: white;
+    font-family: 'Exo 2', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px), 
+                      linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
 }
 
-h1, h2 {
-  text-align: center;
-  margin-bottom: 20px;
+/* 音量パネルUI */
+#sound-control-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--neon-cyan);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px var(--neon-cyan);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* =========================
-   ランキング共通カード
-========================= */
+#sound-control-panel.collapsed {
+    transform: translateX(calc(100% - 40px));
+}
+
+.panel-content { display: flex; align-items: center; gap: 10px; }
+
+/* ランキングカード */
+.container { max-width: 900px; margin: 80px auto; padding: 20px; }
+
 .player-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #1a1a1a;
-  padding: 12px 16px;
-  margin: 8px auto;
-  border-radius: 10px;
-  max-width: 700px;
-  transition: 0.2s ease;
-  font-size: 16px;
+    background: var(--card-bg);
+    border-left: 5px solid var(--neon-cyan);
+    margin-bottom: 15px;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    border-radius: 0 10px 10px 0;
+    transition: 0.3s;
+    text-decoration: none;
+    color: white;
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.player-card.show {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .player-card:hover {
-  background: #252525;
-  transform: translateY(-2px);
+    transform: scale(1.02);
+    background: rgba(40, 40, 60, 0.8);
+    box-shadow: 0 0 20px var(--neon-cyan);
 }
 
-/* =========================
-   上位3人拡大表示
-========================= */
-.player-card.rank1 {
-  font-size: 22px;
-  font-weight: bold;
+/* 上位3人の特殊スタイル */
+.rank-1 { border-left-color: var(--gold); transform: scale(1.05) !important; z-index: 10; border: 1px solid var(--gold); }
+.rank-1 .rank-num { color: var(--gold); text-shadow: 0 0 10px var(--gold); font-size: 2rem; }
+.rank-2 { border-left-color: #c0c0c0; }
+.rank-3 { border-left-color: #cd7f32; }
+
+/* Tierバッジ */
+.tier-badge {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+.badge-ht { background: rgba(255, 42, 42, 0.2); border: 1px solid var(--tier-ht); color: var(--tier-ht); box-shadow: 0 0 10px var(--tier-ht); }
+.badge-lt { background: rgba(42, 117, 255, 0.2); border: 1px solid var(--tier-lt); color: var(--tier-lt); box-shadow: 0 0 10px var(--tier-lt); }
+
+/* スキン画像 */
+.skin-icon {
+    width: 32px; height: 32px;
+    image-rendering: pixelated;
+    margin: 0 15px;
 }
 
-.player-card.rank2 {
-  font-size: 20px;
-  font-weight: bold;
+/* アニメーション */
+@keyframes crown-float {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-5px) rotate(5deg); }
 }
-
-.player-card.rank3 {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* =========================
-   順位表示
-========================= */
-.rank {
-  width: 90px;
-  font-weight: bold;
-}
-
-/* =========================
-   Tier色分け
-========================= */
-.tier {
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.HT1 { background: #ff4d4d; }
-.HT2 { background: #ff944d; }
-.HT3 { background: #ffd11a; color: black; }
-.HT4 { background: #66ccff; color: black; }
-.HT5 { background: #66ff99; color: black; }
-
-/* =========================
-   Rating表示
-========================= */
-.rating {
-  font-weight: bold;
-}
-
-/* =========================
-   勝ち負け色
-========================= */
-.win {
-  color: #00ff88;
-  font-weight: bold;
-}
-
-.lose {
-  color: #ff4d4d;
-  font-weight: bold;
-}
-
-/* =========================
-   スキン画像（ランキング用）
-========================= */
-.skin {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  object-fit: cover;
-  border: 1px solid #444;
-}
-
-/* =========================
-   プレイヤーページ用スキン
-   → 文字と同じサイズ
-========================= */
-.player-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.player-header .skin {
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  border: 1px solid #555;
-}
-
-/* =========================
-   試合履歴
-========================= */
-#match-container {
-  max-width: 700px;
-  margin: 20px auto;
-}
-
-#match-container .player-card {
-  font-size: 14px;
-}
-
-/* =========================
-   リンク
-========================= */
-a {
-  color: white;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
+.crown { animation: crown-float 2s infinite ease-in-out; display: inline-block; }
