@@ -1,82 +1,50 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>プレイヤー詳細</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Player Stats</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container" id="profile-container">
+        </div>
 
-<h1 id="player-title"></h1>
-<div id="player-info"></div>
-<div id="match-history"></div>
+    <script src="data.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        const p = players.find(x => x.name === name);
 
-<a href="index.html" class="link-btn">戻る</a>
+        if(p) {
+            document.getElementById('profile-container').innerHTML = `
+                <div style="text-align:center;">
+                    <img src="skins/${p.name}.png" onerror="this.src='skins/default.png'" style="width:120px; height:120px; image-rendering:pixelated; border-radius:10px; box-shadow:0 0 30px var(--neon-cyan);">
+                    <h1 style="font-size:3rem; margin:20px 0;">${p.name}</h1>
+                    <div class="tier-badge ${p.tier.startsWith('HT') ? 'badge-ht' : 'badge-lt'}" style="font-size:1.5rem;">${p.tier}</div>
+                </div>
 
-<script src="data.js"></script>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-top:40px;">
+                    <div class="player-card show" style="flex-direction:column; align-items:flex-start;">
+                        <span style="color:var(--neon-cyan)">TOTAL RATING</span>
+                        <span style="font-size:2rem;">${p.rating} PT</span>
+                    </div>
+                    <div class="player-card show" style="flex-direction:column; align-items:flex-start;">
+                        <span style="color:var(--neon-pink)">WIN RATE</span>
+                        <span style="font-size:2rem;">${((p.wins/p.matches)*100).toFixed(1)}%</span>
+                    </div>
+                </div>
 
-<script>
-const params = new URLSearchParams(window.location.search);
-const playerName = params.get("name");
-
-const player = players.find(p => p.name === playerName);
-
-const title = document.getElementById("player-title");
-const info = document.getElementById("player-info");
-const history = document.getElementById("match-history");
-
-if (!player) {
-  title.textContent = "プレイヤーが見つかりません";
-} else {
-
-  title.innerHTML = `
-    <span style="display:flex;align-items:center;gap:10px;">
-      <img src="skins/${player.name}.png"
-           onerror="this.src='skins/default.png'"
-           class="skin-title">
-      ${player.name}
-    </span>
-  `;
-
-  const playerMatches = matches.filter(m =>
-    m.winner === player.name || m.loser === player.name
-  );
-
-  const wins = playerMatches.filter(m => m.winner === player.name).length;
-  const total = playerMatches.length;
-  const winRate = total === 0 ? 0 :
-    ((wins / total) * 100).toFixed(1);
-
-  info.innerHTML = `
-    <p>Tier: ${player.tier}</p>
-    <p>レート: ${player.rating}</p>
-    <p>勝率: ${winRate}%</p>
-    <p>試合数: ${total}</p>
-  `;
-
-  if (total === 0) {
-    history.innerHTML = "<p>試合履歴がありません</p>";
-  } else {
-    playerMatches.forEach(match => {
-      const isWin = match.winner === player.name;
-
-      const card = document.createElement("div");
-      card.className = "player-card";
-
-      card.innerHTML = `
-        <span>${match.date}</span>
-        <span class="${isWin ? 'win' : 'lose'}">
-          ${isWin ? "勝ち" : "負け"}
-        </span>
-        <span>vs ${isWin ? match.loser : match.winner}</span>
-        <span>${match.change}</span>
-      `;
-
-      history.appendChild(card);
-    });
-  }
-}
-</script>
-
+                <h2 style="margin-top:40px; border-bottom:1px solid var(--neon-cyan);">MAP TIERS</h2>
+                <div id="map-tiers" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-top:20px;">
+                    ${Object.entries(p.mapTiers).map(([map, tier]) => `
+                        <div class="player-card show" style="justify-content:space-between;">
+                            <span>${map}</span>
+                            <span class="tier-badge ${tier.startsWith('HT') ? 'badge-ht' : 'badge-lt'}">${tier}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+    </script>
 </body>
 </html>
