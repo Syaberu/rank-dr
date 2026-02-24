@@ -1,5 +1,13 @@
 const players = [
   {
+    name: "Jason Games9024",
+    rating: 1040,
+    matches: 6,
+    wins: 5,
+    tier: "LT3",
+    mapTiers: { Cave: "LT3", Temple: "-", Factory: "-" }
+  },
+  {
     name: "MCsyaberu",
     rating: 1040,
     matches: 6,
@@ -82,3 +90,4 @@ function getTierScore(tierStr) {
     let base = (11 - level) * 2;
     return type === "HT" ? base : base - 1;
 }
+
