@@ -15,9 +15,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT3", record: 48.244 },
-      Flora: { tier: "-", record: 999.999 }, // Caveの隣に配置
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 }, // Caveの隣に配置
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -28,9 +28,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT3", record: 48.230 },
-      Flora: { tier: "-", record: 999.999 },
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -41,9 +41,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT4", record: 49.060 },
-      Flora: { tier: "-", record: 999.999 },
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -54,9 +54,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT5", record: 49.240 },
-      Flora: { tier: "-", record: 999.999 },
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -67,9 +67,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT5", record: 49.464 },
-      Flora: { tier: "-", record: 999.999 },
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -80,9 +80,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT6", record: 49.825 },
-      Flora: { tier: "-", record: 999.999 },
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -93,9 +93,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT6", record: 49.993 },
-      Flora: { tier: "-", record: 999.999 },
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -106,9 +106,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT7", record: 51.817 },
-      Flora: { tier: "-", record: 999.999 },
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -119,9 +119,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT7", record: 51.839 },
-      Flora: { tier: "-", record: 999.999 },
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -132,9 +132,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT8", record: 52.577 },
-      Flora: { tier: "-", record: 999.999 },
-      Temple: { tier: "-", record: 999.999 },
-      Factory: { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 120.000 },
+      Factory: { tier: "-", record: 120.000 }
     }
   }
 ];
