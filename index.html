@@ -6,11 +6,10 @@
     <title>DeathRun Rankings</title>
     <script src="data.js"></script>
     <style>
-        /* 参考サイトのシンプルかつクリーンなダークテーマを再現 */
         body {
             background-color: #121212;
             color: #e0e0e0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -25,13 +24,13 @@
             letter-spacing: 2px;
         }
 
-        /* タブメニュー（syaberu氏のスタイルを忠実に再現） */
         .tabs {
             display: flex;
             border-bottom: 1px solid #333;
             width: 100%;
             max-width: 950px;
             margin-bottom: 25px;
+            overflow-x: auto;
         }
 
         .tab-btn {
@@ -45,18 +44,15 @@
             transition: all 0.2s ease;
             border-bottom: 2px solid transparent;
             margin-bottom: -1px;
+            white-space: nowrap;
         }
 
-        .tab-btn:hover {
-            color: #bbb;
-        }
-
+        .tab-btn:hover { color: #bbb; }
         .tab-btn.active {
             color: #00e5ff;
             border-bottom: 2px solid #00e5ff;
         }
 
-        /* ランキングテーブル */
         .ranking-table {
             width: 100%;
             max-width: 950px;
@@ -65,9 +61,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .ranking-table thead {
-            background-color: #252525;
-        }
+        .ranking-table thead { background-color: #252525; }
 
         .ranking-table th {
             padding: 12px 15px;
@@ -85,11 +79,8 @@
             vertical-align: middle;
         }
 
-        .ranking-table tr:hover {
-            background-color: #222;
-        }
+        .ranking-table tr:hover { background-color: #222; }
 
-        /* 各列のスタイル */
         .rank-col { width: 50px; text-align: center; font-weight: bold; font-size: 1.2rem; color: #555; }
         .skin-col { width: 50px; text-align: center; }
         .name-col { font-weight: 600; font-size: 1.05rem; color: #fff; }
@@ -97,17 +88,14 @@
         .record-col { width: 140px; text-align: right; font-family: 'Consolas', monospace; color: #00e5ff; font-weight: bold; }
         .rating-col { width: 100px; text-align: right; color: #666; font-size: 0.85rem; }
 
-        /* スキンヘッド画像 (skinsフォルダ参照) */
         .skin-img {
             width: 34px;
             height: 34px;
             image-rendering: pixelated;
             border-radius: 3px;
             background-color: #333;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        /* Tierバッジ */
         .tier-badge {
             padding: 3px 10px;
             border-radius: 12px;
@@ -116,11 +104,10 @@
             display: inline-block;
             min-width: 50px;
         }
-        .tier-ht { background-color: #ff3d00; color: #fff; } /* 鮮やかな赤 */
-        .tier-lt { background-color: #00c853; color: #fff; } /* 鮮やかな緑 */
+        .tier-ht { background-color: #ff3d00; color: #fff; }
+        .tier-lt { background-color: #00c853; color: #fff; }
         .tier-none { background-color: #424242; color: #bbb; }
 
-        /* 1-3位のカラーアクセント */
         tr:nth-child(1) .rank-col { color: #ffca28; }
         tr:nth-child(2) .rank-col { color: #cfd8dc; }
         tr:nth-child(3) .rank-col { color: #bcaaa4; }
@@ -139,7 +126,7 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="updateMode('Overall', this)">Overall</button>
         <button class="tab-btn" onclick="updateMode('Cave', this)">Cave</button>
-        <button class="tab-btn" onclick="updateMode('Temple', this)">Temple</button>
+        <button class="tab-btn" onclick="updateMode('Flora', this)">Flora</button> <button class="tab-btn" onclick="updateMode('Temple', this)">Temple</button>
         <button class="tab-btn" onclick="updateMode('Factory', this)">Factory</button>
     </div>
 
@@ -154,8 +141,7 @@
                 <th style="text-align: right;">Rating</th>
             </tr>
         </thead>
-        <tbody id="ranking-body">
-            </tbody>
+        <tbody id="ranking-body"></tbody>
     </table>
 
     <script>
@@ -174,6 +160,13 @@
             return idx === -1 ? 999 : idx;
         }
 
+        // 有効なタイムのみを合算する
+        function getValidSum(p) {
+            return Object.values(p.mapTiers).reduce((acc, m) => {
+                return acc + (m.record < 900 ? m.record : 0);
+            }, 0);
+        }
+
         function render() {
             const body = document.getElementById('ranking-body');
             body.innerHTML = '';
@@ -182,26 +175,18 @@
 
             sorted.sort((a, b) => {
                 if (currentMode === 'Overall') {
-                    // Overall: 全マップの合計タイム(record)が少ない順
-                    const sumA = Object.values(a.mapTiers).reduce((acc, m) => acc + (m.record || 0), 0);
-                    const sumB = Object.values(b.mapTiers).reduce((acc, m) => acc + (m.record || 0), 0);
-                    if (sumA !== sumB) return sumA - sumB;
+                    const sumA = getValidSum(a);
+                    const sumB = getValidSum(b);
+                    if (sumA !== sumB) return sumB === 0 ? -1 : (sumA === 0 ? 1 : sumA - sumB);
                     return b.rating - a.rating;
                 } else {
-                    // 各マップ: Tier優先 > タイム順 > Rating順
                     const mDataA = a.mapTiers[currentMode];
                     const mDataB = b.mapTiers[currentMode];
-                    const tierA = typeof mDataA === 'string' ? mDataA : (mDataA ? mDataA.tier : "-");
-                    const tierB = typeof mDataB === 'string' ? mDataB : (mDataB ? mDataB.tier : "-");
-                    
-                    const idxA = getTierIdx(tierA);
-                    const idxB = getTierIdx(tierB);
+                    const idxA = getTierIdx(mDataA.tier);
+                    const idxB = getTierIdx(mDataB.tier);
+
                     if (idxA !== idxB) return idxA - idxB;
-
-                    const recA = typeof mDataA === 'string' ? 999.999 : (mDataA ? mDataA.record : 999.999);
-                    const recB = typeof mDataB === 'string' ? 999.999 : (mDataB ? mDataB.record : 999.999);
-                    if (recA !== recB) return recA - recB;
-
+                    if (mDataA.record !== mDataB.record) return mDataA.record - mDataB.record;
                     return b.rating - a.rating;
                 }
             });
@@ -213,18 +198,15 @@
                 let displayTier, displayRecord;
                 if (currentMode === 'Overall') {
                     displayTier = p.tier;
-                    const total = Object.values(p.mapTiers).reduce((acc, m) => acc + (m.record || 0), 0);
+                    const total = getValidSum(p);
                     displayRecord = total > 0 ? total.toFixed(3) + "s" : "---";
                 } else {
                     const mData = p.mapTiers[currentMode];
-                    displayTier = (mData && typeof mData === 'object') ? mData.tier : (mData || "-");
-                    const rec = (mData && typeof mData === 'object') ? mData.record : 0;
-                    displayRecord = rec > 0 ? rec.toFixed(3) + "s" : "---";
+                    displayTier = mData.tier;
+                    displayRecord = mData.record < 900 ? mData.record.toFixed(3) + "s" : "---";
                 }
 
                 const tierClass = displayTier.startsWith("HT") ? "tier-ht" : (displayTier.startsWith("LT") ? "tier-lt" : "tier-none");
-                
-                // 画像フォルダ名を skins に修正
                 const imgPath = `skins/${p.name}.png`;
 
                 tr.innerHTML = `
@@ -238,7 +220,6 @@
                 body.appendChild(tr);
             });
         }
-
         window.onload = render;
     </script>
 </body>
