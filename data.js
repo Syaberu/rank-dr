@@ -1,3 +1,11 @@
+/**
+ * DeathRun Competitive Player Data
+ * * 【順位決定の優先順位】
+ * 1. Tier順 (HT1 > LT1 > HT2...)
+ * 2. 同Tier内の場合：Record（タイム）が速い順
+ * 3. タイムも同じ場合：Ratingが高い順
+ */
+
 const players = [
   {
     name: "Jason Games9024",
@@ -5,7 +13,11 @@ const players = [
     matches: 0,
     wins: 0,
     tier: "LT3",
-    mapTiers: { Cave: "LT3", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "LT3", record: 48.244 }, // タイムを計測したらここに入れる
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   },
   {
     name: "MCsyaberu",
@@ -13,7 +25,11 @@ const players = [
     matches: 6,
     wins: 5,
     tier: "LT3",
-    mapTiers: { Cave: "LT3", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "LT3", record: 48.230 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   },
   {
     name: "Kurobean1729",
@@ -21,7 +37,11 @@ const players = [
     matches: 2,
     wins: 1,
     tier: "LT4",
-    mapTiers: { Cave: "LT4", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "LT4", record: 49.060 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   },
   {
     name: "ykgalleria",
@@ -29,7 +49,11 @@ const players = [
     matches: 0,
     wins: 0,
     tier: "HT5",
-    mapTiers: { Cave: "HT5", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "HT5", record: 49.240 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   },
   {
     name: "tenntennyt",
@@ -37,7 +61,11 @@ const players = [
     matches: 2,
     wins: 0,
     tier: "HT5",
-    mapTiers: { Cave: "HT5", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "HT5", record: 49.464 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   },
   {
     name: "AntiUnlockJP",
@@ -45,7 +73,11 @@ const players = [
     matches: 0,
     wins: 0,
     tier: "HT6",
-    mapTiers: { Cave: "HT6", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "HT6", record: 49.825 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   },
   {
     name: "beatdown2725",
@@ -53,7 +85,11 @@ const players = [
     matches: 0,
     wins: 0,
     tier: "HT6",
-    mapTiers: { Cave: "HT6", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "HT6", record: 49.993 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   },
   {
     name: "Super Hiko14",
@@ -61,7 +97,11 @@ const players = [
     matches: 1,
     wins: 1,
     tier: "LT7",
-    mapTiers: { Cave: "LT7", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "LT7", record: 51.817 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   },
   {
     name: "chikuwa03224837",
@@ -69,7 +109,11 @@ const players = [
     matches: 3,
     wins: 0,
     tier: "LT7",
-    mapTiers: { Cave: "LT7", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "LT7", record: 51.839 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   },
   {
     name: "KenNova758",
@@ -77,18 +121,15 @@ const players = [
     matches: 0,
     wins: 0,
     tier: "HT8",
-    mapTiers: { Cave: "HT8", Temple: "-", Factory: "-" }
+    mapTiers: {
+      Cave: { tier: "HT8", record: 52.577 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
+    }
   }
 ];
-function getTierScore(tierStr) {
-    if (!tierStr) return 0;
-    const type = tierStr.substring(0, 2); // "HT" or "LT"
-    const level = parseInt(tierStr.substring(2)); // "1" to "10"
-    
-    // 計算式: (11 - レベル) * 10 + (HTなら5, LTなら0) などの重み付け
-    // HT1=20, LT1=19, HT2=18, LT2=17...
-    let base = (11 - level) * 2;
-    return type === "HT" ? base : base - 1;
-}
 
-
+const TIER_ORDER = [
+  "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
+  "HT6", "LT6", "HT7", "LT7", "HT8", "LT8", "HT9", "LT9", "HT10", "LT10", "-"
+];
