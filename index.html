@@ -2,150 +2,237 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="icon/png" href="icon.png">
-    <title>MCsyaberu's DeathRun Tier</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeathRun Rankings</title>
+    <script src="data.js"></script>
+    <style>
+        /* 参考サイトのフォントとカラーを再現 */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        /* タブメニュー（syaberu氏のスタイル） */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #333;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #888;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: 0.2s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+        }
+
+        .tab-btn.active {
+            color: #00bcd4; /* シアン系のアクセント */
+            border-bottom: 3px solid #00bcd4;
+        }
+
+        /* ランキングテーブル */
+        .ranking-table {
+            width: 100%;
+            max-width: 900px;
+            border-collapse: collapse;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .ranking-table thead {
+            background-color: #2c2c2c;
+            color: #aaa;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .ranking-table th, .ranking-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .ranking-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ranking-table tr:hover {
+            background-color: #252525;
+        }
+
+        /* 各パーツのスタイル */
+        .rank-col { width: 60px; font-weight: bold; text-align: center; color: #ffeb3b; }
+        .skin-col { width: 50px; text-align: center; }
+        .name-col { font-weight: bold; font-size: 1.1rem; color: #fff; }
+        .tier-col { width: 100px; text-align: center; }
+        .record-col { width: 150px; text-align: right; font-family: 'Courier New', monospace; color: #00bcd4; font-weight: bold; }
+        .rating-col { width: 100px; text-align: right; color: #888; font-size: 0.9rem; }
+
+        /* スキンヘッド画像 */
+        .skin-img {
+            width: 32px;
+            height: 32px;
+            image-rendering: pixelated;
+            border-radius: 4px;
+            vertical-align: middle;
+            background-color: #333;
+        }
+
+        /* Tierバッジの装飾 */
+        .tier-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            display: inline-block;
+            min-width: 50px;
+        }
+        .tier-ht { background-color: #d32f2f; color: #fff; } /* 赤 */
+        .tier-lt { background-color: #388e3c; color: #fff; } /* 緑 */
+        .tier-none { background-color: #555; color: #ccc; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        tbody tr { animation: fadeIn 0.3s ease forwards; }
+
+    </style>
 </head>
 <body>
 
-    <div id="sound-control-panel">
-        <div class="panel-content">
-            <button id="mute-btn" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">🔊</button>
-            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
-            <span id="vol-txt">50%</span>
-        </div>
+    <h1>DeathRun Rankings</h1>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="updateMode('Overall', this)">Overall</button>
+        <button class="tab-btn" onclick="updateMode('Cave', this)">Cave</button>
+        <button class="tab-btn" onclick="updateMode('Temple', this)">Temple</button>
+        <button class="tab-btn" onclick="updateMode('Factory', this)">Factory</button>
     </div>
 
-    <div class="container">
-        <h1 style="text-align:center; font-size:3rem; text-shadow:0 0 20px var(--neon-cyan);">TOP RUNNERS</h1>
-        
-        <div style="margin-bottom: 20px; display:flex; gap:10px; justify-content:center;">
-            <button class="neon-btn" onclick="renderRanking('rating')">Rating順</button>
-            <button class="neon-btn" onclick="renderRanking('tier')">Tier順</button>
-        </div>
+    <table class="ranking-table">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Rank</th>
+                <th>Skin</th>
+                <th>Player</th>
+                <th style="text-align: center;">Tier</th>
+                <th style="text-align: right;">Record</th>
+                <th style="text-align: right;">Rating</th>
+            </tr>
+        </thead>
+        <tbody id="ranking-body">
+            </tbody>
+    </table>
 
-        <div id="ranking-list"></div>
-    </div>
-
-    <script src="data.js"></script>
     <script>
-        // --- SoundManager Class ---
-        class SoundManager {
-            constructor() {
-                this.volume = localStorage.getItem('volume') || 0.5;
-                this.isMuted = localStorage.getItem('muted') === 'true';
-                this.sounds = {
-                    startup: new Audio('sounds/startup.mp3'),
-                    hover: new Audio('sounds/hover.mp3'),
-                    click: new Audio('sounds/click.mp3'),
-                    rank: new Audio('sounds/rank.mp3'),
-                    win: new Audio('sounds/win.mp3'),
-                    button: new Audio('sounds/button.mp3')
-                };
-                this.init();
-            }
+        let currentMode = 'Overall';
 
-            init() {
-                document.getElementById('volume-slider').value = this.volume;
-                this.updateUI();
-                
-                // 初回クリック時にstartupを再生（ブラウザ制限解除）
-                document.addEventListener('mousedown', () => {
-                    if(!this.started) { this.playSound('startup'); this.started = true; }
-                }, {once: true});
-            }
-
-            playSound(type) {
-                if(this.isMuted) return;
-                const s = this.sounds[type];
-                if(s) {
-                    s.currentTime = 0;
-                    s.volume = this.volume;
-                    s.play().catch(e => {});
-                }
-            }
-
-            setVolume(val) {
-                this.volume = val;
-                localStorage.setItem('volume', val);
-                this.updateUI();
-            }
-
-            toggleMute() {
-                this.isMuted = !this.isMuted;
-                localStorage.setItem('muted', this.isMuted);
-                this.updateUI();
-            }
-
-            updateUI() {
-                document.getElementById('vol-txt').innerText = Math.round(this.volume * 100) + "%";
-                document.getElementById('mute-btn').innerText = this.isMuted ? "🔇" : "🔊";
-            }
+        function updateMode(mode, btn) {
+            currentMode = mode;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render();
         }
 
-        const sm = new SoundManager();
+        function getTierIdx(tier) {
+            if (!tier || tier === "-") return 999;
+            const idx = TIER_ORDER.indexOf(tier);
+            return idx === -1 ? 999 : idx;
+        }
 
-        // --- Ranking Logic ---
-        function renderRanking(mode = 'tier') {
-            const list = document.getElementById('ranking-list');
-            list.innerHTML = "";
+        function render() {
+            const body = document.getElementById('ranking-body');
+            body.innerHTML = '';
 
-            // ソートロジック
             let sorted = [...players];
-            if(mode === 'tier') {
-                sorted.sort((a, b) => getTierScore(b.tier) - getTierScore(a.tier) || b.rating - a.rating);
-            } else {
-                sorted.sort((a, b) => b.rating - a.rating);
-            }
 
-            sorted.forEach((p, i) => {
-                const rank = i + 1;
-                const winRate = ((p.wins / p.matches) * 100).toFixed(1);
-                const tierClass = p.tier.startsWith('HT') ? 'badge-ht' : 'badge-lt';
-                
-                const card = document.createElement('a');
-                card.href = `player.html?name=${encodeURIComponent(p.name)}`;
-                card.className = `player-card rank-${rank <= 3 ? rank : 'normal'}`;
-                
-                let rankDisplay = `#${rank}`;
-                if(rank === 1) rankDisplay = `<span class="crown">👑</span>`;
-                if(rank === 2) rankDisplay = `🥈`;
-                if(rank === 3) rankDisplay = `🥉`;
+            sorted.sort((a, b) => {
+                if (currentMode === 'Overall') {
+                    // Overall: 合計タイム(record)が少ない順
+                    const sumA = Object.values(a.mapTiers).reduce((acc, m) => acc + (m.record || 0), 0);
+                    const sumB = Object.values(b.mapTiers).reduce((acc, m) => acc + (m.record || 0), 0);
+                    if (sumA !== sumB) return sumA - sumB;
+                    return b.rating - a.rating;
+                } else {
+                    // 各マップ: Tier優先 > タイム順 > Rating順
+                    const mDataA = a.mapTiers[currentMode];
+                    const mDataB = b.mapTiers[currentMode];
+                    const tierA = typeof mDataA === 'string' ? mDataA : mDataA.tier;
+                    const tierB = typeof mDataB === 'string' ? mDataB : mDataB.tier;
+                    
+                    const idxA = getTierIdx(tierA);
+                    const idxB = getTierIdx(tierB);
+                    if (idxA !== idxB) return idxA - idxB;
 
-                card.innerHTML = `
-                    <div style="width:50px; font-weight:bold; font-size:1.2rem;" class="rank-num">${rankDisplay}</div>
-                    <img src="skins/${p.name}.png" onerror="this.src='skins/default.png'" class="skin-icon">
-                    <div style="flex-grow:1">
-                        <div style="font-size:1.1rem; font-weight:bold;">${p.name}</div>
-                        <div style="font-size:0.8rem; color:#aaa;">Matches: ${p.matches} | WinRate: ${winRate}%</div>
-                    </div>
-                    <div style="text-align:right">
-                        <div class="tier-badge ${tierClass}">${p.tier}</div>
-                        <div style="margin-top:5px; color:var(--neon-cyan); font-weight:bold;">${p.rating} pt</div>
-                    </div>
-                `;
+                    const recA = typeof mDataA === 'string' ? 999.999 : (mDataA.record || 999.999);
+                    const recB = typeof mDataB === 'string' ? 999.999 : (mDataB.record || 999.999);
+                    if (recA !== recB) return recA - recB;
 
-                // イベント
-                card.onmouseenter = () => sm.playSound('hover');
-                card.onclick = () => sm.playSound('click');
-
-                list.appendChild(card);
-                
-                // アニメーション表示
-                setTimeout(() => card.classList.add('show'), i * 50);
+                    return b.rating - a.rating;
+                }
             });
 
-            if(mode === 'tier') sm.playSound('rank');
+            sorted.forEach((p, i) => {
+                const tr = document.createElement('tr');
+                
+                let displayTier, displayRecord;
+                if (currentMode === 'Overall') {
+                    displayTier = p.tier;
+                    const total = Object.values(p.mapTiers).reduce((acc, m) => acc + (m.record || 0), 0);
+                    displayRecord = total > 0 ? total.toFixed(3) + "s" : "---";
+                } else {
+                    const mData = p.mapTiers[currentMode];
+                    displayTier = typeof mData === 'string' ? mData : mData.tier;
+                    const rec = typeof mData === 'string' ? 0 : mData.record;
+                    displayRecord = rec > 0 ? rec.toFixed(3) + "s" : "---";
+                }
+
+                const tierClass = displayTier.startsWith("HT") ? "tier-ht" : (displayTier.startsWith("LT") ? "tier-lt" : "tier-none");
+                const imgPath = `skin/${p.name}.png`;
+
+                tr.innerHTML = `
+                    <td class="rank-col">${i + 1}</td>
+                    <td class="skin-col"><img src="${imgPath}" class="skin-img" onerror="this.src='skin/default.png'"></td>
+                    <td class="name-col">${p.name}</td>
+                    <td class="tier-col"><span class="tier-badge ${tierClass}">${displayTier}</span></td>
+                    <td class="record-col">${displayRecord}</td>
+                    <td class="rating-col">R: ${p.rating}</td>
+                `;
+                body.appendChild(tr);
+            });
         }
 
-        // 音量コントロール
-        document.getElementById('volume-slider').oninput = (e) => sm.setVolume(e.target.value);
-        document.getElementById('mute-btn').onclick = () => { sm.toggleMute(); sm.playSound('button'); };
-
-        window.onload = () => renderRanking('tier');
+        window.onload = render;
     </script>
 </body>
 </html>
-
-
