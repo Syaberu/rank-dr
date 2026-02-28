@@ -22,9 +22,9 @@ const players = [
   },
   {
     name: "MCsyaberu",
-    rating: 1065,
-    matches: 7,
-    wins: 6,
+    rating: 1165,
+    matches: 12,
+    wins: 10,
     tier: "HT5",
     mapTiers: {
       Cave: { tier: "LT3", record: 48.230 },
@@ -48,9 +48,9 @@ const players = [
   },
   {
     name: "ykgalleria",
-    rating: 0,
-    matches: 0,
-    wins: 0,
+    rating: 985,
+    matches: 5,
+    wins: 1,
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT5", record: 49.240 },
@@ -169,6 +169,7 @@ const TIER_ORDER = [
   "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
   "HT6", "LT6", "HT7", "LT7", "HT8", "LT8", "HT9", "LT9", "HT10", "LT10", "-"
 ];
+
 
 
 
