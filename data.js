@@ -135,6 +135,18 @@ const players = [
       Flora: { tier: "-", record: 120.000 },
       Temple: { tier: "-", record: 999.999 },
       Factory: { tier: "-", record: 999.999 }
+    },
+    {
+    name: "makurakun323",
+    rating: 0,
+    matches: 0,
+    wins: 0,
+    tier: "-",
+    mapTiers: {
+      Cave: { tier: "HT8", record: 48.924 },
+      Flora: { tier: "-", record: 120.000 },
+      Temple: { tier: "-", record: 999.999 },
+      Factory: { tier: "-", record: 999.999 }
     }
   }
 ];
@@ -143,6 +155,7 @@ const TIER_ORDER = [
   "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
   "HT6", "LT6", "HT7", "LT7", "HT8", "LT8", "HT9", "LT9", "HT10", "LT10", "-"
 ];
+
 
 
 
