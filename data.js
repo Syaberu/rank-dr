@@ -135,8 +135,9 @@ const players = [
       Flora: { tier: "-", record: 120.000 },
       Temple: { tier: "-", record: 999.999 },
       Factory: { tier: "-", record: 999.999 }
-    },
-    {
+    }
+  },
+  {
     name: "makurakun323",
     rating: 0,
     matches: 0,
