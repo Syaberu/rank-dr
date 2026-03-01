@@ -80,7 +80,7 @@ const players = [
     tier: "LT8",
     mapTiers: {
       Cave: { tier: "HT6", record: 49.825 },
-      Flora: { tier: "LT10", record: 01:28.300 },
+      Flora: { tier: "LT10", record: 88.300 },
       Temple: { tier: "-", record: 999.999 },
       Factory: { tier: "-", record: 999.999 }
     }
@@ -169,6 +169,7 @@ const TIER_ORDER = [
   "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
   "HT6", "LT6", "HT7", "LT7", "HT8", "LT8", "HT9", "LT9", "HT10", "LT10", "-"
 ];
+
 
 
 
