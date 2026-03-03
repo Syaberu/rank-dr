@@ -6,10 +6,19 @@
     <title>DeathRun Rankings</title>
     <script src="data.js"></script>
     <style>
+        :root {
+            --bg-dark: #0f0f12;
+            --card-bg: #1c1c1e;
+            --accent-cyan: #00d2ff;
+            --tier-ht: #ff3b30;
+            --tier-lt: #34c759;
+            --tier-na: #3a3a3c;
+        }
+
         body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: #d1d1d6;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -20,124 +29,156 @@
         h1 {
             color: #ffffff;
             font-size: 2.2rem;
-            margin: 20px 0 40px 0;
-            letter-spacing: 2px;
+            margin: 30px 0;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
+        /* --- Tabs --- */
         .tabs {
             display: flex;
-            border-bottom: 1px solid #333;
+            border-bottom: 2px solid #2c2c2e;
             width: 100%;
-            max-width: 950px;
-            margin-bottom: 25px;
+            max-width: 1100px;
+            margin-bottom: 30px;
             overflow-x: auto;
         }
 
         .tab-btn {
             background: none;
             border: none;
-            color: #777;
-            padding: 12px 24px;
+            color: #8e8e93;
+            padding: 15px 25px;
             cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
             white-space: nowrap;
         }
 
-        .tab-btn:hover { color: #bbb; }
+        .tab-btn:hover { color: #fff; }
         .tab-btn.active {
-            color: #00e5ff;
-            border-bottom: 2px solid #00e5ff;
+            color: var(--accent-cyan);
+            border-bottom: 3px solid var(--accent-cyan);
         }
 
+        /* --- Table Layout --- */
         .ranking-table {
             width: 100%;
-            max-width: 950px;
-            border-collapse: collapse;
-            background-color: #1a1a1a;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 1100px;
+            border-collapse: separate;
+            border-spacing: 0 10px;
         }
 
-        .ranking-table thead { background-color: #252525; }
-
-        .ranking-table th {
-            padding: 12px 15px;
+        .ranking-table thead th {
+            padding: 10px 15px;
             text-align: left;
-            color: #888;
+            color: #636366;
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-bottom: 1px solid #333;
         }
 
-        .ranking-table td {
-            padding: 14px 15px;
-            border-bottom: 1px solid #282828;
-            vertical-align: middle;
+        .ranking-table tbody tr {
+            background-color: var(--card-bg);
+            transition: transform 0.2s;
         }
 
-        .ranking-table tr:hover { background-color: #222; }
+        .ranking-table tbody tr:hover {
+            transform: translateY(-2px);
+            background-color: #252529;
+        }
 
-        .rank-col { width: 50px; text-align: center; font-weight: bold; font-size: 1.2rem; color: #555; }
-        .skin-col { width: 50px; text-align: center; }
-        .name-col { font-weight: 600; font-size: 1.05rem; color: #fff; }
-        .tier-col { width: 110px; text-align: center; }
-        .record-col { width: 140px; text-align: right; font-family: 'Consolas', monospace; color: #00e5ff; font-weight: bold; }
-        .rating-col { width: 100px; text-align: right; color: #666; font-size: 0.85rem; }
+        .ranking-table td { padding: 12px 15px; vertical-align: middle; }
+        .ranking-table td:first-child { border-radius: 10px 0 0 10px; }
+        .ranking-table td:last-child { border-radius: 0 10px 10px 0; }
 
+        /* --- Rank Colors --- */
+        .rank-col { width: 50px; text-align: center; font-size: 1.5rem; font-weight: 900; color: #444; }
+        .rank-1 .rank-col { color: #ffd700; }
+        .rank-2 .rank-col { color: #c0c0c0; }
+        .rank-3 .rank-col { color: #cd7f32; }
+
+        /* --- Player Info --- */
         .skin-img {
-            width: 34px;
-            height: 34px;
+            width: 50px;
+            height: 50px;
             image-rendering: pixelated;
-            border-radius: 3px;
-            background-color: #333;
+            border-radius: 8px;
+            background: #333;
+        }
+        .player-name { font-size: 1.2rem; font-weight: 700; color: #fff; display: block; }
+        .player-sub { font-size: 0.75rem; color: #8e8e93; }
+
+        /* --- 64px Stamp UI --- */
+        .tier-stamp-container {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
         }
 
-        .tier-badge {
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            display: inline-block;
-            min-width: 50px;
+        .tier-stamp {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            font-weight: 900;
+            font-size: 1rem;
+            transition: transform 0.2s;
+            cursor: help;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .tier-ht { background-color: #ff3d00; color: #fff; }
-        .tier-lt { background-color: #00c853; color: #fff; }
-        .tier-none { background-color: #424242; color: #bbb; }
 
-        tr:nth-child(1) .rank-col { color: #ffca28; }
-        tr:nth-child(2) .rank-col { color: #cfd8dc; }
-        tr:nth-child(3) .rank-col { color: #bcaaa4; }
+        .tier-stamp:hover { transform: scale(1.1); z-index: 10; }
 
-        @keyframes fadeInRow {
-            from { opacity: 0; transform: translateX(-5px); }
-            to { opacity: 1; transform: translateX(0); }
+        .stamp-map-label {
+            font-size: 0.6rem;
+            margin-bottom: 2px;
+            opacity: 0.8;
+            letter-spacing: 1px;
         }
-        tbody tr { animation: fadeInRow 0.3s ease-out forwards; }
+
+        .tier-ht { background-color: var(--tier-ht); color: #fff; }
+        .tier-lt { background-color: var(--tier-lt); color: #fff; }
+        .tier-none { background-color: var(--tier-na); color: #888; }
+
+        /* --- Record & Rating --- */
+        .record-col { text-align: right; font-family: 'Consolas', monospace; color: var(--accent-cyan); font-size: 1.3rem; font-weight: 700; }
+        .rating-col { text-align: right; color: var(--accent-cyan); font-weight: bold; }
+        .rating-label { color: #636366; font-size: 0.65rem; display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        tbody tr { animation: fadeIn 0.4s ease-out forwards; }
     </style>
 </head>
 <body>
 
-    <h1>DeathRun Rankings</h1>
+    <h1>DeathRun Leaderboard</h1>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="updateMode('Overall', this)">Overall</button>
-        <button class="tab-btn" onclick="updateMode('Cave', this)">Cave</button>
-        <button class="tab-btn" onclick="updateMode('Flora', this)">Flora</button> <button class="tab-btn" onclick="updateMode('Temple', this)">Temple</button>
-        <button class="tab-btn" onclick="updateMode('Factory', this)">Factory</button>
+        <button class="tab-btn active" onclick="updateMode('Overall', this)">OVERALL</button>
+        <button class="tab-btn" onclick="updateMode('Cave', this)">CAVE</button>
+        <button class="tab-btn" onclick="updateMode('Flora', this)">FLORA</button>
+        <button class="tab-btn" onclick="updateMode('Gardens', this)">GARDENS</button>
+        <button class="tab-btn" onclick="updateMode('Gardens(Spring)', this)">GARDENS(SPRING)</button>
     </div>
 
     <table class="ranking-table">
         <thead>
             <tr>
                 <th style="text-align: center;">Rank</th>
-                <th>Skin</th>
-                <th>Player Name</th>
-                <th style="text-align: center;">Tier</th>
-                <th style="text-align: right;">Record</th>
+                <th colspan="2">Player</th>
+                <th style="text-align: center;">Map Tiers (Status)</th>
+                <th style="text-align: right;">Total / Record</th>
                 <th style="text-align: right;">Rating</th>
             </tr>
         </thead>
@@ -160,11 +201,8 @@
             return idx === -1 ? 999 : idx;
         }
 
-        // 有効なタイムのみを合算する
         function getValidSum(p) {
-            return Object.values(p.mapTiers).reduce((acc, m) => {
-                return acc + (m.record < 900 ? m.record : 0);
-            }, 0);
+            return Object.values(p.mapTiers).reduce((acc, m) => acc + (m.record < 900 ? m.record : 0), 0);
         }
 
         function render() {
@@ -184,38 +222,62 @@
                     const mDataB = b.mapTiers[currentMode];
                     const idxA = getTierIdx(mDataA.tier);
                     const idxB = getTierIdx(mDataB.tier);
-
                     if (idxA !== idxB) return idxA - idxB;
                     if (mDataA.record !== mDataB.record) return mDataA.record - mDataB.record;
                     return b.rating - a.rating;
                 }
             });
 
+            const mapShortNames = {
+                'Cave': 'C',
+                'Flora': 'F',
+                'Gardens': 'G',
+                'Gardens(Spring)': 'GS'
+            };
+
             sorted.forEach((p, i) => {
                 const tr = document.createElement('tr');
-                tr.style.animationDelay = (i * 0.03) + 's';
+                if (i < 3) tr.className = `rank-${i+1}`;
+                tr.style.animationDelay = (i * 0.05) + 's';
                 
-                let displayTier, displayRecord;
+                let tierContent = "";
                 if (currentMode === 'Overall') {
-                    displayTier = p.tier;
-                    const total = getValidSum(p);
-                    displayRecord = total > 0 ? total.toFixed(3) + "s" : "---";
+                    tierContent = `<div class="tier-stamp-container">`;
+                    for (const mapName of ['Cave', 'Flora', 'Gardens', 'Gardens(Spring)']) {
+                        const data = p.mapTiers[mapName];
+                        const tier = data.tier;
+                        const cls = tier.startsWith("HT") ? "tier-ht" : (tier.startsWith("LT") ? "tier-lt" : "tier-none");
+                        const short = mapShortNames[mapName];
+                        tierContent += `
+                            <div class="tier-stamp ${cls}" title="${mapName}: ${tier}">
+                                <span class="stamp-map-label">${short}</span>
+                                <span>${tier === "-" ? "NA" : tier}</span>
+                            </div>`;
+                    }
+                    tierContent += `</div>`;
                 } else {
                     const mData = p.mapTiers[currentMode];
-                    displayTier = mData.tier;
-                    displayRecord = mData.record < 900 ? mData.record.toFixed(3) + "s" : "---";
+                    const cls = mData.tier.startsWith("HT") ? "tier-ht" : (mData.tier.startsWith("LT") ? "tier-lt" : "tier-none");
+                    tierContent = `<div style="display:flex; justify-content:center;"><div class="tier-stamp ${cls}" style="width:100px;">${mData.tier}</div></div>`;
                 }
 
-                const tierClass = displayTier.startsWith("HT") ? "tier-ht" : (displayTier.startsWith("LT") ? "tier-lt" : "tier-none");
-                const imgPath = `skins/${p.name}.png`;
+                const total = getValidSum(p);
+                const recDisp = currentMode === 'Overall' 
+                    ? (total > 0 ? total.toFixed(3) + "s" : "---")
+                    : (p.mapTiers[currentMode].record < 900 ? p.mapTiers[currentMode].record.toFixed(3) + "s" : "---");
 
                 tr.innerHTML = `
                     <td class="rank-col">${i + 1}</td>
-                    <td class="skin-col"><img src="${imgPath}" class="skin-img" onerror="this.src='skins/default.png'"></td>
-                    <td class="name-col">${p.name}</td>
-                    <td class="tier-col"><span class="tier-badge ${tierClass}">${displayTier}</span></td>
-                    <td class="record-col">${displayRecord}</td>
-                    <td class="rating-col">R: ${p.rating}</td>
+                    <td style="width: 60px;"><img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'"></td>
+                    <td>
+                        <div class="name-container">
+                            <span class="player-name">${p.name}</span>
+                            <span class="player-sub">W: ${p.wins} / M: ${p.matches}</span>
+                        </div>
+                    </td>
+                    <td>${tierContent}</td>
+                    <td class="record-col">${recDisp}</td>
+                    <td class="rating-col"><span class="rating-label">RATING</span>${p.rating}</td>
                 `;
                 body.appendChild(tr);
             });
