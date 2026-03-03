@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeathRun Rankings</title>
+    <title>DeathRun Rankings - Official Leaderboard</title>
     <script src="data.js"></script>
     <style>
         :root {
@@ -13,6 +13,8 @@
             --tier-ht: #ff3b30;
             --tier-lt: #34c759;
             --tier-na: #3a3a3c;
+            --text-main: #ffffff;
+            --text-sub: #8e8e93;
         }
 
         body {
@@ -27,15 +29,16 @@
         }
 
         h1 {
-            color: #ffffff;
+            color: var(--text-main);
             font-size: 2.2rem;
             margin: 30px 0;
             letter-spacing: 4px;
             font-weight: 800;
             text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
         }
 
-        /* --- Tabs --- */
+        /* --- タブメニュー --- */
         .tabs {
             display: flex;
             border-bottom: 2px solid #2c2c2e;
@@ -43,12 +46,14 @@
             max-width: 1100px;
             margin-bottom: 30px;
             overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
         }
+        .tabs::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 
         .tab-btn {
             background: none;
             border: none;
-            color: #8e8e93;
+            color: var(--text-sub);
             padding: 15px 25px;
             cursor: pointer;
             font-size: 0.9rem;
@@ -59,13 +64,13 @@
             white-space: nowrap;
         }
 
-        .tab-btn:hover { color: #fff; }
+        .tab-btn:hover { color: var(--text-main); }
         .tab-btn.active {
             color: var(--accent-cyan);
             border-bottom: 3px solid var(--accent-cyan);
         }
 
-        /* --- Table Layout --- */
+        /* --- ランキングテーブル --- */
         .ranking-table {
             width: 100%;
             max-width: 1100px;
@@ -84,39 +89,41 @@
 
         .ranking-table tbody tr {
             background-color: var(--card-bg);
-            transition: transform 0.2s;
+            transition: transform 0.2s, background-color 0.2s;
         }
 
         .ranking-table tbody tr:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             background-color: #252529;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
-        .ranking-table td { padding: 12px 15px; vertical-align: middle; }
-        .ranking-table td:first-child { border-radius: 10px 0 0 10px; }
-        .ranking-table td:last-child { border-radius: 0 10px 10px 0; }
+        .ranking-table td { padding: 15px; vertical-align: middle; }
+        .ranking-table td:first-child { border-radius: 12px 0 0 12px; }
+        .ranking-table td:last-child { border-radius: 0 12px 12px 0; }
 
-        /* --- Rank Colors --- */
-        .rank-col { width: 50px; text-align: center; font-size: 1.5rem; font-weight: 900; color: #444; }
-        .rank-1 .rank-col { color: #ffd700; }
+        /* --- 順位カラー --- */
+        .rank-col { width: 50px; text-align: center; font-size: 1.6rem; font-weight: 900; color: #444; }
+        .rank-1 .rank-col { color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
         .rank-2 .rank-col { color: #c0c0c0; }
         .rank-3 .rank-col { color: #cd7f32; }
 
-        /* --- Player Info --- */
+        /* --- プレイヤー情報 --- */
         .skin-img {
-            width: 50px;
-            height: 50px;
+            width: 54px;
+            height: 54px;
             image-rendering: pixelated;
             border-radius: 8px;
             background: #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
-        .player-name { font-size: 1.2rem; font-weight: 700; color: #fff; display: block; }
-        .player-sub { font-size: 0.75rem; color: #8e8e93; }
+        .player-name { font-size: 1.25rem; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 2px; }
+        .player-sub { font-size: 0.75rem; color: var(--text-sub); font-weight: 600; }
 
-        /* --- 64px Stamp UI --- */
+        /* --- 64px 特大スタンプUI --- */
         .tier-stamp-container {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
         }
 
@@ -127,37 +134,46 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 900;
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: transform 0.2s;
             cursor: help;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .tier-stamp:hover { transform: scale(1.1); z-index: 10; }
+        .tier-stamp:hover { transform: scale(1.15); z-index: 10; }
 
         .stamp-map-label {
-            font-size: 0.6rem;
-            margin-bottom: 2px;
+            font-size: 0.65rem;
+            margin-bottom: 3px;
             opacity: 0.8;
             letter-spacing: 1px;
         }
 
-        .tier-ht { background-color: var(--tier-ht); color: #fff; }
-        .tier-lt { background-color: var(--tier-lt); color: #fff; }
-        .tier-none { background-color: var(--tier-na); color: #888; }
+        .tier-ht { background: linear-gradient(135deg, #ff3b30, #ff2d55); color: #fff; }
+        .tier-lt { background: linear-gradient(135deg, #34c759, #32d74b); color: #fff; }
+        .tier-none { background: #3a3a3c; color: #777; }
 
-        /* --- Record & Rating --- */
-        .record-col { text-align: right; font-family: 'Consolas', monospace; color: var(--accent-cyan); font-size: 1.3rem; font-weight: 700; }
-        .rating-col { text-align: right; color: var(--accent-cyan); font-weight: bold; }
-        .rating-label { color: #636366; font-size: 0.65rem; display: block; }
+        /* --- タイム & レーティング --- */
+        .record-col { 
+            text-align: right; 
+            font-family: 'Consolas', 'Courier New', monospace; 
+            color: var(--accent-cyan); 
+            font-size: 1.4rem; 
+            font-weight: 700;
+            width: 180px;
+        }
+        .rating-col { text-align: right; color: var(--accent-cyan); font-weight: bold; width: 100px; }
+        .rating-label { color: var(--text-sub); font-size: 0.65rem; display: block; margin-bottom: 2px; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+        /* アニメーション */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        tbody tr { animation: fadeIn 0.4s ease-out forwards; }
+        tbody tr { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
     </style>
 </head>
 <body>
@@ -177,7 +193,7 @@
             <tr>
                 <th style="text-align: center;">Rank</th>
                 <th colspan="2">Player</th>
-                <th style="text-align: center;">Map Tiers (Status)</th>
+                <th style="text-align: center;">Map Status</th>
                 <th style="text-align: right;">Total / Record</th>
                 <th style="text-align: right;">Rating</th>
             </tr>
@@ -187,6 +203,24 @@
 
     <script>
         let currentMode = 'Overall';
+
+        // マップの略称定義
+        const mapShortNames = { 
+            'Cave': 'C', 
+            'Flora': 'F', 
+            'Gardens': 'G', 
+            'Gardens(Spring)': 'GS' 
+        };
+
+        // タイムフォーマット関数 (00:00.000)
+        function formatTime(seconds) {
+            if (seconds >= 900 || seconds <= 0) return "---";
+            const mins = Math.floor(seconds / 60);
+            const secs = (seconds % 60).toFixed(3);
+            const displayMins = String(mins).padStart(2, '0');
+            const displaySecs = String(secs).padStart(6, '0');
+            return `${displayMins}:${displaySecs}`;
+        }
 
         function updateMode(mode, btn) {
             currentMode = mode;
@@ -201,6 +235,7 @@
             return idx === -1 ? 999 : idx;
         }
 
+        // 有効なタイム（120秒や999秒を除外する場合はここを調整）
         function getValidSum(p) {
             return Object.values(p.mapTiers).reduce((acc, m) => acc + (m.record < 900 ? m.record : 0), 0);
         }
@@ -208,14 +243,16 @@
         function render() {
             const body = document.getElementById('ranking-body');
             body.innerHTML = '';
-
             let sorted = [...players];
 
+            // ソート
             sorted.sort((a, b) => {
                 if (currentMode === 'Overall') {
                     const sumA = getValidSum(a);
                     const sumB = getValidSum(b);
-                    if (sumA !== sumB) return sumB === 0 ? -1 : (sumA === 0 ? 1 : sumA - sumB);
+                    if (sumA === 0) return 1;
+                    if (sumB === 0) return -1;
+                    if (sumA !== sumB) return sumA - sumB;
                     return b.rating - a.rating;
                 } else {
                     const mDataA = a.mapTiers[currentMode];
@@ -227,13 +264,6 @@
                     return b.rating - a.rating;
                 }
             });
-
-            const mapShortNames = {
-                'Cave': 'C',
-                'Flora': 'F',
-                'Gardens': 'G',
-                'Gardens(Spring)': 'GS'
-            };
 
             sorted.forEach((p, i) => {
                 const tr = document.createElement('tr');
@@ -247,10 +277,9 @@
                         const data = p.mapTiers[mapName];
                         const tier = data.tier;
                         const cls = tier.startsWith("HT") ? "tier-ht" : (tier.startsWith("LT") ? "tier-lt" : "tier-none");
-                        const short = mapShortNames[mapName];
                         tierContent += `
                             <div class="tier-stamp ${cls}" title="${mapName}: ${tier}">
-                                <span class="stamp-map-label">${short}</span>
+                                <span class="stamp-map-label">${mapShortNames[mapName]}</span>
                                 <span>${tier === "-" ? "NA" : tier}</span>
                             </div>`;
                     }
@@ -258,26 +287,26 @@
                 } else {
                     const mData = p.mapTiers[currentMode];
                     const cls = mData.tier.startsWith("HT") ? "tier-ht" : (mData.tier.startsWith("LT") ? "tier-lt" : "tier-none");
-                    tierContent = `<div style="display:flex; justify-content:center;"><div class="tier-stamp ${cls}" style="width:100px;">${mData.tier}</div></div>`;
+                    tierContent = `<div style="display:flex; justify-content:center;"><div class="tier-stamp ${cls}" style="width:110px;">${mData.tier}</div></div>`;
                 }
 
                 const total = getValidSum(p);
-                const recDisp = currentMode === 'Overall' 
-                    ? (total > 0 ? total.toFixed(3) + "s" : "---")
-                    : (p.mapTiers[currentMode].record < 900 ? p.mapTiers[currentMode].record.toFixed(3) + "s" : "---");
+                const rawRecord = currentMode === 'Overall' ? total : p.mapTiers[currentMode].record;
+                const recDisp = formatTime(rawRecord);
 
                 tr.innerHTML = `
                     <td class="rank-col">${i + 1}</td>
-                    <td style="width: 60px;"><img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'"></td>
+                    <td style="width: 70px;"><img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'"></td>
                     <td>
-                        <div class="name-container">
-                            <span class="player-name">${p.name}</span>
-                            <span class="player-sub">W: ${p.wins} / M: ${p.matches}</span>
-                        </div>
+                        <span class="player-name">${p.name}</span>
+                        <span class="player-sub">WINS: ${p.wins} / MATCHES: ${p.matches}</span>
                     </td>
                     <td>${tierContent}</td>
                     <td class="record-col">${recDisp}</td>
-                    <td class="rating-col"><span class="rating-label">RATING</span>${p.rating}</td>
+                    <td class="rating-col">
+                        <span class="rating-label">RATING</span>
+                        ${p.rating}
+                    </td>
                 `;
                 body.appendChild(tr);
             });
