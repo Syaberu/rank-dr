@@ -11,9 +11,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT3", record: 48.244 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -26,7 +26,7 @@ const players = [
       Cave: { tier: "LT3", record: 48.230 },
       Flora: { tier: "LT3", record: 65.034 },
       Gardens: { tier: "LT4", record: 65.881 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -37,9 +37,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT4", record: 49.060 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -50,9 +50,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT5", record: 49.240 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -65,7 +65,7 @@ const players = [
       Cave: { tier: "HT4", record: 48.690 },
       Flora: { tier: "LT3", record: 65.837 },
       Gardens: { tier: "LT3", record: 63.993 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -77,8 +77,8 @@ const players = [
     mapTiers: {
       Cave: { tier: "HT6", record: 49.825 },
       Flora: { tier: "LT6", record: 71.258 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -89,9 +89,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT6", record: 49.993 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -102,9 +102,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT7", record: 51.817 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -115,9 +115,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT7", record: 51.839 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -128,9 +128,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT8", record: 52.577 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -141,9 +141,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "LT6", record: 50.087 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -154,9 +154,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT5", record: 49.220 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -166,10 +166,10 @@ const players = [
     wins: 0,
     tier: "-",
     mapTiers: {
-      Cave: { tier: "-", record: 120.000 },
-      Flora: { tier: "-", record: 120.000 },
+      Cave: { tier: "-", record: 240.000 },
+      Flora: { tier: "-", record: 240.000 },
       Gardens: { tier: "LT5", record: 67.507 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -180,9 +180,9 @@ const players = [
     tier: "-",
     mapTiers: {
       Cave: { tier: "HT5", record: 49.430 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Flora: { tier: "-", record: 240.000 },
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   },
   {
@@ -194,8 +194,8 @@ const players = [
     mapTiers: {
       Cave: { tier: "HT5", record: 49.270 },
       Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      "Gardens(Spring)": { tier: "-", record: 999.999 }
+      Gardens: { tier: "-", record: 240.000 },
+      Metropolis: { tier: "-", record: 999.999 }
     }
   }
 ];
@@ -204,6 +204,7 @@ const TIER_ORDER = [
   "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
   "HT6", "LT6", "HT7", "LT7", "HT8", "LT8", "HT9", "LT9", "HT10", "LT10", "-"
 ];
+
 
 
 
