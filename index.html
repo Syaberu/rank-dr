@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCsyaberu's Tier - DeathRun</title>
+    <title>MCsyaberu's Tier - DeathRun Rankings</title>
     <script src="data.js"></script>
     <style>
         :root {
@@ -22,7 +22,7 @@
             color: #d1d1d6;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -30,100 +30,97 @@
 
         h1 {
             color: var(--text-main);
-            font-size: 2.2rem;
-            margin: 30px 0;
-            letter-spacing: 4px;
+            font-size: 1.8rem;
+            margin: 25px 0;
+            letter-spacing: 3px;
             font-weight: 800;
             text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+            text-align: center;
         }
 
-        /* --- タブメニュー --- */
+        /* --- Tabs --- */
         .tabs {
             display: flex;
             border-bottom: 2px solid #2c2c2e;
             width: 100%;
             max-width: 1100px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             overflow-x: auto;
-            scrollbar-width: none; /* Firefox */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
-        .tabs::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .tabs::-webkit-scrollbar { display: none; }
 
         .tab-btn {
             background: none;
             border: none;
             color: var(--text-sub);
-            padding: 15px 25px;
+            padding: 15px 22px;
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: bold;
             transition: 0.3s;
             border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
             white-space: nowrap;
         }
-
-        .tab-btn:hover { color: var(--text-main); }
         .tab-btn.active {
             color: var(--accent-cyan);
             border-bottom: 3px solid var(--accent-cyan);
         }
 
-        /* --- ランキングテーブル --- */
+        /* --- Ranking Table --- */
         .ranking-table {
             width: 100%;
             max-width: 1100px;
             border-collapse: separate;
-            border-spacing: 0 10px;
+            border-spacing: 0 8px;
         }
 
         .ranking-table thead th {
-            padding: 10px 15px;
+            padding: 10px;
             text-align: left;
             color: #636366;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .ranking-table tbody tr {
             background-color: var(--card-bg);
-            transition: transform 0.2s, background-color 0.2s;
+            transition: transform 0.2s;
         }
 
         .ranking-table tbody tr:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             background-color: #252529;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
-        .ranking-table td { padding: 15px; vertical-align: middle; }
-        .ranking-table td:first-child { border-radius: 12px 0 0 12px; }
-        .ranking-table td:last-child { border-radius: 0 12px 12px 0; }
+        .ranking-table td { padding: 12px 15px; vertical-align: middle; }
+        .ranking-table td:first-child { border-radius: 10px 0 0 10px; }
+        .ranking-table td:last-child { border-radius: 0 10px 10px 0; }
 
-        /* --- 順位カラー --- */
-        .rank-col { width: 50px; text-align: center; font-size: 1.6rem; font-weight: 900; color: #444; }
-        .rank-1 .rank-col { color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        /* --- Ranking Positions --- */
+        .rank-col { width: 45px; text-align: center; font-size: 1.4rem; font-weight: 900; color: #444; }
+        .rank-1 .rank-col { color: #ffd700; }
         .rank-2 .rank-col { color: #c0c0c0; }
         .rank-3 .rank-col { color: #cd7f32; }
 
-        /* --- プレイヤー情報 --- */
+        /* --- Player UI --- */
         .skin-img {
-            width: 54px;
-            height: 54px;
+            width: 48px;
+            height: 48px;
             image-rendering: pixelated;
             border-radius: 8px;
             background: #333;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
-        .player-name { font-size: 1.25rem; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 2px; }
-        .player-sub { font-size: 0.75rem; color: var(--text-sub); font-weight: 600; }
+        .player-name { font-size: 1.1rem; font-weight: 700; color: var(--text-main); display: block; }
+        .player-sub { font-size: 0.7rem; color: var(--text-sub); }
 
-        /* --- 64px 特大スタンプUI --- */
+        /* --- 64px Stamp UI --- */
         .tier-stamp-container {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
         }
 
@@ -134,67 +131,73 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 900;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: transform 0.2s;
             cursor: help;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-
-        .tier-stamp:hover { transform: scale(1.15); z-index: 10; }
-
-        .stamp-map-label {
-            font-size: 0.65rem;
-            margin-bottom: 3px;
-            opacity: 0.8;
-            letter-spacing: 1px;
-        }
+        .tier-stamp:hover { transform: scale(1.1); z-index: 10; }
+        .stamp-map-label { font-size: 0.6rem; margin-bottom: 2px; opacity: 0.8; }
 
         .tier-ht { background: linear-gradient(135deg, #ff3b30, #ff2d55); color: #fff; }
         .tier-lt { background: linear-gradient(135deg, #34c759, #32d74b); color: #fff; }
         .tier-none { background: #3a3a3c; color: #777; }
 
-        /* --- タイム & レーティング --- */
+        /* --- Time & Rating --- */
         .record-col { 
             text-align: right; 
-            font-family: 'Consolas', 'Courier New', monospace; 
+            font-family: 'Consolas', monospace; 
             color: var(--accent-cyan); 
-            font-size: 1.4rem; 
+            font-size: 1.25rem; 
             font-weight: 700;
-            width: 180px;
         }
-        .rating-col { text-align: right; color: var(--accent-cyan); font-weight: bold; width: 100px; }
-        .rating-label { color: var(--text-sub); font-size: 0.65rem; display: block; margin-bottom: 2px; }
+        .rating-col { text-align: right; color: var(--accent-cyan); font-weight: bold; width: 80px; }
+        .rating-label { color: var(--text-sub); font-size: 0.6rem; display: block; }
 
-        /* アニメーション */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
+        /* --- Mobile Optimization --- */
+        @media screen and (max-width: 768px) {
+            .player-name { font-size: 0.95rem; }
+            .tier-stamp { width: 48px; height: 48px; font-size: 0.85rem; }
+            .tier-stamp-container { gap: 5px; }
+            .record-col { font-size: 1rem; }
+            .rank-col { width: 30px; font-size: 1.1rem; }
+            .skin-img { width: 38px; height: 38px; }
+        }
+
+        @media screen and (max-width: 480px) {
+            .tier-stamp { width: 42px; height: 42px; font-size: 0.75rem; }
+            .player-sub { display: none; }
+            .rating-col { width: 50px; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        tbody tr { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
+        tbody tr { animation: fadeIn 0.4s ease-out forwards; opacity: 0; }
     </style>
 </head>
 <body>
 
-    <h1>DeathRun Leaderboard</h1>
+    <h1>DeathRun Rankings</h1>
 
     <div class="tabs">
         <button class="tab-btn active" onclick="updateMode('Overall', this)">OVERALL</button>
         <button class="tab-btn" onclick="updateMode('Cave', this)">CAVE</button>
         <button class="tab-btn" onclick="updateMode('Flora', this)">FLORA</button>
         <button class="tab-btn" onclick="updateMode('Gardens', this)">GARDENS</button>
-        <button class="tab-btn" onclick="updateMode('Gardens(Spring)', this)">GARDENS(SPRING)</button>
+        <button class="tab-btn" onclick="updateMode('Metropolis', this)">METROPOLIS</button>
     </div>
 
     <table class="ranking-table">
         <thead>
             <tr>
-                <th style="text-align: center;">Rank</th>
+                <th style="text-align: center;">#</th>
                 <th colspan="2">Player</th>
-                <th style="text-align: center;">Map Status</th>
-                <th style="text-align: right;">Total / Record</th>
+                <th style="text-align: center;">Status</th>
+                <th style="text-align: right;">Record</th>
                 <th style="text-align: right;">Rating</th>
             </tr>
         </thead>
@@ -203,16 +206,10 @@
 
     <script>
         let currentMode = 'Overall';
+        // マップ略称を Metropolis (M) に更新
+        const mapShortNames = { 'Cave': 'C', 'Flora': 'F', 'Gardens': 'G', 'Metropolis': 'M' };
 
-        // マップの略称定義
-        const mapShortNames = { 
-            'Cave': 'C', 
-            'Flora': 'F', 
-            'Gardens': 'G', 
-            'Gardens(Spring)': 'GS' 
-        };
-
-        // タイムフォーマット関数 (00:00.000)
+        // タイムフォーマット (00:00.000)
         function formatTime(seconds) {
             if (seconds >= 900 || seconds <= 0) return "---";
             const mins = Math.floor(seconds / 60);
@@ -235,7 +232,6 @@
             return idx === -1 ? 999 : idx;
         }
 
-        // 有効なタイム（120秒や999秒を除外する場合はここを調整）
         function getValidSum(p) {
             return Object.values(p.mapTiers).reduce((acc, m) => acc + (m.record < 900 ? m.record : 0), 0);
         }
@@ -252,16 +248,14 @@
                     const sumB = getValidSum(b);
                     if (sumA === 0) return 1;
                     if (sumB === 0) return -1;
-                    if (sumA !== sumB) return sumA - sumB;
-                    return b.rating - a.rating;
+                    return sumA - sumB || b.rating - a.rating;
                 } else {
                     const mDataA = a.mapTiers[currentMode];
                     const mDataB = b.mapTiers[currentMode];
                     const idxA = getTierIdx(mDataA.tier);
                     const idxB = getTierIdx(mDataB.tier);
                     if (idxA !== idxB) return idxA - idxB;
-                    if (mDataA.record !== mDataB.record) return mDataA.record - mDataB.record;
-                    return b.rating - a.rating;
+                    return mDataA.record - mDataB.record || b.rating - a.rating;
                 }
             });
 
@@ -273,9 +267,10 @@
                 let tierContent = "";
                 if (currentMode === 'Overall') {
                     tierContent = `<div class="tier-stamp-container">`;
-                    for (const mapName of ['Cave', 'Flora', 'Gardens', 'Gardens(Spring)']) {
+                    // Metropolisを含む4マップをループ
+                    for (const mapName of ['Cave', 'Flora', 'Gardens', 'Metropolis']) {
                         const data = p.mapTiers[mapName];
-                        const tier = data.tier;
+                        const tier = data ? data.tier : "-";
                         const cls = tier.startsWith("HT") ? "tier-ht" : (tier.startsWith("LT") ? "tier-lt" : "tier-none");
                         tierContent += `
                             <div class="tier-stamp ${cls}" title="${mapName}: ${tier}">
@@ -287,22 +282,20 @@
                 } else {
                     const mData = p.mapTiers[currentMode];
                     const cls = mData.tier.startsWith("HT") ? "tier-ht" : (mData.tier.startsWith("LT") ? "tier-lt" : "tier-none");
-                    tierContent = `<div style="display:flex; justify-content:center;"><div class="tier-stamp ${cls}" style="width:110px;">${mData.tier}</div></div>`;
+                    tierContent = `<div style="display:flex; justify-content:center;"><div class="tier-stamp ${cls}" style="width:100px; height:50px;">${mData.tier}</div></div>`;
                 }
 
-                const total = getValidSum(p);
-                const rawRecord = currentMode === 'Overall' ? total : p.mapTiers[currentMode].record;
-                const recDisp = formatTime(rawRecord);
+                const rawRecord = currentMode === 'Overall' ? getValidSum(p) : p.mapTiers[currentMode].record;
 
                 tr.innerHTML = `
                     <td class="rank-col">${i + 1}</td>
-                    <td style="width: 70px;"><img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'"></td>
+                    <td style="width: 50px;"><img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'"></td>
                     <td>
                         <span class="player-name">${p.name}</span>
-                        <span class="player-sub">WINS: ${p.wins} / MATCHES: ${p.matches}</span>
+                        <span class="player-sub">W:${p.wins} / M:${p.matches}</span>
                     </td>
                     <td>${tierContent}</td>
-                    <td class="record-col">${recDisp}</td>
+                    <td class="record-col">${formatTime(rawRecord)}</td>
                     <td class="rating-col">
                         <span class="rating-label">RATING</span>
                         ${p.rating}
@@ -315,4 +308,3 @@
     </script>
 </body>
 </html>
-
