@@ -179,7 +179,7 @@ const players = [
     wins: 0,
     tier: "-",
     mapTiers: {
-      Cave: { tier: "HT5", record: 49.430 },
+      Cave: { tier: "HT5", record: 49.393 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
       Metropolis: { tier: "-", record: 120.000 }
