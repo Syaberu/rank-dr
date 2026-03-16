@@ -35,7 +35,7 @@ const players = [
   {
     name: "Jason Games9024",
     rating: 0,
-    region: "NA",
+    region: "JP",
     title: "Cave Runner",
     matches: 0,
     wins: 0,
