@@ -3,231 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCsyaberu's Tiers - DeathRun</title>
+    <title>MCsyaberu's Tier - DeathRun Rankings</title>
     <script src="data.js"></script>
     <style>
         :root {
-            --bg-dark: #0f0f12;
-            --card-bg: #1c1c1e;
+            --bg-body: #0a0a0c;
+            --bg-card: #141417;
+            --bg-nav: #1b1b1f;
             --accent-cyan: #00d2ff;
-            --accent-purple: #a55eea;
-            --tier-ht: #ff3b30;
-            --tier-lt: #34c759;
-            --tier-na: #3a3a3c;
-            --text-main: #ffffff;
+            --tier-ht: #ffb400;
+            --tier-lt: #8e8e93;
+            --text-main: #eeeeee;
             --text-sub: #8e8e93;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: #d1d1d6;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h1 {
+            background-color: var(--bg-body);
             color: var(--text-main);
-            font-size: 1.8rem;
-            margin: 20px 0 10px;
-            letter-spacing: 3px;
-            font-weight: 800;
-            text-transform: uppercase;
-            text-align: center;
+            font-family: 'Inter', sans-serif;
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- モード切り替え (Solos / Duos) --- */
-        .mode-switch {
-            display: flex;
-            background: #2c2c2e;
-            padding: 5px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
+        /* --- ナビゲーション --- */
+        .header-nav { display: flex; gap: 15px; background: var(--bg-nav); padding: 8px; border-radius: 12px; margin-bottom: 30px; }
+        .mode-btn { background: none; border: none; color: var(--text-sub); padding: 10px 25px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .mode-btn.active { background: #2c2c34; color: #fff; }
 
-        .mode-btn {
-            background: none;
-            border: none;
-            color: var(--text-sub);
-            padding: 10px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 900;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
+        .map-tabs { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; width: 100%; max-width: 900px; justify-content: center; scrollbar-width: none; }
+        .map-tab { background: var(--bg-nav); border: none; color: var(--text-sub); padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
+        .map-tab.active { background: var(--accent-cyan); color: #000; }
 
-        .mode-btn.active {
-            background: var(--accent-cyan);
-            color: #000;
-        }
-
-        .mode-btn.duo-active {
-            background: var(--accent-purple);
-            color: #fff;
-        }
-
-        /* --- マップ切り替えタブ --- */
-        .tabs {
-            display: flex;
-            border-bottom: 2px solid #2c2c2e;
-            width: 100%;
-            max-width: 1100px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-        .tabs::-webkit-scrollbar { display: none; }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            color: var(--text-sub);
-            padding: 15px 22px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: bold;
-            transition: 0.3s;
-            border-bottom: 3px solid transparent;
-            white-space: nowrap;
-        }
-        .tab-btn.active {
-            color: var(--accent-cyan);
-            border-bottom: 3px solid var(--accent-cyan);
-        }
-
-        /* --- テーブル --- */
-        .ranking-table {
-            width: 100%;
-            max-width: 1100px;
-            border-collapse: separate;
-            border-spacing: 0 8px;
-        }
-
-        .ranking-table thead th {
-            padding: 10px;
-            text-align: left;
-            color: #636366;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-        }
-
-        .ranking-table tbody tr {
-            background-color: var(--card-bg);
-            transition: 0.2s;
-        }
-
-        .ranking-table td { padding: 12px 15px; vertical-align: middle; }
-        .ranking-table td:first-child { border-radius: 10px 0 0 10px; }
-        .ranking-table td:last-child { border-radius: 0 10px 10px 0; }
-
-        .rank-col { width: 45px; text-align: center; font-size: 1.4rem; font-weight: 900; color: #444; }
-        .rank-1 .rank-col { color: #ffd700; }
-
-        /* --- プレイヤー/ペア表示 --- */
-        .player-info { display: flex; align-items: center; gap: 12px; }
-        .skin-img { width: 48px; height: 48px; image-rendering: pixelated; border-radius: 8px; background: #333; }
-        .duo-icon { width: 48px; height: 48px; background: #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        /* --- ランキングアイテム --- */
+        .ranking-list { width: 100%; max-width: 1000px; display: flex; flex-direction: column; gap: 8px; }
         
-        .player-name { font-size: 1.1rem; font-weight: 700; color: var(--text-main); display: block; }
-        .player-sub { font-size: 0.7rem; color: var(--text-sub); }
-
-        /* --- スタンプ --- */
-        .tier-stamp-container { display: flex; gap: 8px; justify-content: center; }
-        .tier-stamp {
-            width: 64px; height: 64px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            border-radius: 10px; font-weight: 900; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        .rank-item {
+            display: grid;
+            grid-template-columns: 60px 60px 1fr 100px 300px; /* 横幅調整 */
+            align-items: center;
+            background-color: var(--bg-card);
+            padding: 8px 20px;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.03);
         }
-        .stamp-map-label { font-size: 0.6rem; opacity: 0.8; }
 
-        .tier-ht { background: linear-gradient(135deg, #ff3b30, #ff2d55); color: #fff; }
-        .tier-lt { background: linear-gradient(135deg, #34c759, #32d74b); color: #fff; }
-        .tier-none { background: #3a3a3c; color: #777; }
+        /* 斜めカット装飾 */
+        .rank-item.top-rank::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 100px;
+            clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 100%); z-index: 1;
+        }
+        .rank-1::before { background: linear-gradient(90deg, #ffb400 0%, #ff8c00 100%); opacity: 0.8; }
+        .rank-2::before { background: linear-gradient(90deg, #b0b0b0 0%, #808080 100%); opacity: 0.6; }
+        .rank-3::before { background: linear-gradient(90deg, #cd7f32 0%, #a0522d 100%); opacity: 0.5; }
 
-        /* --- タイム & レーティング --- */
-        .record-col { text-align: right; font-family: 'Consolas', monospace; color: var(--accent-cyan); font-size: 1.25rem; font-weight: 700; }
-        .rating-col { text-align: right; color: var(--accent-cyan); font-weight: bold; width: 80px; }
-        .rating-label { color: var(--text-sub); font-size: 0.6rem; display: block; }
+        .rank-number { font-size: 1.8rem; font-weight: 900; font-style: italic; z-index: 2; text-align: center; color: #fff; }
+        .skin-container { z-index: 2; display: flex; justify-content: center; }
+        .skin-img { width: 44px; height: 44px; image-rendering: pixelated; border-radius: 4px; background: #222; }
+
+        .player-info { padding-left: 15px; }
+        .player-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
+        .player-title { font-size: 0.75rem; color: var(--text-sub); display: flex; align-items: center; gap: 5px; }
+        .title-icon { color: #ffb400; font-size: 0.8rem; } /* 称号の前のアイコン */
+
+        .region-badge {
+            background: #2a2a2e;
+            color: #ff4d4d;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 0;
+            width: 45px;
+            border-radius: 4px;
+            text-align: center;
+            justify-self: center;
+        }
+        .region-EU { color: #4d94ff; } /* EUは青っぽく等、CSSで色分け可能 */
+
+        /* --- ティア並び (16x16画像対応) --- */
+        .tiers-row { display: flex; gap: 10px; justify-content: flex-end; }
+        .tier-mini-box { display: flex; flex-direction: column; align-items: center; min-width: 32px; }
+        .map-icon-img { width: 18px; height: 18px; image-rendering: pixelated; margin-bottom: 4px; opacity: 0.9; }
+        .tier-label { font-size: 0.65rem; font-weight: 800; text-align: center; }
+        .label-ht { color: #ffb400; }
+        .label-lt { color: #8e8e93; }
+        .label-none { color: #444; }
 
         /* モバイル対応 */
-        @media screen and (max-width: 768px) {
-            .tier-stamp { width: 48px; height: 48px; font-size: 0.8rem; }
-            .record-col { font-size: 1rem; }
-            .mode-btn { padding: 10px 20px; }
+        @media screen and (max-width: 850px) {
+            .rank-item { grid-template-columns: 50px 50px 1fr 60px; padding: 10px; }
+            .tiers-row { display: none; }
+            .rank-item.top-rank::before { width: 70px; }
         }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        tbody tr { animation: fadeIn 0.4s ease-out forwards; }
     </style>
 </head>
 <body>
 
-    <h1>DeathRun Rankings</h1>
-
-    <div class="mode-switch">
-        <button id="btn-solos" class="mode-btn active" onclick="setGameMode('solos')">SOLOS</button>
-        <button id="btn-duos" class="mode-btn" onclick="setGameMode('duos')">DUOS</button>
+    <div class="header-nav">
+        <button id="btn-solos" class="mode-btn active" onclick="setGameMode('solos')">Solos</button>
+        <button id="btn-duos" class="mode-btn" onclick="setGameMode('duos')">Duos</button>
     </div>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="updateMap('Overall', this)">OVERALL</button>
-        <button class="tab-btn" onclick="updateMap('Cave', this)">CAVE</button>
-        <button class="tab-btn" onclick="updateMap('Flora', this)">FLORA</button>
-        <button class="tab-btn" onclick="updateMap('Gardens', this)">GARDENS</button>
-        <button class="tab-btn" onclick="updateMap('Metropolis', this)">METROPOLIS</button>
+    <div class="map-tabs">
+        <button class="map-tab active" onclick="updateMap('Overall', this)">Overall</button>
+        <button class="map-tab" onclick="updateMap('Cave', this)">Cave</button>
+        <button class="map-tab" onclick="updateMap('Flora', this)">Flora</button>
+        <button class="map-tab" onclick="updateMap('Gardens', this)">Gardens</button>
+        <button class="map-tab" onclick="updateMap('Metropolis', this)">Metropolis</button>
     </div>
 
-    <table class="ranking-table">
-        <thead>
-            <tr>
-                <th style="text-align: center;">#</th>
-                <th>Player / Team</th>
-                <th style="text-align: center;">Status</th>
-                <th style="text-align: right;">Record</th>
-                <th style="text-align: right;">Rating</th>
-            </tr>
-        </thead>
-        <tbody id="ranking-body"></tbody>
-    </table>
+    <div class="ranking-list" id="ranking-body"></div>
 
     <script>
-        let currentGameMode = 'solos'; // 'solos' or 'duos'
+        let currentGameMode = 'solos';
         let currentMap = 'Overall';
-        const mapShortNames = { 'Cave': 'C', 'Flora': 'F', 'Gardens': 'G', 'Metropolis': 'M' };
 
         function setGameMode(mode) {
             currentGameMode = mode;
-            const soloBtn = document.getElementById('btn-solos');
-            const duoBtn = document.getElementById('btn-duos');
-            
-            soloBtn.classList.remove('active');
-            duoBtn.classList.remove('duo-active', 'active');
-
-            if (mode === 'solos') {
-                soloBtn.classList.add('active');
-            } else {
-                duoBtn.classList.add('duo-active');
-            }
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${mode}`).classList.add('active');
             render();
         }
 
         function updateMap(map, btn) {
             currentMap = map;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.map-tab').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             render();
-        }
-
-        function formatTime(seconds) {
-            if (seconds >= 900 || seconds <= 0) return "---";
-            const mins = Math.floor(seconds / 60);
-            const secs = (seconds % 60).toFixed(3);
-            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(6, '0')}`;
         }
 
         function getTierIdx(tier) {
@@ -243,7 +145,6 @@
             const body = document.getElementById('ranking-body');
             body.innerHTML = '';
             
-            // data.js に duos がない場合のフォールバック
             const dataSource = (currentGameMode === 'solos') ? players : (typeof duos !== 'undefined' ? duos : []);
             let sorted = [...dataSource];
 
@@ -265,45 +166,46 @@
             });
 
             sorted.forEach((p, i) => {
-                const tr = document.createElement('tr');
-                if (i < 3) tr.className = `rank-${i+1}`;
+                const isTop = i < 3;
+                const rankClass = isTop ? `top-rank rank-${i+1}` : '';
+                const name = p.name || p.pairName;
+                const region = p.region || "NA";
+                const title = p.title || "Combat Ace";
                 
-                let tierContent = `<div class="tier-stamp-container">`;
-                if (currentMap === 'Overall') {
-                    for (const m of ['Cave', 'Flora', 'Gardens', 'Metropolis']) {
-                        const d = p.mapTiers[m];
-                        const tier = d ? d.tier : "-";
-                        const cls = tier.startsWith("HT") ? "tier-ht" : (tier.startsWith("LT") ? "tier-lt" : "tier-none");
-                        tierContent += `<div class="tier-stamp ${cls}"><span class="stamp-map-label">${mapShortNames[m]}</span><span>${tier === "-" ? "NA" : tier}</span></div>`;
-                    }
-                } else {
-                    const d = p.mapTiers[currentMap];
-                    const cls = d.tier.startsWith("HT") ? "tier-ht" : (d.tier.startsWith("LT") ? "tier-lt" : "tier-none");
-                    tierContent += `<div class="tier-stamp ${cls}" style="width:100px;">${d.tier}</div>`;
-                }
-                tierContent += `</div>`;
+                // ティア行の生成 (mapsフォルダーの画像を使用)
+                let tiersHtml = '';
+                const maps = ['Cave', 'Flora', 'Gardens', 'Metropolis'];
+                maps.forEach(m => {
+                    const d = p.mapTiers[m];
+                    const tier = d ? d.tier : "-";
+                    const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
+                    
+                    // マップ名に応じた画像を表示 (例: maps/Cave.png)
+                    tiersHtml += `
+                        <div class="tier-mini-box">
+                            <img src="maps/${m}.png" class="map-icon-img" alt="${m}" onerror="this.style.display='none'">
+                            <div class="tier-label ${labelClass}">${tier === "-" ? "-" : tier}</div>
+                        </div>`;
+                });
 
-                const rawRecord = currentMap === 'Overall' ? getValidSum(p) : p.mapTiers[currentMap].record;
-                const displayName = p.name || p.pairName; // Solosならname, DuosならpairName
-
-                tr.innerHTML = `
-                    <td class="rank-col">${i + 1}</td>
-                    <td>
+                body.innerHTML += `
+                    <div class="rank-item ${rankClass}">
+                        <div class="rank-number">${i + 1}.</div>
+                        <div class="skin-container">
+                            <img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'">
+                        </div>
                         <div class="player-info">
-                            ${currentGameMode === 'solos' 
-                                ? `<img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'">`
-                                : `<div class="duo-icon">👥</div>`}
-                            <div>
-                                <span class="player-name">${displayName}</span>
-                                <span class="player-sub">W:${p.wins} / M:${p.matches}</span>
+                            <div class="player-name">${name}</div>
+                            <div class="player-title">
+                                <span class="title-icon">◈</span> ${title} (${p.rating} points)
                             </div>
                         </div>
-                    </td>
-                    <td>${tierContent}</td>
-                    <td class="record-col">${formatTime(rawRecord)}</td>
-                    <td class="rating-col"><span class="rating-label">RATING</span>${p.rating}</td>
+                        <div class="region-badge region-${region}">${region}</div>
+                        <div class="tiers-row">
+                            ${tiersHtml}
+                        </div>
+                    </div>
                 `;
-                body.appendChild(tr);
             });
         }
         window.onload = render;
