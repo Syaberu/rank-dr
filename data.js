@@ -8,7 +8,7 @@ const players = [
     name: "tenntennyt",
     rating: 980,
     region: "JP",
-    title: "Combat Ace",
+    title: "全マップ制覇",
     matches: 3,
     wins: 1,
     mapTiers: {
@@ -22,7 +22,7 @@ const players = [
     name: "MCsyaberu",
     rating: 1135,
     region: "JP",
-    title: "Combat Grandmaster",
+    title: "全マップ制覇",
     matches: 16,
     wins: 12,
     mapTiers: {
@@ -36,7 +36,7 @@ const players = [
     name: "Jason Games9024",
     rating: 0,
     region: "NA",
-    title: "Combat Master",
+    title: "Cave Runner",
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -50,7 +50,7 @@ const players = [
     name: "AntiUnlockJP",
     rating: 0,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -64,7 +64,7 @@ const players = [
     name: "MCdaichi9382",
     rating: 1010,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 3,
     wins: 2,
     mapTiers: {
@@ -78,7 +78,7 @@ const players = [
     name: "Kurobean1729",
     rating: 1015,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 2,
     wins: 1,
     mapTiers: {
@@ -92,7 +92,7 @@ const players = [
     name: "dadan11pvp",
     rating: 990,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 1,
     wins: 0,
     mapTiers: {
@@ -106,7 +106,7 @@ const players = [
     name: "ykgalleria",
     rating: 985,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 5,
     wins: 1,
     mapTiers: {
@@ -120,7 +120,7 @@ const players = [
     name: "j1sq2",
     rating: 0,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -134,7 +134,7 @@ const players = [
     name: "MCluminqYT",
     rating: 0,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -148,7 +148,7 @@ const players = [
     name: "beatdown2725",
     rating: 0,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -162,7 +162,7 @@ const players = [
     name: "Super Hiko14",
     rating: 1025,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 1,
     wins: 1,
     mapTiers: {
@@ -176,7 +176,7 @@ const players = [
     name: "chikuwa03224837",
     rating: 970,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 3,
     wins: 0,
     mapTiers: {
@@ -190,7 +190,7 @@ const players = [
     name: "KenNova758",
     rating: 0,
     region: "JP",
-    title: "Combat Ace",
+    title: "Cave Runner",
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -204,7 +204,7 @@ const players = [
     name: "hateran",
     rating: 0,
     region: "JP",
-    title: "Combat Ace",
+    title: "Gardens Runner",
     matches: 0,
     wins: 0,
     mapTiers: {
