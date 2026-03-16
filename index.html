@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCsyaberu's Tier - DeathRun Rankings</title>
+    <title>DeathRun Rankings - Elite UI</title>
     <script src="data.js"></script>
     <style>
         :root {
@@ -34,66 +34,103 @@
         .map-tab { background: var(--bg-nav); border: none; color: var(--text-sub); padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
         .map-tab.active { background: var(--accent-cyan); color: #000; }
 
-        /* --- ランキングアイテム --- */
-        .ranking-list { width: 100%; max-width: 1000px; display: flex; flex-direction: column; gap: 8px; }
+        /* --- ランキングリスト --- */
+        .ranking-list { width: 100%; max-width: 1000px; display: flex; flex-direction: column; gap: 10px; }
         
         .rank-item {
             display: grid;
-            grid-template-columns: 60px 60px 1fr 100px 300px; /* 横幅調整 */
+            /* カラム設定: 順位(60px) | スキン(60px) | 名前(1fr) | 地域(80px) | ティア・タイム(320px) */
+            grid-template-columns: 60px 60px 1fr 80px 320px;
             align-items: center;
             background-color: var(--bg-card);
-            padding: 8px 20px;
-            border-radius: 6px;
+            padding: 12px 0;
+            border-radius: 8px;
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.03);
         }
 
-        /* 斜めカット装飾 */
+        /* --- 上位ランクの斜め背景 (スキンと被らないように幅を制限) --- */
         .rank-item.top-rank::before {
-            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 100px;
-            clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 100%); z-index: 1;
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 75px; /* 順位の数字部分だけに限定 */
+            clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
+            z-index: 1;
         }
-        .rank-1::before { background: linear-gradient(90deg, #ffb400 0%, #ff8c00 100%); opacity: 0.8; }
-        .rank-2::before { background: linear-gradient(90deg, #b0b0b0 0%, #808080 100%); opacity: 0.6; }
-        .rank-3::before { background: linear-gradient(90deg, #cd7f32 0%, #a0522d 100%); opacity: 0.5; }
+        .rank-1::before { background: linear-gradient(90deg, #ffb400 0%, #ff8c00 100%); opacity: 0.9; }
+        .rank-2::before { background: linear-gradient(90deg, #b0b0b0 0%, #808080 100%); opacity: 0.7; }
+        .rank-3::before { background: linear-gradient(90deg, #cd7f32 0%, #a0522d 100%); opacity: 0.6; }
 
-        .rank-number { font-size: 1.8rem; font-weight: 900; font-style: italic; z-index: 2; text-align: center; color: #fff; }
-        .skin-container { z-index: 2; display: flex; justify-content: center; }
-        .skin-img { width: 44px; height: 44px; image-rendering: pixelated; border-radius: 4px; background: #222; }
+        .rank-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-style: italic;
+            z-index: 2; /* 背景より上に表示 */
+            text-align: center;
+            padding-right: 10px; /* 斜めカットの内側に収める */
+        }
 
-        .player-info { padding-left: 15px; }
+        /* スキン画像 (背景と被らないように配置) */
+        .skin-container {
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        .skin-img {
+            width: 46px;
+            height: 46px;
+            image-rendering: pixelated;
+            border-radius: 6px;
+            background: #222;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .player-info { padding-left: 20px; }
         .player-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
         .player-title { font-size: 0.75rem; color: var(--text-sub); display: flex; align-items: center; gap: 5px; }
-        .title-icon { color: #ffb400; font-size: 0.8rem; } /* 称号の前のアイコン */
+        .title-icon { color: #ffb400; font-size: 0.8rem; }
 
         .region-badge {
             background: #2a2a2e;
             color: #ff4d4d;
             font-size: 0.7rem;
             font-weight: 800;
-            padding: 4px 0;
-            width: 45px;
+            padding: 4px 8px;
             border-radius: 4px;
             text-align: center;
             justify-self: center;
         }
-        .region-EU { color: #4d94ff; } /* EUは青っぽく等、CSSで色分け可能 */
 
-        /* --- ティア並び (16x16画像対応) --- */
-        .tiers-row { display: flex; gap: 10px; justify-content: flex-end; }
+        /* --- タイム & ティア セクション --- */
+        .status-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 25px;
+            padding-right: 25px;
+        }
+
+        .time-box { text-align: right; min-width: 80px; }
+        .time-label { font-size: 0.6rem; color: var(--text-sub); display: block; }
+        .time-value { font-family: 'Consolas', monospace; color: var(--accent-cyan); font-weight: bold; font-size: 1.1rem; }
+
+        .tiers-row { display: flex; gap: 12px; }
         .tier-mini-box { display: flex; flex-direction: column; align-items: center; min-width: 32px; }
-        .map-icon-img { width: 18px; height: 18px; image-rendering: pixelated; margin-bottom: 4px; opacity: 0.9; }
-        .tier-label { font-size: 0.65rem; font-weight: 800; text-align: center; }
+        .map-icon-img { width: 18px; height: 18px; image-rendering: pixelated; margin-bottom: 4px; }
+        
+        .tier-label { font-size: 0.65rem; font-weight: 800; }
         .label-ht { color: #ffb400; }
         .label-lt { color: #8e8e93; }
         .label-none { color: #444; }
 
         /* モバイル対応 */
         @media screen and (max-width: 850px) {
-            .rank-item { grid-template-columns: 50px 50px 1fr 60px; padding: 10px; }
-            .tiers-row { display: none; }
-            .rank-item.top-rank::before { width: 70px; }
+            .rank-item { grid-template-columns: 50px 50px 1fr 60px; }
+            .status-section { display: none; }
+            .rank-item.top-rank::before { width: 60px; }
         }
     </style>
 </head>
@@ -132,13 +169,20 @@
             render();
         }
 
+        function formatTime(seconds) {
+            if (seconds >= 480 || seconds <= 0) return "--:--.---";
+            const mins = Math.floor(seconds / 60);
+            const secs = (seconds % 60).toFixed(3);
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(6, '0')}`;
+        }
+
         function getTierIdx(tier) {
             if (!tier || tier === "-") return 999;
             return TIER_ORDER.indexOf(tier);
         }
 
         function getValidSum(p) {
-            return Object.values(p.mapTiers).reduce((acc, m) => acc + (m.record < 900 ? m.record : 0), 0);
+            return Object.values(p.mapTiers).reduce((acc, m) => acc + (m.record < 120 ? m.record : 0), 0);
         }
 
         function render() {
@@ -150,16 +194,12 @@
 
             sorted.sort((a, b) => {
                 if (currentMap === 'Overall') {
-                    const sumA = getValidSum(a);
-                    const sumB = getValidSum(b);
-                    if (sumA === 0) return 1;
-                    if (sumB === 0) return -1;
+                    const sumA = getValidSum(a); const sumB = getValidSum(b);
+                    if (sumA === 0) return 1; if (sumB === 0) return -1;
                     return sumA - sumB || b.rating - a.rating;
                 } else {
-                    const mA = a.mapTiers[currentMap];
-                    const mB = b.mapTiers[currentMap];
-                    const idxA = getTierIdx(mA.tier);
-                    const idxB = getTierIdx(mB.tier);
+                    const mA = a.mapTiers[currentMap]; const mB = b.mapTiers[currentMap];
+                    const idxA = getTierIdx(mA.tier); const idxB = getTierIdx(mB.tier);
                     if (idxA !== idxB) return idxA - idxB;
                     return mA.record - mB.record || b.rating - a.rating;
                 }
@@ -169,40 +209,54 @@
                 const isTop = i < 3;
                 const rankClass = isTop ? `top-rank rank-${i+1}` : '';
                 const name = p.name || p.pairName;
-                const region = p.region || "NA";
+                const region = p.region || "JP";
                 const title = p.title || "Combat Ace";
                 
-                // ティア行の生成 (mapsフォルダーの画像を使用)
                 let tiersHtml = '';
-                const maps = ['Cave', 'Flora', 'Gardens', 'Metropolis'];
-                maps.forEach(m => {
-                    const d = p.mapTiers[m];
+                if (currentMap === 'Overall') {
+                    const maps = ['Cave', 'Flora', 'Gardens', 'Metropolis'];
+                    maps.forEach(m => {
+                        const d = p.mapTiers[m];
+                        const tier = d ? d.tier : "-";
+                        const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
+                        tiersHtml += `
+                            <div class="tier-mini-box">
+                                <img src="maps/${m}.png" class="map-icon-img" onerror="this.style.opacity='0.2'">
+                                <div class="tier-label ${labelClass}">${tier === "-" ? "-" : tier}</div>
+                            </div>`;
+                    });
+                } else {
+                    const d = p.mapTiers[currentMap];
                     const tier = d ? d.tier : "-";
                     const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
-                    
-                    // マップ名に応じた画像を表示 (例: maps/Cave.png)
-                    tiersHtml += `
-                        <div class="tier-mini-box">
-                            <img src="maps/${m}.png" class="map-icon-img" alt="${m}" onerror="this.style.display='none'">
+                    tiersHtml = `
+                        <div class="tier-mini-box" style="transform: scale(1.2);">
+                            <img src="maps/${currentMap}.png" class="map-icon-img">
                             <div class="tier-label ${labelClass}">${tier === "-" ? "-" : tier}</div>
                         </div>`;
-                });
+                }
+
+                const rawRecord = currentMap === 'Overall' ? getValidSum(p) : p.mapTiers[currentMap].record;
 
                 body.innerHTML += `
                     <div class="rank-item ${rankClass}">
-                        <div class="rank-number">${i + 1}.</div>
+                        <div class="rank-number">${i + 1}</div>
                         <div class="skin-container">
                             <img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'">
                         </div>
                         <div class="player-info">
                             <div class="player-name">${name}</div>
-                            <div class="player-title">
-                                <span class="title-icon">◈</span> ${title} (${p.rating} points)
-                            </div>
+                            <div class="player-title"><span class="title-icon">◈</span> ${title} (${p.rating} pts)</div>
                         </div>
-                        <div class="region-badge region-${region}">${region}</div>
-                        <div class="tiers-row">
-                            ${tiersHtml}
+                        <div class="region-badge">${region}</div>
+                        <div class="status-section">
+                            <div class="time-box">
+                                <span class="time-label">${currentMap.toUpperCase()} TIME</span>
+                                <span class="time-value">${formatTime(rawRecord)}</span>
+                            </div>
+                            <div class="tiers-row">
+                                ${tiersHtml}
+                            </div>
                         </div>
                     </div>
                 `;
