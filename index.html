@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeathRun Rankings - Professional Display</title>
+    <title>DeathRun Rankings - Elite Display</title>
+    
+    <link rel="icon" href="maps/Cave.png" type="image/png">
+    
     <script src="data.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -51,8 +54,8 @@
         
         .rank-item {
             display: grid;
-            /* カラム設定: 順位(80px) | スキン(80px) | 名前(1fr) | 地域(100px) | タイム&ティア(420px) */
-            grid-template-columns: 80px 80px 1fr 100px 420px; /* タイム&ティアの幅を少し広げた */
+            /* カラム設定: 順位 | スキン | 名前 | 地域 | (タイム + ティア) */
+            grid-template-columns: 80px 80px 1fr 100px 450px; 
             align-items: center;
             background-color: var(--bg-card);
             padding: 18px 0;
@@ -60,9 +63,7 @@
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.2s, background 0.2s;
         }
-        .rank-item:hover { background-color: #1c1c21; transform: scale(1.01); }
 
         /* 斜め背景 (1-3位) */
         .rank-item.top-rank::before {
@@ -76,7 +77,6 @@
         .rank-number { font-size: 2.2rem; font-weight: 900; font-style: italic; z-index: 2; text-align: center; color: #fff; margin-right: 15px; }
         .skin-container { z-index: 2; display: flex; justify-content: center; }
         .skin-img { width: 60px; height: 60px; image-rendering: pixelated; border-radius: 8px; background: #222; border: 1px solid rgba(255,255,255,0.1); }
-        .duo-icon-box { width: 60px; height: 60px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
 
         .player-info { padding-left: 30px; }
         .player-name { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
@@ -85,30 +85,32 @@
 
         .region-badge { background: #2a2a2e; color: #ff4d4d; font-size: 0.85rem; font-weight: 800; padding: 6px 12px; border-radius: 6px; text-align: center; justify-self: center; }
 
-        /* --- タイム & ティア --- */
-        .status-section { display: flex; align-items: center; justify-content: flex-end; gap: 30px; padding-right: 30px; }
+        /* --- タイム & ティア (重なり防止用調整) --- */
+        .status-section { display: flex; align-items: center; justify-content: flex-end; gap: 40px; padding-right: 40px; }
 
-        .time-box { text-align: right; min-width: 140px; }
-        .time-label { font-size: 0.7rem; color: var(--text-sub); display: block; margin-bottom: 2px; text-transform: uppercase; }
+        .time-box { text-align: right; min-width: 150px; }
+        .time-label { font-size: 0.7rem; color: var(--text-sub); display: block; margin-bottom: 2px; }
         .time-value { font-family: 'Consolas', monospace; color: var(--accent-cyan); font-weight: bold; font-size: 1.4rem; }
 
-        .tiers-row { display: flex; gap: 12px; }
+        .tiers-row { display: flex; gap: 15px; min-width: 220px; justify-content: flex-end; }
         .tier-mini-box { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
-        .map-icon-img { width: 22px; height: 22px; image-rendering: pixelated; margin-bottom: 6px; }
+        .map-icon-img { width: 24px; height: 24px; image-rendering: pixelated; margin-bottom: 6px; }
         
         .tier-label { font-size: 0.8rem; font-weight: 800; }
         .label-ht { color: #ffb400; }
         .label-lt { color: #8e8e93; }
         .label-none { color: #444; }
 
-        /* モバイル対応 */
+        @media screen and (max-width: 1100px) {
+            .rank-item { grid-template-columns: 80px 80px 1fr 100px 300px; }
+            .status-section { gap: 15px; }
+            .time-box { min-width: 120px; }
+            .time-value { font-size: 1.1rem; }
+            .tiers-row { min-width: auto; }
+        }
+
         @media screen and (max-width: 900px) {
-            .main-header h1 { font-size: 2.5rem; letter-spacing: 4px; }
-            .rank-item { grid-template-columns: 60px 60px 1fr 70px; padding: 12px 0; }
-            .status-section { display: none; } /* スマホでは詳細表示を隠す */
-            .player-name { font-size: 1.1rem; }
-            .rank-number { font-size: 1.5rem; }
-            .skin-img, .duo-icon-box { width: 44px; height: 44px; font-size: 1.5rem; }
+            .status-section { display: none; }
         }
     </style>
 </head>
@@ -137,7 +139,6 @@
     <script>
         let currentGameMode = 'solos';
         let currentMap = 'Overall';
-        const mapShortNames = { 'Cave': 'C', 'Flora': 'F', 'Gardens': 'G', 'Metropolis': 'M' };
 
         function setGameMode(mode) {
             currentGameMode = mode;
@@ -154,7 +155,6 @@
         }
 
         function formatTime(seconds) {
-            // Overallで全マップ未プレイ(480秒)などの場合はハイフン表示
             if (seconds <= 0 || seconds >= 480) return "--:--.---";
             const mins = Math.floor(seconds / 60);
             const secs = (seconds % 60).toFixed(3);
@@ -166,7 +166,6 @@
             return TIER_ORDER.indexOf(tier);
         }
 
-        // 全マップの記録を単純に合計する
         function getOverallSum(p) {
             return Object.values(p.mapTiers).reduce((acc, m) => acc + m.record, 0);
         }
@@ -200,7 +199,6 @@
                 
                 let tiersHtml = '';
                 if (currentMap === 'Overall') {
-                    // Overallのときは4マップ全て表示
                     const maps = ['Cave', 'Flora', 'Gardens', 'Metropolis'];
                     maps.forEach(m => {
                         const d = p.mapTiers[m];
@@ -208,34 +206,28 @@
                         const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
                         tiersHtml += `
                             <div class="tier-mini-box">
-                                <img src="maps/${m}.png" class="map-icon-img" alt="${m}" onerror="this.style.opacity='0.2'">
+                                <img src="maps/${m}.png" class="map-icon-img" onerror="this.style.opacity='0.2'">
                                 <div class="tier-label ${labelClass}">${tier === "-" ? "-" : tier}</div>
                             </div>`;
                     });
                 } else {
-                    // 個別マップのときは、そのマップのTier1つだけを表示 (重ならないように)
                     const d = p.mapTiers[currentMap];
                     const tier = d ? d.tier : "-";
                     const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
                     tiersHtml = `
                         <div class="tier-mini-box" style="transform: scale(1.3);">
-                            <img src="maps/${currentMap}.png" class="map-icon-img" alt="${currentMap}">
+                            <img src="maps/${currentMap}.png" class="map-icon-img">
                             <div class="tier-label ${labelClass}">${tier === "-" ? "-" : tier}</div>
                         </div>`;
                 }
 
                 const rawRecord = currentMap === 'Overall' ? getOverallSum(p) : p.mapTiers[currentMap].record;
 
-                // スキンアイコンか、Duosアイコンの出し分け
-                const iconHtml = (currentGameMode === 'solos') 
-                    ? `<img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'">`
-                    : `<div class="duo-icon-box">👥</div>`;
-
                 body.innerHTML += `
                     <div class="rank-item ${rankClass}">
                         <div class="rank-number">${i + 1}</div>
                         <div class="skin-container">
-                            ${iconHtml}
+                            <img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'">
                         </div>
                         <div class="player-info">
                             <div class="player-name">${name}</div>
@@ -244,7 +236,7 @@
                         <div class="region-badge">${region}</div>
                         <div class="status-section">
                             <div class="time-box">
-                                <span class="time-label">${currentMap} Record</span>
+                                <span class="time-label">${currentMap.toUpperCase()} RECORD</span>
                                 <span class="time-value">${formatTime(rawRecord)}</span>
                             </div>
                             <div class="tiers-row">
