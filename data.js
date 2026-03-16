@@ -50,7 +50,7 @@ const players = [
     name: "AntiUnlockJP",
     rating: 0,
     region: "JP",
-    title: "Cave Runner",
+    title: "Cave & Flora Runner",
     matches: 0,
     wins: 0,
     mapTiers: {
