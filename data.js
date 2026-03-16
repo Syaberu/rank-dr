@@ -8,7 +8,7 @@ const players = [
     name: "tenntennyt",
     rating: 980,
     region: "JP",
-    title: "全マップ制覇",
+    title: "All Maps Runner",
     matches: 3,
     wins: 1,
     mapTiers: {
@@ -22,7 +22,7 @@ const players = [
     name: "MCsyaberu",
     rating: 1135,
     region: "JP",
-    title: "全マップ制覇",
+    title: "All Maps Runner",
     matches: 16,
     wins: 12,
     mapTiers: {
