@@ -28,7 +28,7 @@ const players = [
     mapTiers: {
       Cave: { tier: "LT3", record: 48.230 },
       Flora: { tier: "HT3", record: 64.941 },
-      Gardens: { tier: "LT4", record: 65.881 },
+      Gardens: { tier: "LT3", record: 63.579 },
       Metropolis: { tier: "HT2", record: 44.112 }
     }
   },
