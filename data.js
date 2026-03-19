@@ -134,7 +134,7 @@ const players = [
     name: "MCluminqYT",
     rating: 0,
     region: "JP",
-    title: "Cave Runner",
+    title: "Cave & Metropolis Runner",
     matches: 0,
     wins: 0,
     mapTiers: {
