@@ -26,7 +26,7 @@ const players = [
     matches: 16,
     wins: 12,
     mapTiers: {
-      Cave: { tier: "LT3", record: 48.230 },
+      Cave: { tier: "HT3", record: 48.106 },
       Flora: { tier: "HT3", record: 64.941 },
       Gardens: { tier: "LT3", record: 63.579 },
       Metropolis: { tier: "HT2", record: 44.112 }
