@@ -103,7 +103,7 @@ const players = [
     }
   },
   {
-    name: "ykgalleria",
+    name: "hive clips5512",
     rating: 985,
     region: "JP",
     title: "Cave Runner",
@@ -117,7 +117,7 @@ const players = [
     }
   },
   {
-    name: "j1sq2",
+    name: "Youre cats",
     rating: 0,
     region: "JP",
     title: "Cave Runner",
