@@ -5,7 +5,7 @@
 
 const players = [
   {
-    name: "tenntennyt",
+    name: "tenntennYT",
     rating: 980,
     region: "JP",
     title: "All Maps Runner",
