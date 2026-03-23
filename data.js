@@ -213,6 +213,20 @@ const players = [
       Gardens: { tier: "LT5", record: 67.507 },
       Metropolis: { tier: "-", record: 120.000 }
     }
+  },
+  {
+    name: "LiveHydra444663",
+    rating: 0,
+    region: "JP",
+    title: "Cave Runner",
+    matches: 0,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "LT6", record: 50.921 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
   }
 ];
 
