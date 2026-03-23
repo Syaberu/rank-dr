@@ -15,7 +15,7 @@ const players = [
       Cave: { tier: "HT4", record: 48.612 },
       Flora: { tier: "LT3", record: 65.837 },
       Gardens: { tier: "LT3", record: 63.719 },
-      Metropolis: { tier: "HT3", record: 44.459 }
+      Metropolis: { tier: "LT4", record: 44.459 }
     }
   },
   {
@@ -29,7 +29,7 @@ const players = [
       Cave: { tier: "HT3", record: 48.106 },
       Flora: { tier: "HT3", record: 64.941 },
       Gardens: { tier: "LT3", record: 63.579 },
-      Metropolis: { tier: "HT2", record: 44.112 }
+      Metropolis: { tier: "LT4", record: 44.112 }
     }
   },
   {
@@ -141,7 +141,7 @@ const players = [
       Cave: { tier: "HT6", record: 49.945 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "LT6", record: 48.323 }
+      Metropolis: { tier: "HT7", record: 48.323 }
     }
   },
   {
