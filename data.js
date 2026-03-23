@@ -227,6 +227,20 @@ const players = [
       Gardens: { tier: "-", record: 120.000 },
       Metropolis: { tier: "-", record: 120.000 }
     }
+  },
+  {
+    name: "umidukisora",
+    rating: 0,
+    region: "JP",
+    title: "Cave Runner",
+    matches: 0,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "LT5", record: 49.611 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
   }
 ];
 
