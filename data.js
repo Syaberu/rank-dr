@@ -1,6 +1,7 @@
 /**
  * DeathRun Competitive Player Data
- * マップ構成: Cave, Flora, Gardens, Metropolis
+ * active: true (現役 - Active Rankに表示)
+ * active: false (引退 - All-Time Rankのみに表示)
  */
 
 const players = [
@@ -9,6 +10,7 @@ const players = [
     rating: 980,
     region: "JP",
     title: "All Maps Runner",
+    active: true,
     matches: 3,
     wins: 1,
     mapTiers: {
@@ -23,6 +25,7 @@ const players = [
     rating: 1135,
     region: "JP",
     title: "All Maps Runner",
+    active: true,
     matches: 16,
     wins: 12,
     mapTiers: {
@@ -37,6 +40,7 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Cave Runner",
+    active: true,
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -51,6 +55,7 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Cave & Flora Runner",
+    active: true,
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -65,6 +70,7 @@ const players = [
     rating: 1010,
     region: "JP",
     title: "Cave Runner",
+    active: true,
     matches: 3,
     wins: 2,
     mapTiers: {
@@ -79,6 +85,7 @@ const players = [
     rating: 1015,
     region: "JP",
     title: "Cave Runner",
+    active: true,
     matches: 2,
     wins: 1,
     mapTiers: {
@@ -93,6 +100,7 @@ const players = [
     rating: 990,
     region: "JP",
     title: "Cave Runner",
+    active: true,
     matches: 1,
     wins: 0,
     mapTiers: {
@@ -107,6 +115,7 @@ const players = [
     rating: 985,
     region: "JP",
     title: "Cave Runner",
+    active: true,
     matches: 5,
     wins: 1,
     mapTiers: {
@@ -121,6 +130,7 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Cave Runner",
+    active: true,
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -135,6 +145,7 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Cave & Metropolis Runner",
+    active: true,
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -149,6 +160,7 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Cave Runner",
+    active: false,
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -163,6 +175,7 @@ const players = [
     rating: 1025,
     region: "JP",
     title: "Cave Runner",
+    active: true,
     matches: 1,
     wins: 1,
     mapTiers: {
@@ -177,6 +190,7 @@ const players = [
     rating: 970,
     region: "JP",
     title: "Cave Runner",
+    active: true,
     matches: 3,
     wins: 0,
     mapTiers: {
@@ -191,6 +205,7 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Cave Runner",
+    active: true, 
     matches: 0,
     wins: 0,
     mapTiers: {
@@ -205,8 +220,7 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Gardens Runner",
-    matches: 0,
-    wins: 0,
+    active: true,
     mapTiers: {
       Cave: { tier: "-", record: 120.000 },
       Flora: { tier: "-", record: 120.000 },
@@ -219,8 +233,7 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Cave Runner",
-    matches: 0,
-    wins: 0,
+    active: true,
     mapTiers: {
       Cave: { tier: "LT6", record: 50.921 },
       Flora: { tier: "-", record: 120.000 },
@@ -233,8 +246,7 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Cave Runner",
-    matches: 0,
-    wins: 0,
+    active: true,
     mapTiers: {
       Cave: { tier: "LT5", record: 49.611 },
       Flora: { tier: "-", record: 120.000 },
@@ -244,24 +256,7 @@ const players = [
   }
 ];
 
-// 2人プレイ(Duos)用配列
-const duos = [
-  /* {
-    pairName: "Sample Duo",
-    rating: 1000,
-    region: "JP",
-    title: "DeathRun Duo",
-    matches: 0,
-    wins: 0,
-    mapTiers: {
-      Cave: { tier: "-", record: 120.000 },
-      Flora: { tier: "-", record: 120.000 },
-      Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
-    }
-  }
-  */
-];
+const duos = [];
 
 const TIER_ORDER = [
   "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
