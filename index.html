@@ -3,127 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCsyaberu's DeathRun Tier Rankings</title>
-    
+    <title>DeathRun Rankings</title>
     <link rel="icon" href="maps/Cave.png" type="image/png">
-    
     <script src="data.js"></script>
     <style>
+        /* (スタイルは以前のものを継承、追加分のみ記載) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-
-        :root {
-            --bg-body: #0a0a0c;
-            --bg-card: #141417;
-            --bg-nav: #1b1b1f;
-            --accent-cyan: #00d2ff;
-            --tier-ht: #ffb400;
-            --tier-lt: #8e8e93;
-            --text-main: #eeeeee;
-            --text-sub: #8e8e93;
-        }
-
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            margin: 0; padding: 40px 20px;
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        /* --- 巨大見出し --- */
+        :root { --bg-body: #0a0a0c; --bg-card: #141417; --bg-nav: #1b1b1f; --accent-cyan: #00d2ff; --text-main: #eeeeee; --text-sub: #8e8e93; }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
         .main-header { text-align: center; margin-bottom: 50px; }
-        .main-header h1 {
-            font-size: 4rem; font-weight: 900; text-transform: uppercase; letter-spacing: 8px; margin: 0;
-            background: linear-gradient(to bottom, #fff 40%, #555 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4));
-        }
-        .main-header .sub-text { color: var(--accent-cyan); font-size: 1.2rem; letter-spacing: 4px; font-weight: 700; }
-
-        /* --- ナビゲーション --- */
+        .main-header h1 { font-size: 4rem; font-weight: 900; text-transform: uppercase; letter-spacing: 8px; margin: 0; background: linear-gradient(to bottom, #fff 40%, #555 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4)); }
         .header-nav { display: flex; gap: 20px; background: var(--bg-nav); padding: 10px; border-radius: 16px; margin-bottom: 40px; }
         .mode-btn { background: none; border: none; color: var(--text-sub); padding: 12px 35px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: 0.2s; }
         .mode-btn.active { background: #2c2c34; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-
         .map-tabs { display: flex; gap: 15px; margin-bottom: 40px; overflow-x: auto; width: 100%; max-width: 1000px; justify-content: center; scrollbar-width: none; }
         .map-tab { background: var(--bg-nav); border: none; color: var(--text-sub); padding: 15px 25px; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: 700; white-space: nowrap; }
         .map-tab.active { background: var(--accent-cyan); color: #000; }
-
-        /* --- ランキングリスト --- */
         .ranking-list { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 12px; }
-        
-        .rank-item {
-            display: grid;
-            /* カラム設定: 順位 | スキン | 名前 | 地域 | (タイム + ティア) */
-            grid-template-columns: 80px 80px 1fr 100px 450px; 
-            align-items: center;
-            background-color: var(--bg-card);
-            padding: 18px 0;
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* 斜め背景 (1-3位) */
-        .rank-item.top-rank::before {
-            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 95px;
-            clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%); z-index: 1;
-        }
+        .rank-item { display: grid; grid-template-columns: 80px 80px 1fr 100px 450px; align-items: center; background-color: var(--bg-card); padding: 18px 0; border-radius: 12px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .rank-item.retired { opacity: 0.6; filter: grayscale(0.5); } /* 引退者の見た目 */
+        .rank-item.top-rank::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 95px; clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%); z-index: 1; }
         .rank-1::before { background: linear-gradient(90deg, #ffb400 0%, #ff8c00 100%); opacity: 0.9; }
         .rank-2::before { background: linear-gradient(90deg, #b0b0b0 0%, #808080 100%); opacity: 0.7; }
         .rank-3::before { background: linear-gradient(90deg, #cd7f32 0%, #a0522d 100%); opacity: 0.6; }
-
-        .rank-number { font-size: 2.2rem; font-weight: 900; font-style: italic; z-index: 2; text-align: center; color: #fff; margin-right: 15px; }
-        .skin-container { z-index: 2; display: flex; justify-content: center; }
+        .rank-number { font-size: 2.2rem; font-weight: 900; font-style: italic; z-index: 2; text-align: center; color: #fff; }
         .skin-img { width: 60px; height: 60px; image-rendering: pixelated; border-radius: 8px; background: #222; border: 1px solid rgba(255,255,255,0.1); }
-
         .player-info { padding-left: 30px; }
-        .player-name { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
-        .player-title { font-size: 0.9rem; color: var(--text-sub); display: flex; align-items: center; gap: 8px; }
-        .title-icon { color: #ffb400; font-size: 1rem; }
-
+        .player-name { font-size: 1.4rem; font-weight: 700; color: #fff; }
+        .retired-tag { font-size: 0.7rem; background: #444; color: #ccc; padding: 2px 6px; border-radius: 4px; margin-left: 10px; vertical-align: middle; }
         .region-badge { background: #2a2a2e; color: #ff4d4d; font-size: 0.85rem; font-weight: 800; padding: 6px 12px; border-radius: 6px; text-align: center; justify-self: center; }
-
-        /* --- タイム & ティア (重なり防止用調整) --- */
         .status-section { display: flex; align-items: center; justify-content: flex-end; gap: 40px; padding-right: 40px; }
-
-        .time-box { text-align: right; min-width: 150px; }
-        .time-label { font-size: 0.7rem; color: var(--text-sub); display: block; margin-bottom: 2px; }
         .time-value { font-family: 'Consolas', monospace; color: var(--accent-cyan); font-weight: bold; font-size: 1.4rem; }
-
         .tiers-row { display: flex; gap: 15px; min-width: 220px; justify-content: flex-end; }
         .tier-mini-box { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
         .map-icon-img { width: 24px; height: 24px; image-rendering: pixelated; margin-bottom: 6px; }
-        
         .tier-label { font-size: 0.8rem; font-weight: 800; }
         .label-ht { color: #ffb400; }
         .label-lt { color: #8e8e93; }
-        .label-none { color: #444; }
-
-        @media screen and (max-width: 1100px) {
-            .rank-item { grid-template-columns: 80px 80px 1fr 100px 300px; }
-            .status-section { gap: 15px; }
-            .time-box { min-width: 120px; }
-            .time-value { font-size: 1.1rem; }
-            .tiers-row { min-width: auto; }
-        }
-
-        @media screen and (max-width: 900px) {
-            .status-section { display: none; }
-        }
+        @media screen and (max-width: 900px) { .status-section { display: none; } }
     </style>
 </head>
 <body>
 
     <header class="main-header">
         <h1>DeathRun Rankings</h1>
-        <div class="sub-text">MCSYABERU'S TIER</div>
+        <div class="sub-text">LEADERBOARD</div>
     </header>
 
     <div class="header-nav">
-        <button id="btn-solos" class="mode-btn active" onclick="setGameMode('solos')">Solos</button>
-        <button id="btn-duos" class="mode-btn" onclick="setGameMode('duos')">Duos</button>
+        <button id="btn-active" class="mode-btn active" onclick="setRankType('active')">Active Rank</button>
+        <button id="btn-all" class="mode-btn" onclick="setRankType('all')">All-Time Rank</button>
     </div>
 
     <div class="map-tabs">
@@ -137,13 +66,13 @@
     <div class="ranking-list" id="ranking-body"></div>
 
     <script>
-        let currentGameMode = 'solos';
+        let rankType = 'active'; // 'active' または 'all'
         let currentMap = 'Overall';
 
-        function setGameMode(mode) {
-            currentGameMode = mode;
+        function setRankType(type) {
+            rankType = type;
             document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`btn-${mode}`).classList.add('active');
+            document.getElementById(`btn-${type}`).classList.add('active');
             render();
         }
 
@@ -174,10 +103,11 @@
             const body = document.getElementById('ranking-body');
             body.innerHTML = '';
             
-            const dataSource = (currentGameMode === 'solos') ? players : (typeof duos !== 'undefined' ? duos : []);
-            let sorted = [...dataSource];
+            // フィルタリング: 'active'モードなら現役のみ、'all'モードなら全員
+            let filtered = players.filter(p => rankType === 'all' || p.active);
 
-            sorted.sort((a, b) => {
+            // ソート
+            filtered.sort((a, b) => {
                 if (currentMap === 'Overall') {
                     return getOverallSum(a) - getOverallSum(b) || b.rating - a.rating;
                 } else {
@@ -190,61 +120,50 @@
                 }
             });
 
-            sorted.forEach((p, i) => {
+            filtered.forEach((p, i) => {
                 const isTop = i < 3;
                 const rankClass = isTop ? `top-rank rank-${i+1}` : '';
-                const name = p.name || p.pairName;
-                const region = p.region || "JP";
-                const title = p.title || "Combat Ace";
+                const retiredClass = !p.active ? 'retired' : '';
                 
                 let tiersHtml = '';
+                const maps = ['Cave', 'Flora', 'Gardens', 'Metropolis'];
                 if (currentMap === 'Overall') {
-                    const maps = ['Cave', 'Flora', 'Gardens', 'Metropolis'];
                     maps.forEach(m => {
-                        const d = p.mapTiers[m];
-                        const tier = d ? d.tier : "-";
+                        const tier = p.mapTiers[m].tier;
                         const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
-                        tiersHtml += `
-                            <div class="tier-mini-box">
-                                <img src="maps/${m}.png" class="map-icon-img" onerror="this.style.opacity='0.2'">
-                                <div class="tier-label ${labelClass}">${tier === "-" ? "-" : tier}</div>
-                            </div>`;
+                        tiersHtml += `<div class="tier-mini-box">
+                            <img src="maps/${m}.png" class="map-icon-img" onerror="this.style.opacity='0.2'">
+                            <div class="tier-label ${labelClass}">${tier}</div>
+                        </div>`;
                     });
                 } else {
-                    const d = p.mapTiers[currentMap];
-                    const tier = d ? d.tier : "-";
+                    const tier = p.mapTiers[currentMap].tier;
                     const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
-                    tiersHtml = `
-                        <div class="tier-mini-box" style="transform: scale(1.3);">
-                            <img src="maps/${currentMap}.png" class="map-icon-img">
-                            <div class="tier-label ${labelClass}">${tier === "-" ? "-" : tier}</div>
-                        </div>`;
+                    tiersHtml = `<div class="tier-mini-box" style="transform: scale(1.3);"><img src="maps/${currentMap}.png" class="map-icon-img"><div class="tier-label ${labelClass}">${tier}</div></div>`;
                 }
 
                 const rawRecord = currentMap === 'Overall' ? getOverallSum(p) : p.mapTiers[currentMap].record;
 
                 body.innerHTML += `
-                    <div class="rank-item ${rankClass}">
+                    <div class="rank-item ${rankClass} ${retiredClass}">
                         <div class="rank-number">${i + 1}</div>
                         <div class="skin-container">
                             <img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'">
                         </div>
                         <div class="player-info">
-                            <div class="player-name">${name}</div>
-                            <div class="player-title"><span class="title-icon">◈</span> ${title} (${p.rating} pts)</div>
+                            <div class="player-name">
+                                ${p.name} ${!p.active ? '<span class="retired-tag">RETIRED</span>' : ''}
+                            </div>
+                            <div class="player-title"><span class="title-icon">◈</span> ${p.title} (${p.rating} pts)</div>
                         </div>
-                        <div class="region-badge">${region}</div>
+                        <div class="region-badge">${p.region}</div>
                         <div class="status-section">
                             <div class="time-box">
-                                <span class="time-label">${currentMap.toUpperCase()} RECORD</span>
                                 <span class="time-value">${formatTime(rawRecord)}</span>
                             </div>
-                            <div class="tiers-row">
-                                ${tiersHtml}
-                            </div>
+                            <div class="tiers-row">${tiersHtml}</div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
         window.onload = render;
