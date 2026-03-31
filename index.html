@@ -7,47 +7,151 @@
     <link rel="icon" href="maps/Cave.png" type="image/png">
     <script src="data.js"></script>
     <style>
-        /* (スタイルは以前のものを継承、追加分のみ記載) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        :root { --bg-body: #0a0a0c; --bg-card: #141417; --bg-nav: #1b1b1f; --accent-cyan: #00d2ff; --text-main: #eeeeee; --text-sub: #8e8e93; }
-        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
-        .main-header { text-align: center; margin-bottom: 50px; }
-        .main-header h1 { font-size: 4rem; font-weight: 900; text-transform: uppercase; letter-spacing: 8px; margin: 0; background: linear-gradient(to bottom, #fff 40%, #555 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4)); }
-        .header-nav { display: flex; gap: 20px; background: var(--bg-nav); padding: 10px; border-radius: 16px; margin-bottom: 40px; }
-        .mode-btn { background: none; border: none; color: var(--text-sub); padding: 12px 35px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: 0.2s; }
-        .mode-btn.active { background: #2c2c34; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .map-tabs { display: flex; gap: 15px; margin-bottom: 40px; overflow-x: auto; width: 100%; max-width: 1000px; justify-content: center; scrollbar-width: none; }
-        .map-tab { background: var(--bg-nav); border: none; color: var(--text-sub); padding: 15px 25px; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: 700; white-space: nowrap; }
+
+        :root {
+            --bg-body: #0a0a0c;
+            --bg-card: #141417;
+            --bg-nav: #1b1b1f;
+            --accent-cyan: #00d2ff;
+            --text-main: #eeeeee;
+            --text-sub: #8e8e93;
+            --rank-1: linear-gradient(90deg, #ffb400 0%, #ff8c00 100%);
+            --rank-2: linear-gradient(90deg, #b0b0b0 0%, #808080 100%);
+            --rank-3: linear-gradient(90deg, #cd7f32 0%, #a0522d 100%);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- ヘッダー --- */
+        .main-header { text-align: center; margin-bottom: 30px; width: 100%; }
+        .main-header h1 {
+            font-size: clamp(2rem, 8vw, 4rem); /* 画面幅に合わせて可変 */
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: clamp(2px, 1vw, 8px);
+            margin: 0;
+            background: linear-gradient(to bottom, #fff 40%, #555 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.3));
+        }
+        .sub-text { color: var(--accent-cyan); font-size: clamp(0.8rem, 2vw, 1.2rem); font-weight: 700; letter-spacing: 2px; }
+
+        /* --- ナビゲーション --- */
+        .header-nav { display: flex; gap: 10px; background: var(--bg-nav); padding: 8px; border-radius: 12px; margin-bottom: 25px; }
+        .mode-btn { background: none; border: none; color: var(--text-sub); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: 0.3s; }
+        .mode-btn.active { background: #2c2c34; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+        .map-tabs { 
+            display: flex; gap: 10px; margin-bottom: 30px; 
+            overflow-x: auto; width: 100%; max-width: 1000px; 
+            justify-content: flex-start; padding-bottom: 10px;
+            scrollbar-width: none; /* Firefox用 */
+        }
+        .map-tabs::-webkit-scrollbar { display: none; } /* Chrome/Safari用 */
+        
+        .map-tab { background: var(--bg-nav); border: none; color: var(--text-sub); padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 700; white-space: nowrap; transition: 0.2s; }
         .map-tab.active { background: var(--accent-cyan); color: #000; }
-        .ranking-list { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 12px; }
-        .rank-item { display: grid; grid-template-columns: 80px 80px 1fr 100px 450px; align-items: center; background-color: var(--bg-card); padding: 18px 0; border-radius: 12px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
-        .rank-item.retired { opacity: 0.6; filter: grayscale(0.5); } /* 引退者の見た目 */
-        .rank-item.top-rank::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 95px; clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%); z-index: 1; }
-        .rank-1::before { background: linear-gradient(90deg, #ffb400 0%, #ff8c00 100%); opacity: 0.9; }
-        .rank-2::before { background: linear-gradient(90deg, #b0b0b0 0%, #808080 100%); opacity: 0.7; }
-        .rank-3::before { background: linear-gradient(90deg, #cd7f32 0%, #a0522d 100%); opacity: 0.6; }
-        .rank-number { font-size: 2.2rem; font-weight: 900; font-style: italic; z-index: 2; text-align: center; color: #fff; }
-        .skin-img { width: 60px; height: 60px; image-rendering: pixelated; border-radius: 8px; background: #222; border: 1px solid rgba(255,255,255,0.1); }
-        .player-info { padding-left: 30px; }
-        .player-name { font-size: 1.4rem; font-weight: 700; color: #fff; }
-        .retired-tag { font-size: 0.7rem; background: #444; color: #ccc; padding: 2px 6px; border-radius: 4px; margin-left: 10px; vertical-align: middle; }
-        .region-badge { background: #2a2a2e; color: #ff4d4d; font-size: 0.85rem; font-weight: 800; padding: 6px 12px; border-radius: 6px; text-align: center; justify-self: center; }
-        .status-section { display: flex; align-items: center; justify-content: flex-end; gap: 40px; padding-right: 40px; }
-        .time-value { font-family: 'Consolas', monospace; color: var(--accent-cyan); font-weight: bold; font-size: 1.4rem; }
-        .tiers-row { display: flex; gap: 15px; min-width: 220px; justify-content: flex-end; }
-        .tier-mini-box { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
-        .map-icon-img { width: 24px; height: 24px; image-rendering: pixelated; margin-bottom: 6px; }
-        .tier-label { font-size: 0.8rem; font-weight: 800; }
+
+        /* --- ランキングリスト --- */
+        .ranking-list { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 12px; }
+        
+        .rank-item {
+            display: grid;
+            grid-template-columns: 60px 70px 1fr 80px 380px;
+            align-items: center;
+            background-color: var(--bg-card);
+            padding: 15px;
+            border-radius: 12px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s;
+        }
+        .rank-item:hover { transform: translateY(-2px); background: #1a1a1e; }
+        .rank-item.retired { opacity: 0.5; filter: grayscale(0.3); }
+
+        /* 順位バッジ (1-3位) */
+        .rank-item.top-rank::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; z-index: 5;
+        }
+        .rank-1::before { background: var(--rank-1); box-shadow: 2px 0 10px rgba(255, 180, 0, 0.4); }
+        .rank-2::before { background: var(--rank-2); }
+        .rank-3::before { background: var(--rank-3); }
+
+        .rank-number { font-size: 1.8rem; font-weight: 900; font-style: italic; text-align: center; }
+        .skin-img { width: 54px; height: 54px; image-rendering: pixelated; border-radius: 6px; background: #222; }
+
+        .player-info { padding-left: 15px; min-width: 0; }
+        .player-name { font-size: 1.2rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 8px; }
+        .retired-tag { font-size: 0.6rem; background: #444; color: #ccc; padding: 2px 5px; border-radius: 4px; }
+        .player-title { font-size: 0.8rem; color: var(--text-sub); margin-top: 2px; }
+
+        .region-badge { background: #2a2a2e; color: #ff4d4d; font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 4px; text-align: center; justify-self: center; }
+
+        .status-section { display: flex; align-items: center; justify-content: flex-end; gap: 25px; }
+        .time-value { font-family: 'Consolas', monospace; color: var(--accent-cyan); font-weight: 700; font-size: 1.2rem; min-width: 110px; text-align: right; }
+        
+        .tiers-row { display: flex; gap: 8px; }
+        .tier-mini-box { display: flex; flex-direction: column; align-items: center; width: 40px; }
+        .map-icon-img { width: 20px; height: 20px; image-rendering: pixelated; margin-bottom: 4px; }
+        .tier-label { font-size: 0.7rem; font-weight: 800; }
         .label-ht { color: #ffb400; }
         .label-lt { color: #8e8e93; }
-        @media screen and (max-width: 900px) { .status-section { display: none; } }
+
+        /* --- レスポンシブ設定 --- */
+
+        /* 中画面 (タブレット等) */
+        @media (max-width: 1000px) {
+            .rank-item { grid-template-columns: 50px 60px 1fr 180px; }
+            .region-badge { display: none; } /* 地域を隠す */
+            .status-section { gap: 15px; }
+            .tiers-row { display: none; } /* 全体マップTierを一旦隠す */
+        }
+
+        /* 小画面 (スマホ) */
+        @media (max-width: 600px) {
+            body { padding: 15px 10px; }
+            .rank-item { 
+                grid-template-columns: 40px 50px 1fr; 
+                gap: 5px;
+                padding: 12px 10px;
+            }
+            .rank-number { font-size: 1.4rem; }
+            .skin-img { width: 44px; height: 44px; }
+            .player-name { font-size: 1rem; }
+            .player-title { font-size: 0.7rem; }
+            
+            .status-section {
+                grid-column: 1 / -1; /* 全幅に広げる */
+                justify-content: space-between;
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px solid rgba(255,255,255,0.05);
+            }
+            .time-value { font-size: 1.1rem; text-align: left; }
+            .tiers-row { display: flex; } /* スマホでは下部にTierを再表示 */
+            .map-tab { padding: 10px 15px; font-size: 0.8rem; }
+        }
     </style>
 </head>
 <body>
 
     <header class="main-header">
         <h1>DeathRun Rankings</h1>
-        <div class="sub-text">LEADERBOARD</div>
+        <div class="sub-text">COMPETITIVE LEADERBOARD</div>
     </header>
 
     <div class="header-nav">
@@ -55,7 +159,7 @@
         <button id="btn-all" class="mode-btn" onclick="setRankType('all')">All-Time Rank</button>
     </div>
 
-    <div class="map-tabs">
+    <div class="map-tabs" id="map-tabs-container">
         <button class="map-tab active" onclick="updateMap('Overall', this)">Overall</button>
         <button class="map-tab" onclick="updateMap('Cave', this)">Cave</button>
         <button class="map-tab" onclick="updateMap('Flora', this)">Flora</button>
@@ -66,7 +170,7 @@
     <div class="ranking-list" id="ranking-body"></div>
 
     <script>
-        let rankType = 'active'; // 'active' または 'all'
+        let rankType = 'active';
         let currentMap = 'Overall';
 
         function setRankType(type) {
@@ -103,10 +207,8 @@
             const body = document.getElementById('ranking-body');
             body.innerHTML = '';
             
-            // フィルタリング: 'active'モードなら現役のみ、'all'モードなら全員
             let filtered = players.filter(p => rankType === 'all' || p.active);
 
-            // ソート
             filtered.sort((a, b) => {
                 if (currentMap === 'Overall') {
                     return getOverallSum(a) - getOverallSum(b) || b.rating - a.rating;
@@ -127,6 +229,7 @@
                 
                 let tiersHtml = '';
                 const maps = ['Cave', 'Flora', 'Gardens', 'Metropolis'];
+                
                 if (currentMap === 'Overall') {
                     maps.forEach(m => {
                         const tier = p.mapTiers[m].tier;
@@ -139,7 +242,10 @@
                 } else {
                     const tier = p.mapTiers[currentMap].tier;
                     const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
-                    tiersHtml = `<div class="tier-mini-box" style="transform: scale(1.3);"><img src="maps/${currentMap}.png" class="map-icon-img"><div class="tier-label ${labelClass}">${tier}</div></div>`;
+                    tiersHtml = `<div class="tier-mini-box" style="transform: scale(1.2);">
+                        <img src="maps/${currentMap}.png" class="map-icon-img">
+                        <div class="tier-label ${labelClass}">${tier}</div>
+                    </div>`;
                 }
 
                 const rawRecord = currentMap === 'Overall' ? getOverallSum(p) : p.mapTiers[currentMap].record;
@@ -154,13 +260,11 @@
                             <div class="player-name">
                                 ${p.name} ${!p.active ? '<span class="retired-tag">RETIRED</span>' : ''}
                             </div>
-                            <div class="player-title"><span class="title-icon">◈</span> ${p.title} (${p.rating} pts)</div>
+                            <div class="player-title">${p.title} (${p.rating} pts)</div>
                         </div>
                         <div class="region-badge">${p.region}</div>
                         <div class="status-section">
-                            <div class="time-box">
-                                <span class="time-value">${formatTime(rawRecord)}</span>
-                            </div>
+                            <div class="time-value">${formatTime(rawRecord)}</div>
                             <div class="tiers-row">${tiersHtml}</div>
                         </div>
                     </div>`;
