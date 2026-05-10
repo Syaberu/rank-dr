@@ -1,3 +1,9 @@
+@@ -1,264 +1,215 @@
+/**
+ * DeathRun Competitive Player Data
+ * active: true (現役 - Active Rankに表示)
+ * active: false (引退 - All-Time Rankのみに表示)
+ */
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -9,207 +15,254 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
-        :root {
-            --bg-body: #0a0a0c;
-            --bg-card: #141417;
-            --bg-nav: #1b1b1f;
-            --accent-cyan: #00d2ff;
-            --tier-ht: #ffb400;
-            --tier-lt: #8e8e93;
-            --text-main: #eeeeee;
-            --text-sub: #8e8e93;
-            --rank-1: linear-gradient(90deg, #ffb400 0%, #ff8c00 100%);
-            --rank-2: linear-gradient(90deg, #b0b0b0 0%, #808080 100%);
-            --rank-3: linear-gradient(90deg, #cd7f32 0%, #a0522d 100%);
-        }
-
-        * { box-sizing: border-box; }
-        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-
-        .main-header { text-align: center; margin-bottom: 30px; width: 100%; }
-        .main-header h1 { font-size: clamp(2rem, 8vw, 4rem); font-weight: 900; text-transform: uppercase; letter-spacing: clamp(2px, 1vw, 8px); margin: 0; background: linear-gradient(to bottom, #fff 40%, #555 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.3)); }
-        .sub-text { color: var(--accent-cyan); font-size: clamp(0.8rem, 2vw, 1.2rem); font-weight: 700; letter-spacing: 2px; }
-
-        .header-nav { display: flex; gap: 10px; background: var(--bg-nav); padding: 8px; border-radius: 12px; margin-bottom: 25px; }
-        .mode-btn { background: none; border: none; color: var(--text-sub); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: 0.3s; }
-        .mode-btn.active { background: #2c2c34; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-        .map-tabs { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; width: 100%; max-width: 1100px; justify-content: center; scrollbar-width: none; padding-bottom: 5px; }
-        .map-tabs::-webkit-scrollbar { display: none; }
-        .map-tab { background: var(--bg-nav); border: none; color: var(--text-sub); padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 700; white-space: nowrap; transition: 0.2s; }
-        .map-tab.active { background: var(--accent-cyan); color: #000; }
-
-        .ranking-list { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 12px; }
-        .rank-item { display: grid; grid-template-columns: 70px 70px 1fr 100px 520px; align-items: center; background-color: var(--bg-card); padding: 18px 0; border-radius: 12px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
-        .rank-item.retired { opacity: 0.5; filter: grayscale(0.5); }
-        
-        .rank-item.top-rank::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; z-index: 5; }
-        .rank-1::before { background: var(--rank-1); }
-        .rank-2::before { background: var(--rank-2); }
-        .rank-3::before { background: var(--rank-3); }
-
-        .rank-number { font-size: 2.2rem; font-weight: 900; font-style: italic; text-align: center; color: #fff; }
-        .skin-img { width: 60px; height: 60px; image-rendering: pixelated; border-radius: 8px; background: #222; border: 1px solid rgba(255,255,255,0.1); }
-
-        .player-info { padding-left: 30px; min-width: 0; }
-        .player-name { font-size: 1.4rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
-        .retired-tag { font-size: 0.6rem; background: #444; color: #ccc; padding: 2px 6px; border-radius: 4px; }
-        .player-title { font-size: 0.9rem; color: var(--text-sub); display: flex; align-items: center; gap: 8px; margin-top: 4px; }
-        .title-icon { color: #ffb400; font-size: 1rem; }
-
-        .region-badge { background: #2a2a2e; color: #ff4d4d; font-size: 0.85rem; font-weight: 800; padding: 6px 12px; border-radius: 6px; text-align: center; justify-self: center; }
-
-        .status-section { display: flex; align-items: center; justify-content: flex-end; gap: 30px; padding-right: 30px; }
-        .time-value { font-family: 'Consolas', monospace; color: var(--accent-cyan); font-weight: bold; font-size: 1.4rem; min-width: 130px; text-align: right; }
-
-        .tiers-row { display: flex; gap: 12px; min-width: 300px; justify-content: flex-end; }
-        .tier-mini-box { display: flex; flex-direction: column; align-items: center; width: 48px; }
-        .map-icon-img { width: 22px; height: 22px; image-rendering: pixelated; margin-bottom: 6px; }
-        .tier-label { font-size: 0.8rem; font-weight: 800; text-align: center; }
-        .label-ht { color: #ffb400; }
-        .label-lt { color: #8e8e93; }
-
-        @media (max-width: 1150px) {
-            .rank-item { grid-template-columns: 60px 70px 1fr 80px 300px; }
-            .tiers-row { display: none; }
-        }
-        @media (max-width: 600px) {
-            .rank-item { grid-template-columns: 50px 60px 1fr; padding: 12px 5px; }
-            .status-section { grid-column: 1 / -1; justify-content: space-between; margin-top: 10px; padding: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
-            .tiers-row { display: flex; min-width: auto; }
-        }
-    </style>
-</head>
-<body>
-
-    <header class="main-header">
-        <h1>DeathRun Rankings</h1>
-        <div class="sub-text">COMPETITIVE LEADERBOARD</div>
-    </header>
-
-    <div class="header-nav">
-        <button id="btn-active" class="mode-btn active" onclick="setRankType('active')">Active Rank</button>
-        <button id="btn-all" class="mode-btn" onclick="setRankType('all')">All-Time Rank</button>
-    </div>
-
-    <div class="map-tabs">
-        <button class="map-tab active" onclick="updateMap('Overall', this)">Overall</button>
-        <button class="map-tab" onclick="updateMap('Cave', this)">Cave</button>
-        <button class="map-tab" onclick="updateMap('Flora', this)">Flora</button>
-        <button class="map-tab" onclick="updateMap('Gardens', this)">Gardens</button>
-        <button class="map-tab" onclick="updateMap('Metropolis', this)">Metropolis</button>
-        <button class="map-tab" onclick="updateMap('Primus', this)">Primus</button>
-    </div>
-
-    <div class="ranking-list" id="ranking-body"></div>
-
-    <script>
-        let rankType = 'active';
-        let currentMap = 'Overall';
-        const mapsList = ['Cave', 'Flora', 'Gardens', 'Metropolis', 'Primus'];
-        
-        // 略称の定義 (PrimusをPmに設定)
-        const mapShortNames = {
-            'Cave': 'C',
-            'Flora': 'F',
-            'Gardens': 'G',
-            'Metropolis': 'M',
-            'Primus': 'Pm'
-        };
-
-        function setRankType(type) {
-            rankType = type;
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`btn-${type}`).classList.add('active');
-            render();
-        }
-
-        function updateMap(map, btn) {
-            currentMap = map;
-            document.querySelectorAll('.map-tab').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            render();
-        }
-
-        function formatTime(seconds) {
-            if (seconds <= 0 || seconds >= (120 * mapsList.length)) return "--:--.---";
-            const mins = Math.floor(seconds / 60);
-            const secs = (seconds % 60).toFixed(3);
-            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(6, '0')}`;
-        }
-
-        function getOverallSum(p) {
-            return Object.values(p.mapTiers).reduce((acc, m) => acc + m.record, 0);
-        }
-
-        function getTierIdx(tier) {
-            if (!tier || tier === "-") return 999;
-            return TIER_ORDER.indexOf(tier);
-        }
-
-        function render() {
-            const body = document.getElementById('ranking-body');
-            body.innerHTML = '';
-            
-            let filtered = players.filter(p => rankType === 'all' || p.active);
-
-            filtered.sort((a, b) => {
-                if (currentMap === 'Overall') {
-                    return getOverallSum(a) - getOverallSum(b) || b.rating - a.rating;
-                } else {
-                    const mA = a.mapTiers[currentMap];
-                    const mB = b.mapTiers[currentMap];
-                    const idxA = getTierIdx(mA.tier);
-                    const idxB = getTierIdx(mB.tier);
-                    if (idxA !== idxB) return idxA - idxB;
-                    return mA.record - mB.record || b.rating - a.rating;
-                }
-            });
-
-            filtered.forEach((p, i) => {
-                const isTop = i < 3;
-                const rankClass = isTop ? `top-rank rank-${i+1}` : '';
-                const retiredClass = !p.active ? 'retired' : '';
-                
-                let tiersHtml = '';
-                if (currentMap === 'Overall') {
-                    mapsList.forEach(m => {
-                        const tier = p.mapTiers[m].tier;
-                        const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
-                        tiersHtml += `<div class="tier-mini-box">
-                            <img src="maps/${m}.png" class="map-icon-img" onerror="this.style.opacity='0.2'">
-                            <div class="tier-label ${labelClass}">${tier === "-" ? mapShortNames[m] : tier}</div>
-                        </div>`;
-                    });
-                } else {
-                    const tier = p.mapTiers[currentMap].tier;
-                    const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
-                    tiersHtml = `<div class="tier-mini-box" style="transform: scale(1.2);"><img src="maps/${currentMap}.png" class="map-icon-img"><div class="tier-label ${labelClass}">${tier === "-" ? mapShortNames[currentMap] : tier}</div></div>`;
-                }
-
-                const rawRecord = currentMap === 'Overall' ? getOverallSum(p) : p.mapTiers[currentMap].record;
-
-                body.innerHTML += `
-                    <div class="rank-item ${rankClass} ${retiredClass}">
-                        <div class="rank-number">${i + 1}</div>
-                        <div class="skin-container">
-                            <img src="skins/${p.name}.png" class="skin-img" onerror="this.src='skins/default.png'">
-                        </div>
-                        <div class="player-info">
-                            <div class="player-name">
-                                ${p.name} ${!p.active ? '<span class="retired-tag">RETIRED</span>' : ''}
-                            </div>
-                            <div class="player-title"><span class="title-icon">◈</span> ${p.title} (${p.rating} pts)</div>
-                        </div>
-                        <div class="region-badge">${p.region}</div>
-                        <div class="status-section">
-                            <div class="time-value">${formatTime(rawRecord)}</div>
-                            <div class="tiers-row">${tiersHtml}</div>
-                        </div>
-                    </div>`;
-            });
-        }
-        window.onload = render;
-    </script>
-</body>
-</html>
+const players = [
+  {
+    name: "tenntennYT",
+    rating: 980,
+    region: "JP",
+    title: "All Maps Runner",
+    active: true,
+    matches: 3,
+    wins: 1,
+    mapTiers: {
+      Cave: { tier: "HT4", record: 48.612 },
+      Flora: { tier: "LT3", record: 65.837 },
+      Gardens: { tier: "LT3", record: 63.719 },
+      Metropolis: { tier: "LT4", record: 44.459 }
+    }
+  },
+  {
+    name: "MCsyaberu",
+    rating: 1135,
+    region: "JP",
+    title: "All Maps Runner",
+    active: true,
+    matches: 16,
+    wins: 12,
+    mapTiers: {
+      Cave: { tier: "HT3", record: 48.106 },
+      Flora: { tier: "HT3", record: 64.941 },
+      Gardens: { tier: "LT3", record: 63.579 },
+      Metropolis: { tier: "HT4", record: 43.991 }
+    }
+  },
+  {
+    name: "Jason Games9024",
+    rating: 0,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    matches: 0,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "LT3", record: 48.244 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "AntiUnlockJP",
+    rating: 0,
+    region: "JP",
+    title: "Cave & Flora Runner",
+    active: true,
+    matches: 0,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "HT6", record: 49.825 },
+      Flora: { tier: "LT6", record: 71.258 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "MCdaichi9382",
+    rating: 1010,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    matches: 3,
+    wins: 2,
+    mapTiers: {
+      Cave: { tier: "HT5", record: 49.270 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "Kurobean1729",
+    rating: 1015,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    matches: 2,
+    wins: 1,
+    mapTiers: {
+      Cave: { tier: "LT4", record: 49.060 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "dadan11pvp",
+    rating: 990,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    matches: 1,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "HT5", record: 49.220 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "hive clips5512",
+    rating: 985,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    matches: 5,
+    wins: 1,
+    mapTiers: {
+      Cave: { tier: "HT5", record: 49.240 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "Youre cats",
+    rating: 0,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    matches: 0,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "HT5", record: 49.393 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "MCluminqYT",
+    rating: 0,
+    region: "JP",
+    title: "Cave & Metropolis Runner",
+    active: true,
+    matches: 0,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "HT6", record: 49.945 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "HT7", record: 48.323 }
+    }
+  },
+  {
+    name: "beatdown2725",
+    rating: 0,
+    region: "JP",
+    title: "Cave Runner",
+    active: false,
+    matches: 0,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "HT6", record: 49.993 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "Super Hiko14",
+    rating: 1025,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    matches: 1,
+    wins: 1,
+    mapTiers: {
+      Cave: { tier: "LT7", record: 51.817 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "chikuwa03224837",
+    rating: 970,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    matches: 3,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "LT7", record: 51.839 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "KenNova758",
+    rating: 0,
+    region: "JP",
+    title: "Cave Runner",
+    active: true, 
+    matches: 0,
+    wins: 0,
+    mapTiers: {
+      Cave: { tier: "HT8", record: 52.577 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "hateran",
+    rating: 0,
+    region: "JP",
+    title: "Gardens Runner",
+    active: true,
+    mapTiers: {
+      Cave: { tier: "-", record: 120.000 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "LT5", record: 67.507 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "LiveHydra444663",
+    rating: 0,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    mapTiers: {
+      Cave: { tier: "LT6", record: 50.921 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  },
+  {
+    name: "umidukisora",
+    rating: 0,
+    region: "JP",
+    title: "Cave Runner",
+    active: true,
+    mapTiers: {
+      Cave: { tier: "LT5", record: 49.611 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "-", record: 120.000 }
+    }
+  }
+];
