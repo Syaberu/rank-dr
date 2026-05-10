@@ -14,6 +14,8 @@
             --bg-card: #141417;
             --bg-nav: #1b1b1f;
             --accent-cyan: #00d2ff;
+            --tier-ht: #ffb400;
+            --tier-lt: #8e8e93;
             --text-main: #eeeeee;
             --text-sub: #8e8e93;
             --rank-1: linear-gradient(90deg, #ffb400 0%, #ff8c00 100%);
@@ -22,128 +24,59 @@
         }
 
         * { box-sizing: border-box; }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        /* --- ヘッダー --- */
         .main-header { text-align: center; margin-bottom: 30px; width: 100%; }
-        .main-header h1 {
-            font-size: clamp(2rem, 8vw, 4rem); /* 画面幅に合わせて可変 */
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: clamp(2px, 1vw, 8px);
-            margin: 0;
-            background: linear-gradient(to bottom, #fff 40%, #555 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.3));
-        }
+        .main-header h1 { font-size: clamp(2rem, 8vw, 4rem); font-weight: 900; text-transform: uppercase; letter-spacing: clamp(2px, 1vw, 8px); margin: 0; background: linear-gradient(to bottom, #fff 40%, #555 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.3)); }
         .sub-text { color: var(--accent-cyan); font-size: clamp(0.8rem, 2vw, 1.2rem); font-weight: 700; letter-spacing: 2px; }
 
-        /* --- ナビゲーション --- */
         .header-nav { display: flex; gap: 10px; background: var(--bg-nav); padding: 8px; border-radius: 12px; margin-bottom: 25px; }
         .mode-btn { background: none; border: none; color: var(--text-sub); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: 0.3s; }
         .mode-btn.active { background: #2c2c34; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-        .map-tabs { 
-            display: flex; gap: 10px; margin-bottom: 30px; 
-            overflow-x: auto; width: 100%; max-width: 1000px; 
-            justify-content: flex-start; padding-bottom: 10px;
-            scrollbar-width: none; /* Firefox用 */
-        }
-        .map-tabs::-webkit-scrollbar { display: none; } /* Chrome/Safari用 */
-        
+        .map-tabs { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; width: 100%; max-width: 1100px; justify-content: center; scrollbar-width: none; padding-bottom: 5px; }
+        .map-tabs::-webkit-scrollbar { display: none; }
         .map-tab { background: var(--bg-nav); border: none; color: var(--text-sub); padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 700; white-space: nowrap; transition: 0.2s; }
         .map-tab.active { background: var(--accent-cyan); color: #000; }
 
-        /* --- ランキングリスト --- */
-        .ranking-list { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 12px; }
+        .ranking-list { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 12px; }
+        .rank-item { display: grid; grid-template-columns: 70px 70px 1fr 100px 520px; align-items: center; background-color: var(--bg-card); padding: 18px 0; border-radius: 12px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .rank-item.retired { opacity: 0.5; filter: grayscale(0.5); }
         
-        .rank-item {
-            display: grid;
-            grid-template-columns: 60px 70px 1fr 80px 380px;
-            align-items: center;
-            background-color: var(--bg-card);
-            padding: 15px;
-            border-radius: 12px;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.2s;
-        }
-        .rank-item:hover { transform: translateY(-2px); background: #1a1a1e; }
-        .rank-item.retired { opacity: 0.5; filter: grayscale(0.3); }
-
-        /* 順位バッジ (1-3位) */
-        .rank-item.top-rank::before {
-            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; z-index: 5;
-        }
-        .rank-1::before { background: var(--rank-1); box-shadow: 2px 0 10px rgba(255, 180, 0, 0.4); }
+        .rank-item.top-rank::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; z-index: 5; }
+        .rank-1::before { background: var(--rank-1); }
         .rank-2::before { background: var(--rank-2); }
         .rank-3::before { background: var(--rank-3); }
 
-        .rank-number { font-size: 1.8rem; font-weight: 900; font-style: italic; text-align: center; }
-        .skin-img { width: 54px; height: 54px; image-rendering: pixelated; border-radius: 6px; background: #222; }
+        .rank-number { font-size: 2.2rem; font-weight: 900; font-style: italic; text-align: center; color: #fff; }
+        .skin-img { width: 60px; height: 60px; image-rendering: pixelated; border-radius: 8px; background: #222; border: 1px solid rgba(255,255,255,0.1); }
 
-        .player-info { padding-left: 15px; min-width: 0; }
-        .player-name { font-size: 1.2rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 8px; }
-        .retired-tag { font-size: 0.6rem; background: #444; color: #ccc; padding: 2px 5px; border-radius: 4px; }
-        .player-title { font-size: 0.8rem; color: var(--text-sub); margin-top: 2px; }
+        .player-info { padding-left: 30px; min-width: 0; }
+        .player-name { font-size: 1.4rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .retired-tag { font-size: 0.6rem; background: #444; color: #ccc; padding: 2px 6px; border-radius: 4px; }
+        .player-title { font-size: 0.9rem; color: var(--text-sub); display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+        .title-icon { color: #ffb400; font-size: 1rem; }
 
-        .region-badge { background: #2a2a2e; color: #ff4d4d; font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 4px; text-align: center; justify-self: center; }
+        .region-badge { background: #2a2a2e; color: #ff4d4d; font-size: 0.85rem; font-weight: 800; padding: 6px 12px; border-radius: 6px; text-align: center; justify-self: center; }
 
-        .status-section { display: flex; align-items: center; justify-content: flex-end; gap: 25px; }
-        .time-value { font-family: 'Consolas', monospace; color: var(--accent-cyan); font-weight: 700; font-size: 1.2rem; min-width: 110px; text-align: right; }
-        
-        .tiers-row { display: flex; gap: 8px; }
-        .tier-mini-box { display: flex; flex-direction: column; align-items: center; width: 40px; }
-        .map-icon-img { width: 20px; height: 20px; image-rendering: pixelated; margin-bottom: 4px; }
-        .tier-label { font-size: 0.7rem; font-weight: 800; }
+        .status-section { display: flex; align-items: center; justify-content: flex-end; gap: 30px; padding-right: 30px; }
+        .time-value { font-family: 'Consolas', monospace; color: var(--accent-cyan); font-weight: bold; font-size: 1.4rem; min-width: 130px; text-align: right; }
+
+        .tiers-row { display: flex; gap: 12px; min-width: 300px; justify-content: flex-end; }
+        .tier-mini-box { display: flex; flex-direction: column; align-items: center; width: 48px; }
+        .map-icon-img { width: 22px; height: 22px; image-rendering: pixelated; margin-bottom: 6px; }
+        .tier-label { font-size: 0.8rem; font-weight: 800; text-align: center; }
         .label-ht { color: #ffb400; }
         .label-lt { color: #8e8e93; }
 
-        /* --- レスポンシブ設定 --- */
-
-        /* 中画面 (タブレット等) */
-        @media (max-width: 1000px) {
-            .rank-item { grid-template-columns: 50px 60px 1fr 180px; }
-            .region-badge { display: none; } /* 地域を隠す */
-            .status-section { gap: 15px; }
-            .tiers-row { display: none; } /* 全体マップTierを一旦隠す */
+        @media (max-width: 1150px) {
+            .rank-item { grid-template-columns: 60px 70px 1fr 80px 300px; }
+            .tiers-row { display: none; }
         }
-
-        /* 小画面 (スマホ) */
         @media (max-width: 600px) {
-            body { padding: 15px 10px; }
-            .rank-item { 
-                grid-template-columns: 40px 50px 1fr; 
-                gap: 5px;
-                padding: 12px 10px;
-            }
-            .rank-number { font-size: 1.4rem; }
-            .skin-img { width: 44px; height: 44px; }
-            .player-name { font-size: 1rem; }
-            .player-title { font-size: 0.7rem; }
-            
-            .status-section {
-                grid-column: 1 / -1; /* 全幅に広げる */
-                justify-content: space-between;
-                margin-top: 10px;
-                padding-top: 10px;
-                border-top: 1px solid rgba(255,255,255,0.05);
-            }
-            .time-value { font-size: 1.1rem; text-align: left; }
-            .tiers-row { display: flex; } /* スマホでは下部にTierを再表示 */
-            .map-tab { padding: 10px 15px; font-size: 0.8rem; }
+            .rank-item { grid-template-columns: 50px 60px 1fr; padding: 12px 5px; }
+            .status-section { grid-column: 1 / -1; justify-content: space-between; margin-top: 10px; padding: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
+            .tiers-row { display: flex; min-width: auto; }
         }
     </style>
 </head>
@@ -159,12 +92,13 @@
         <button id="btn-all" class="mode-btn" onclick="setRankType('all')">All-Time Rank</button>
     </div>
 
-    <div class="map-tabs" id="map-tabs-container">
+    <div class="map-tabs">
         <button class="map-tab active" onclick="updateMap('Overall', this)">Overall</button>
         <button class="map-tab" onclick="updateMap('Cave', this)">Cave</button>
         <button class="map-tab" onclick="updateMap('Flora', this)">Flora</button>
         <button class="map-tab" onclick="updateMap('Gardens', this)">Gardens</button>
         <button class="map-tab" onclick="updateMap('Metropolis', this)">Metropolis</button>
+        <button class="map-tab" onclick="updateMap('Primus', this)">Primus</button>
     </div>
 
     <div class="ranking-list" id="ranking-body"></div>
@@ -172,6 +106,16 @@
     <script>
         let rankType = 'active';
         let currentMap = 'Overall';
+        const mapsList = ['Cave', 'Flora', 'Gardens', 'Metropolis', 'Primus'];
+        
+        // 略称の定義 (PrimusをPmに設定)
+        const mapShortNames = {
+            'Cave': 'C',
+            'Flora': 'F',
+            'Gardens': 'G',
+            'Metropolis': 'M',
+            'Primus': 'Pm'
+        };
 
         function setRankType(type) {
             rankType = type;
@@ -188,19 +132,19 @@
         }
 
         function formatTime(seconds) {
-            if (seconds <= 0 || seconds >= 480) return "--:--.---";
+            if (seconds <= 0 || seconds >= (120 * mapsList.length)) return "--:--.---";
             const mins = Math.floor(seconds / 60);
             const secs = (seconds % 60).toFixed(3);
             return `${String(mins).padStart(2, '0')}:${String(secs).padStart(6, '0')}`;
         }
 
+        function getOverallSum(p) {
+            return Object.values(p.mapTiers).reduce((acc, m) => acc + m.record, 0);
+        }
+
         function getTierIdx(tier) {
             if (!tier || tier === "-") return 999;
             return TIER_ORDER.indexOf(tier);
-        }
-
-        function getOverallSum(p) {
-            return Object.values(p.mapTiers).reduce((acc, m) => acc + m.record, 0);
         }
 
         function render() {
@@ -228,24 +172,19 @@
                 const retiredClass = !p.active ? 'retired' : '';
                 
                 let tiersHtml = '';
-                const maps = ['Cave', 'Flora', 'Gardens', 'Metropolis'];
-                
                 if (currentMap === 'Overall') {
-                    maps.forEach(m => {
+                    mapsList.forEach(m => {
                         const tier = p.mapTiers[m].tier;
                         const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
                         tiersHtml += `<div class="tier-mini-box">
                             <img src="maps/${m}.png" class="map-icon-img" onerror="this.style.opacity='0.2'">
-                            <div class="tier-label ${labelClass}">${tier}</div>
+                            <div class="tier-label ${labelClass}">${tier === "-" ? mapShortNames[m] : tier}</div>
                         </div>`;
                     });
                 } else {
                     const tier = p.mapTiers[currentMap].tier;
                     const labelClass = tier.startsWith("HT") ? "label-ht" : (tier.startsWith("LT") ? "label-lt" : "label-none");
-                    tiersHtml = `<div class="tier-mini-box" style="transform: scale(1.2);">
-                        <img src="maps/${currentMap}.png" class="map-icon-img">
-                        <div class="tier-label ${labelClass}">${tier}</div>
-                    </div>`;
+                    tiersHtml = `<div class="tier-mini-box" style="transform: scale(1.2);"><img src="maps/${currentMap}.png" class="map-icon-img"><div class="tier-label ${labelClass}">${tier === "-" ? mapShortNames[currentMap] : tier}</div></div>`;
                 }
 
                 const rawRecord = currentMap === 'Overall' ? getOverallSum(p) : p.mapTiers[currentMap].record;
@@ -260,7 +199,7 @@
                             <div class="player-name">
                                 ${p.name} ${!p.active ? '<span class="retired-tag">RETIRED</span>' : ''}
                             </div>
-                            <div class="player-title">${p.title} (${p.rating} pts)</div>
+                            <div class="player-title"><span class="title-icon">◈</span> ${p.title} (${p.rating} pts)</div>
                         </div>
                         <div class="region-badge">${p.region}</div>
                         <div class="status-section">
