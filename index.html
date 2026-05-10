@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCsyaberu's Tier - DeathRun Ranking</title>
+    <title>DeathRun Rankings - All Icons</title>
     <link rel="icon" href="maps/Cave.png" type="image/png">
     <script src="data.js"></script>
     <style>
@@ -14,8 +14,6 @@
             --bg-card: #141417;
             --bg-nav: #1b1b1f;
             --accent-cyan: #00d2ff;
-            --tier-ht: #ffb400;
-            --tier-lt: #8e8e93;
             --text-main: #eeeeee;
             --text-sub: #8e8e93;
             --rank-1: linear-gradient(90deg, #ffb400 0%, #ff8c00 100%);
@@ -30,12 +28,11 @@
         .main-header h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900; text-transform: uppercase; letter-spacing: 8px; margin: 0; background: linear-gradient(to bottom, #fff 40%, #555 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4)); }
         .main-header .sub-text { color: var(--accent-cyan); font-size: 1.2rem; letter-spacing: 4px; font-weight: 700; }
 
-        /* --- ナビゲーション --- */
         .header-nav { display: flex; gap: 15px; background: var(--bg-nav); padding: 8px; border-radius: 12px; margin-bottom: 25px; }
         .mode-btn { background: none; border: none; color: var(--text-sub); padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: 0.3s; }
         .mode-btn.active { background: #2c2c34; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-        /* --- マップタブ (アイコン追加) --- */
+        /* --- マップタブ --- */
         .map-tabs { 
             display: flex; gap: 12px; margin-bottom: 30px; 
             overflow-x: auto; width: 100%; max-width: 1200px; 
@@ -44,16 +41,20 @@
         .map-tabs::-webkit-scrollbar { display: none; }
 
         .map-tab { 
-            display: flex; align-items: center; gap: 10px; /* アイコンと文字の間隔 */
+            display: flex; align-items: center; gap: 10px; 
             background: var(--bg-nav); border: 2px solid transparent; 
             color: var(--text-sub); padding: 10px 18px; border-radius: 14px; 
             cursor: pointer; font-size: 0.95rem; font-weight: 700; 
             white-space: nowrap; transition: 0.2s; 
         }
+        
+        /* Overall用のアイコンコンテナ */
+        .overall-icons { display: flex; gap: 2px; align-items: center; }
+        .overall-icons .tab-icon { width: 16px; height: 16px; }
+
         .tab-icon { width: 20px; height: 20px; image-rendering: pixelated; pointer-events: none; }
         .map-tab:hover { background: #25252b; color: #fff; }
         .map-tab.active { background: #2c2c34; border-color: var(--accent-cyan); color: var(--accent-cyan); }
-        .map-tab.active .tab-icon { filter: drop-shadow(0 0 5px var(--accent-cyan)); }
 
         /* --- ランキングリスト --- */
         .ranking-list { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 12px; }
@@ -61,7 +62,6 @@
         .rank-item:hover { transform: translateY(-2px); background: #1a1a1e; }
         .rank-item.retired { opacity: 0.5; filter: grayscale(0.5); }
 
-        /* 順位バッジ (1-3位) */
         .rank-item.top-rank::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; z-index: 5; }
         .rank-1::before { background: var(--rank-1); }
         .rank-2::before { background: var(--rank-2); }
@@ -99,7 +99,7 @@
 
     <header class="main-header">
         <h1>DeathRun Rankings</h1>
-        <div class="sub-text">LEADERBOARD</div>
+        <div class="sub-text">COMPETITIVE LEADERBOARD</div>
     </header>
 
     <div class="header-nav">
@@ -109,8 +109,16 @@
 
     <div class="map-tabs" id="map-tabs-container">
         <button class="map-tab active" onclick="updateMap('Overall', this)">
-            <img src="maps/Cave.png" class="tab-icon" style="opacity: 0.5;"> Overall
+            <div class="overall-icons">
+                <img src="maps/Cave.png" class="tab-icon">
+                <img src="maps/Flora.png" class="tab-icon">
+                <img src="maps/Gardens.png" class="tab-icon">
+                <img src="maps/Metropolis.png" class="tab-icon">
+                <img src="maps/Primus.png" class="tab-icon">
+            </div>
+            Overall
         </button>
+        
         <button class="map-tab" onclick="updateMap('Cave', this)">
             <img src="maps/Cave.png" class="tab-icon"> Cave
         </button>
