@@ -1,4 +1,3 @@
-@@ -1,264 +1,215 @@
 /**
  * DeathRun Competitive Player Data
  * active: true (現役 - Active Rankに表示)
