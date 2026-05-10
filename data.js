@@ -3,16 +3,6 @@
  * active: true (現役 - Active Rankに表示)
  * active: false (引退 - All-Time Rankのみに表示)
  */
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeathRun Rankings</title>
-    <link rel="icon" href="maps/Cave.png" type="image/png">
-    <script src="data.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
 const players = [
   {
@@ -42,6 +32,7 @@ const players = [
       Cave: { tier: "HT3", record: 48.106 },
       Flora: { tier: "HT3", record: 64.941 },
       Gardens: { tier: "LT3", record: 63.579 },
+      Metropolis: { tier: "LT4", record: 44.112 }
       Metropolis: { tier: "HT4", record: 43.991 }
     }
   },
@@ -264,4 +255,11 @@ const players = [
       Metropolis: { tier: "-", record: 120.000 }
     }
   }
+];
+
+const duos = [];
+
+const TIER_ORDER = [
+  "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
+  "HT6", "LT6", "HT7", "LT7", "HT8", "LT8", "HT9", "LT9", "HT10", "LT10", "-"
 ];
