@@ -1,7 +1,7 @@
 /**
  * DeathRun Competitive Player Data
- * active: true (現役 - Active Rankに表示)
- * active: false (引退 - All-Time Rankのみに表示)
+ * マップ構成: Cave, Flora, Gardens, Metropolis, Primus
+ * active: true (現役 - Active Rankに表示), false (引退 - All-Time Rankに表示)
  */
 
 const players = [
@@ -17,7 +17,8 @@ const players = [
       Cave: { tier: "HT4", record: 48.612 },
       Flora: { tier: "LT3", record: 65.837 },
       Gardens: { tier: "LT3", record: 63.719 },
-      Metropolis: { tier: "LT4", record: 44.459 }
+      Metropolis: { tier: "LT4", record: 44.459 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -32,7 +33,8 @@ const players = [
       Cave: { tier: "HT3", record: 48.106 },
       Flora: { tier: "HT3", record: 64.941 },
       Gardens: { tier: "LT3", record: 63.579 },
-      Metropolis: { tier: "HT4", record: 43.991 }
+      Metropolis: { tier: "HT4", record: 43.991 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -47,7 +49,8 @@ const players = [
       Cave: { tier: "LT3", record: 48.244 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -62,7 +65,8 @@ const players = [
       Cave: { tier: "HT6", record: 49.825 },
       Flora: { tier: "LT6", record: 71.258 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -77,7 +81,8 @@ const players = [
       Cave: { tier: "HT5", record: 49.270 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -92,7 +97,8 @@ const players = [
       Cave: { tier: "LT4", record: 49.060 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -107,7 +113,8 @@ const players = [
       Cave: { tier: "HT5", record: 49.220 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -122,7 +129,8 @@ const players = [
       Cave: { tier: "HT5", record: 49.240 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -137,7 +145,8 @@ const players = [
       Cave: { tier: "HT5", record: 49.393 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -152,7 +161,8 @@ const players = [
       Cave: { tier: "HT6", record: 49.945 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "HT7", record: 48.323 }
+      Metropolis: { tier: "HT7", record: 48.323 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -167,7 +177,8 @@ const players = [
       Cave: { tier: "HT6", record: 49.993 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -182,7 +193,8 @@ const players = [
       Cave: { tier: "LT7", record: 51.817 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -197,7 +209,8 @@ const players = [
       Cave: { tier: "LT7", record: 51.839 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -205,14 +218,15 @@ const players = [
     rating: 0,
     region: "JP",
     title: "Cave Runner",
-    active: true, 
+    active: true,
     matches: 0,
     wins: 0,
     mapTiers: {
       Cave: { tier: "HT8", record: 52.577 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -225,7 +239,8 @@ const players = [
       Cave: { tier: "-", record: 120.000 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "LT5", record: 67.507 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -238,7 +253,8 @@ const players = [
       Cave: { tier: "LT6", record: 50.921 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   },
   {
@@ -251,7 +267,8 @@ const players = [
       Cave: { tier: "LT5", record: 49.611 },
       Flora: { tier: "-", record: 120.000 },
       Gardens: { tier: "-", record: 120.000 },
-      Metropolis: { tier: "-", record: 120.000 }
+      Metropolis: { tier: "-", record: 120.000 },
+      Primus: { tier: "-", record: 120.000 }
     }
   }
 ];
@@ -261,4 +278,4 @@ const duos = [];
 const TIER_ORDER = [
   "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
   "HT6", "LT6", "HT7", "LT7", "HT8", "LT8", "HT9", "LT9", "HT10", "LT10", "-"
-];
+];,
