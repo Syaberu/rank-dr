@@ -9,7 +9,7 @@ const players = [
     name: "tenntennYT",
     rating: 980,
     region: "JP",
-    title: "All Maps Runner",
+    title: "C & F & G & M Runner",
     active: true,
     matches: 3,
     wins: 1,
