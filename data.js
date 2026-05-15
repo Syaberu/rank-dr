@@ -270,6 +270,20 @@ const players = [
       Metropolis: { tier: "-", record: 120.000 },
       Primus: { tier: "-", record: 120.000 }
     }
+  },
+  {
+    name: "Act abso",
+    rating: 0,
+    region: "JP",
+    title: "Metropolis Runner",
+    active: true,
+    mapTiers: {
+      Cave: { tier: "-", record: 50.921 },
+      Flora: { tier: "-", record: 120.000 },
+      Gardens: { tier: "-", record: 120.000 },
+      Metropolis: { tier: "HT6", record: 46.196 },
+      Primus: { tier: "-", record: 120.000 }
+    }
   }
 ];
 
