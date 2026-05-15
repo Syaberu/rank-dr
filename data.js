@@ -17,7 +17,7 @@ const players = [
       Cave: { tier: "HT4", record: 48.612 },
       Flora: { tier: "LT3", record: 65.837 },
       Gardens: { tier: "LT3", record: 63.719 },
-      Metropolis: { tier: "LT4", record: 44.459 },
+      Metropolis: { tier: "LT4", record: 44.114 },
       Primus: { tier: "LT4", record: 62.787 }
     }
   },
