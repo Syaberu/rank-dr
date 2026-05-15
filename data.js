@@ -18,7 +18,7 @@ const players = [
       Flora: { tier: "LT3", record: 65.837 },
       Gardens: { tier: "LT3", record: 63.719 },
       Metropolis: { tier: "LT4", record: 44.459 },
-      Primus: { tier: "-", record: 120.000 }
+      Primus: { tier: "LT4", record: 62.787 }
     }
   },
   {
