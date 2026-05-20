@@ -2,17 +2,19 @@
  * DeathRun Competitive Player Data
  * マップ構成: Cave, Flora, Gardens, Metropolis, Primus
  * active: true (現役 - Active Rankに表示), false (引退 - All-Time Rankに表示)
+ * rank: 0 はランク外（初期状態）。1以上の数字を入れるとその順位（Top番号）でソートされます。
  */
 
 const players = [
   {
     name: "tenntennYT",
-    rating: 980,
+    rank: 0,
+    rating: 0,
     region: "JP",
     title: "ALL Maps Runner",
     active: true,
-    matches: 3,
-    wins: 1,
+    matches: 0,
+    wins: 0,
     mapTiers: {
       Cave: { tier: "HT4", record: 48.612 },
       Flora: { tier: "LT3", record: 65.837 },
@@ -23,12 +25,13 @@ const players = [
   },
   {
     name: "MCsyaberu",
-    rating: 1135,
+    rank: 0,
+    rating: 0,
     region: "JP",
     title: "All Maps Runner",
     active: true,
-    matches: 16,
-    wins: 12,
+    matches: 0,
+    wins: 0,
     mapTiers: {
       Cave: { tier: "HT3", record: 48.106 },
       Flora: { tier: "HT3", record: 64.941 },
@@ -39,6 +42,7 @@ const players = [
   },
   {
     name: "Jason Games9024",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Cave Runner",
@@ -55,6 +59,7 @@ const players = [
   },
   {
     name: "AntiUnlockJP",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Cave & Flora Runner",
@@ -71,12 +76,13 @@ const players = [
   },
   {
     name: "MCdaichi9382",
+    rank: 0,
     rating: 1010,
     region: "JP",
     title: "Cave Runner",
     active: true,
-    matches: 3,
-    wins: 2,
+    matches: 0,
+    wins: 0,
     mapTiers: {
       Cave: { tier: "HT5", record: 49.270 },
       Flora: { tier: "-", record: 120.000 },
@@ -87,12 +93,13 @@ const players = [
   },
   {
     name: "Kurobean1729",
-    rating: 1015,
+    rank: 0,
+    rating: 0,
     region: "JP",
     title: "Cave Runner",
     active: true,
-    matches: 2,
-    wins: 1,
+    matches: 0,
+    wins: 0,
     mapTiers: {
       Cave: { tier: "LT4", record: 49.060 },
       Flora: { tier: "-", record: 120.000 },
@@ -103,11 +110,12 @@ const players = [
   },
   {
     name: "dadan11pvp",
-    rating: 990,
+    rank: 0,
+    rating: 0,
     region: "JP",
     title: "Cave Runner",
     active: true,
-    matches: 1,
+    matches: 0,
     wins: 0,
     mapTiers: {
       Cave: { tier: "HT5", record: 49.220 },
@@ -119,12 +127,13 @@ const players = [
   },
   {
     name: "hive clips5512",
-    rating: 985,
+    rank: 0,
+    rating: 0,
     region: "JP",
     title: "Cave Runner",
     active: true,
-    matches: 5,
-    wins: 1,
+    matches: 0,
+    wins: 0,
     mapTiers: {
       Cave: { tier: "HT5", record: 49.240 },
       Flora: { tier: "-", record: 120.000 },
@@ -135,6 +144,7 @@ const players = [
   },
   {
     name: "Youre cats",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Cave Runner",
@@ -151,6 +161,7 @@ const players = [
   },
   {
     name: "MCluminqYT",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Cave & Metropolis Runner",
@@ -167,6 +178,7 @@ const players = [
   },
   {
     name: "beatdown2725",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Cave Runner",
@@ -183,12 +195,13 @@ const players = [
   },
   {
     name: "Super Hiko14",
-    rating: 1025,
+    rank: 0,
+    rating: 0,
     region: "JP",
     title: "Cave Runner",
     active: true,
-    matches: 1,
-    wins: 1,
+    matches: 0,
+    wins: 0,
     mapTiers: {
       Cave: { tier: "LT7", record: 51.817 },
       Flora: { tier: "-", record: 120.000 },
@@ -199,11 +212,12 @@ const players = [
   },
   {
     name: "chikuwa03224837",
-    rating: 970,
+    rank: 0,
+    rating: 0,
     region: "JP",
     title: "Cave Runner",
     active: true,
-    matches: 3,
+    matches: 0,
     wins: 0,
     mapTiers: {
       Cave: { tier: "LT7", record: 51.839 },
@@ -215,6 +229,7 @@ const players = [
   },
   {
     name: "KenNova758",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Cave Runner",
@@ -231,6 +246,7 @@ const players = [
   },
   {
     name: "hateran",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Gardens Runner",
@@ -245,6 +261,7 @@ const players = [
   },
   {
     name: "LiveHydra444663",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Cave Runner",
@@ -259,6 +276,7 @@ const players = [
   },
   {
     name: "umidukisora",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Cave Runner",
@@ -273,6 +291,7 @@ const players = [
   },
   {
     name: "Act abso",
+    rank: 0,
     rating: 0,
     region: "JP",
     title: "Metropolis Runner",
