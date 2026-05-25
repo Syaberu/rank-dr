@@ -192,7 +192,6 @@
             return Object.values(p.mapTiers).reduce((acc, m) => acc + ((m && m.record) ? m.record : 120), 0);
         }
 
-        // 💡 マップごとのVSデータを安全に取得するヘルパー
         function getVsMapData(p, mapName) {
             if (!p || !p.vsMaps || !p.vsMaps[mapName]) {
                 return { rank: 0, wins: 0, matches: 0, rating: 0 };
@@ -228,17 +227,14 @@
             // --- ⚙️ 並び替えロジック ---
             filtered.sort((a, b) => {
                 if (currentCategory === 'vs') {
-                    // 現在選ばれているマップのデータを個別に取得
                     const vsA = getVsMapData(a, currentMap);
                     const vsB = getVsMapData(b, currentMap);
 
                     const rA = (vsA.rank && vsA.rank > 0) ? vsA.rank : -999;
                     const rB = (vsB.rank && vsB.rank > 0) ? vsB.rank : -999;
                     
-                    // 💡 降順ソート：選んだマップのRankの数値が大きい人を上にする
                     if (rA !== rB) return rB - rA;
                     
-                    // 💡 同率Rankの場合：選んだマップの勝率が高い方を上にする
                     const rateA = calcWinRate(a, currentMap);
                     const rateB = calcWinRate(b, currentMap);
                     if (rateB !== rateA) return rateB - rateA;
@@ -294,7 +290,8 @@
             }
 
             filtered.forEach((p, i) => {
-                const vsData = getCategory === 'vs' ? getVsMapData(p, currentMap) : null;
+                // 💡 バグ原因箇所：getCategory を currentCategory に修正
+                const vsData = currentCategory === 'vs' ? getVsMapData(p, currentMap) : null;
                 const isOut = (currentCategory === 'vs' && (!vsData || vsData.rank <= 0));
                 const retiredClass = !p.active ? 'retired' : '';
                 
@@ -352,7 +349,6 @@
                             ${TiersInnerHtml}
                         </div>`;
                 } else {
-                    // VSモードの表示
                     const currentVs = getVsMapData(p, currentMap);
                     const winPercent = (calcWinRate(p, currentMap) * 100).toFixed(1);
                     const pureMapName = currentMap.replace('_VS', '');
