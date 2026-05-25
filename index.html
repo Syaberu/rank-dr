@@ -117,4 +117,99 @@
 
     <div class="section-title">⏱️ Time Attack (RTA Record)</div>
     <div class="map-tabs">
-        <button class="map-tab
+        <button class="map-tab active rta-mode" data-cat="rta" onclick="updateMap('Overall', this)">
+            <div class="overall-icons">
+                <img src="maps/Cave.png" class="tab-icon">
+                <img src="maps/Flora.png" class="tab-icon">
+                <img src="maps/Gardens.png" class="tab-icon">
+                <img src="maps/Metropolis.png" class="tab-icon">
+                <img src="maps/Primus.png" class="tab-icon">
+            </div>
+            Overall
+        </button>
+        <button class="map-tab rta-mode" data-cat="rta" onclick="updateMap('Cave', this)"><img src="maps/Cave.png" class="tab-icon"> Cave</button>
+        <button class="map-tab rta-mode" data-cat="rta" onclick="updateMap('Flora', this)"><img src="maps/Flora.png" class="tab-icon"> Flora</button>
+        <button class="map-tab rta-mode" data-cat="rta" onclick="updateMap('Gardens', this)"><img src="maps/Gardens.png" class="tab-icon"> Gardens</button>
+        <button class="map-tab rta-mode" data-cat="rta" onclick="updateMap('Metropolis', this)"><img src="maps/Metropolis.png" class="tab-icon"> Metropolis</button>
+        <button class="map-tab rta-mode" data-cat="rta" onclick="updateMap('Primus', this)"><img src="maps/Primus.png" class="tab-icon"> Primus</button>
+    </div>
+
+    <div class="section-title">⚔️ Challenge Ladder (VS Mode)</div>
+    <div class="map-tabs">
+        <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Random', this)"><img src="maps/Cave.png" class="tab-icon" style="filter: hue-rotate(140deg);"> Random</button>
+        <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Cave_VS', this)"><img src="maps/Cave.png" class="tab-icon"> Cave [VS]</button>
+        <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Flora_VS', this)"><img src="maps/Flora.png" class="tab-icon"> Flora [VS]</button>
+        <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Gardens_VS', this)"><img src="maps/Gardens.png" class="tab-icon"> Gardens [VS]</button>
+        <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Metropolis_VS', this)"><img src="maps/Metropolis.png" class="tab-icon"> Metropolis [VS]</button>
+        <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Primus_VS', this)"><img src="maps/Primus.png" class="tab-icon"> Primus [VS]</button>
+    </div>
+
+    <div class="ranking-list" id="ranking-body"></div>
+
+    <script>
+        let rankType = 'active';
+        let currentMap = 'Overall';
+        let currentCategory = 'rta';
+        const mapsList = ['Cave', 'Flora', 'Gardens', 'Metropolis', 'Primus'];
+
+        const LOCAL_TIER_ORDER = [
+            "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
+            "HT6", "LT6", "HT7", "LT7", "HT8", "LT8", "HT9", "LT9", "HT10", "LT10", "-"
+        ];
+
+        function setRankType(type) {
+            rankType = type;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${type}`).classList.add('active');
+            render();
+        }
+
+        function updateMap(map, btn) {
+            currentMap = map;
+            currentCategory = btn.getAttribute('data-cat');
+            document.querySelectorAll('.map-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render();
+        }
+
+        function formatTime(seconds) {
+            if (seconds <= 0 || seconds >= (120 * mapsList.length)) return "--:--.---";
+            const mins = Math.floor(seconds / 60);
+            const secs = (seconds % 60).toFixed(3);
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(6, '0')}`;
+        }
+
+        function getOverallSum(p) {
+            if (!p || !p.mapTiers) return 9999;
+            return Object.values(p.mapTiers).reduce((acc, m) => acc + ((m && m.record) ? m.record : 120), 0);
+        }
+
+        function getTierIdx(tier) {
+            if (!tier || tier === "-") return 999;
+            const order = (typeof TIER_ORDER !== 'undefined') ? TIER_ORDER : LOCAL_TIER_ORDER;
+            return order.indexOf(tier);
+        }
+
+        function calcWinRate(p) {
+            // 💡 安全装置: matchesが定義されていない、もしくは0の場合は0を返す
+            if (!p || !p.matches || p.matches === 0) return 0;
+            return (p.wins || 0) / p.matches;
+        }
+
+        function render() {
+            const body = document.getElementById('ranking-body');
+            if (!body) return;
+            body.innerHTML = '';
+            
+            if (typeof players === 'undefined' || !Array.isArray(players)) {
+                body.innerHTML = '<div style="text-align:center; padding:20px; color:red;">data.js が正しく読み込めていないか、エラーがあります。</div>';
+                return;
+            }
+
+            let filtered = players.filter(p => rankType === 'all' || p.active);
+
+            // --- 並び替えロジック ---
+            filtered.sort((a, b) => {
+                if (currentCategory === 'vs') {
+                    const rA = (a.rank && a.rank > 0) ? a.rank : 999;
+                    const rB = (b.rank && b.rank > 0) ? b.
