@@ -224,25 +224,42 @@
             let filtered = players.filter(p => rankType === 'all' || p.active);
             const mList = (typeof mapsList !== 'undefined') ? mapsList : INTERNAL_MAPS;
 
-            // --- ⚙️ 並び替えロジック ---
+            // --- ⚙️ 並び替えロジック（アルファベット順タイブレーク付き） ---
             filtered.sort((a, b) => {
                 if (currentCategory === 'vs') {
                     const vsA = getVsMapData(a, currentMap);
                     const vsB = getVsMapData(b, currentMap);
 
-                    const rA = (vsA.rank && vsA.rank > 0) ? vsA.rank : -999;
-                    const rB = (vsB.rank && vsB.rank > 0) ? vsB.rank : -999;
+                    const rA = (vsA.rank && vsA.rank > 0) ? vsA.rank : 0;
+                    const rB = (vsB.rank && vsB.rank > 0) ? vsB.rank : 0;
                     
-                    if (rA !== rB) return rB - rA;
-                    
-                    const rateA = calcWinRate(a, currentMap);
-                    const rateB = calcWinRate(b, currentMap);
-                    if (rateB !== rateA) return rateB - rateA;
+                    // 1. 両方ともランキング内の場合、または片方だけがランキング内の場合
+                    if (rA > 0 || rB > 0) {
+                        if (rA === 0) return 1;  // aがランキング外なら下へ
+                        if (rB === 0) return -1; // bがランキング外なら下へ
+                        if (rA !== rB) return rB - rA; // Rank数値が大きい方が上
+                        
+                        const rateA = calcWinRate(a, currentMap);
+                        const rateB = calcWinRate(b, currentMap);
+                        if (rateB !== rateA) return rateB - rateA;
 
-                    return (vsB.rating || 0) - (vsA.rating || 0);
+                        return (vsB.rating || 0) - (vsA.rating || 0);
+                    }
+                    
+                    // 2. 両方ともランキング外(OUT)ならプレイヤー名でアルファベット順ソート
+                    return a.name.localeCompare(b.name);
                 } else {
                     if (currentMap === 'Overall') {
-                        return getOverallSum(a) - getOverallSum(b);
+                        const sumA = getOverallSum(a);
+                        const sumB = getOverallSum(b);
+                        const maxLimit = 120 * mList.length;
+
+                        // 両方とも記録なし(初期値120×マップ数以上)の場合はアルファベット順
+                        if (sumA >= maxLimit && sumB >= maxLimit) {
+                            return a.name.localeCompare(b.name);
+                        }
+                        if (sumA !== sumB) return sumA - sumB;
+                        return a.name.localeCompare(b.name);
                     } else {
                         const mA = a.mapTiers ? a.mapTiers[currentMap] : null;
                         const mB = b.mapTiers ? b.mapTiers[currentMap] : null;
@@ -250,11 +267,17 @@
                         const idxA = mA ? getTierIdx(mA.tier) : 999;
                         const idxB = mB ? getTierIdx(mB.tier) : 999;
                         
+                        // 両方ともTier未設定（ハイフン）の場合はアルファベット順
+                        if (idxA === 999 && idxB === 999) {
+                            return a.name.localeCompare(b.name);
+                        }
                         if (idxA !== idxB) return idxA - idxB;
                         
                         const recA = (mA && mA.record) ? mA.record : 120;
                         const recB = (mB && mB.record) ? mB.record : 120;
-                        return recA - recB;
+                        if (recA !== recB) return recA - recB;
+
+                        return a.name.localeCompare(b.name);
                     }
                 }
             });
@@ -290,7 +313,6 @@
             }
 
             filtered.forEach((p, i) => {
-                // 💡 バグ原因箇所：getCategory を currentCategory に修正
                 const vsData = currentCategory === 'vs' ? getVsMapData(p, currentMap) : null;
                 const isOut = (currentCategory === 'vs' && (!vsData || vsData.rank <= 0));
                 const retiredClass = !p.active ? 'retired' : '';
