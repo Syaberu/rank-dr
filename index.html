@@ -136,7 +136,14 @@
 
     <div class="section-title">⚔️ Challenge Ladder (VS Mode)</div>
     <div class="map-tabs">
-        <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Random', this)"><img src="maps/Cave.png" class="tab-icon" style="filter: hue-rotate(140deg);"> Random</button>
+        <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Overall', this)">
+            <div class="overall-icons">
+                <img src="maps/Cave.png" class="tab-icon" style="filter: hue-rotate(140deg);">
+                <img src="maps/Flora.png" class="tab-icon" style="filter: hue-rotate(140deg);">
+                <img src="maps/Gardens.png" class="tab-icon" style="filter: hue-rotate(140deg);">
+            </div>
+            Overall
+        </button>
         <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Cave_VS', this)"><img src="maps/Cave.png" class="tab-icon"> Cave [VS]</button>
         <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Flora_VS', this)"><img src="maps/Flora.png" class="tab-icon"> Flora [VS]</button>
         <button class="map-tab vs-mode" data-cat="vs" onclick="updateMap('Gardens_VS', this)"><img src="maps/Gardens.png" class="tab-icon"> Gardens [VS]</button>
@@ -151,7 +158,6 @@
         let currentMap = 'Overall';
         let currentCategory = 'rta';
 
-        // 💡 data.js側で定義されている可能性を考慮し、こちらでの重複宣言(const/let)を完全に排除しました
         const INTERNAL_MAPS = ['Cave', 'Flora', 'Gardens', 'Metropolis', 'Primus'];
         const LOCAL_TIER_ORDER = [
             "HT1", "LT1", "HT2", "LT2", "HT3", "LT3", "HT4", "LT4", "HT5", "LT5",
@@ -186,15 +192,24 @@
             return Object.values(p.mapTiers).reduce((acc, m) => acc + ((m && m.record) ? m.record : 120), 0);
         }
 
+        // 💡 マップごとのVSデータを安全に取得するヘルパー
+        function getVsMapData(p, mapName) {
+            if (!p || !p.vsMaps || !p.vsMaps[mapName]) {
+                return { rank: 0, wins: 0, matches: 0, rating: 0 };
+            }
+            return p.vsMaps[mapName];
+        }
+
         function getTierIdx(tier) {
             if (!tier || tier === "-") return 999;
             const order = (typeof TIER_ORDER !== 'undefined') ? TIER_ORDER : LOCAL_TIER_ORDER;
             return order.indexOf(tier);
         }
 
-        function calcWinRate(p) {
-            if (!p || !p.matches || p.matches === 0) return 0;
-            return (p.wins || 0) / p.matches;
+        function calcWinRate(p, mapName) {
+            const vsData = getVsMapData(p, mapName);
+            if (!vsData.matches || vsData.matches === 0) return 0;
+            return (vsData.wins || 0) / vsData.matches;
         }
 
         function render() {
@@ -210,19 +225,25 @@
             let filtered = players.filter(p => rankType === 'all' || p.active);
             const mList = (typeof mapsList !== 'undefined') ? mapsList : INTERNAL_MAPS;
 
-            // --- 並び替えロジック ---
+            // --- ⚙️ 並び替えロジック ---
             filtered.sort((a, b) => {
                 if (currentCategory === 'vs') {
-                    const rA = (a.rank && a.rank > 0) ? a.rank : 999;
-                    const rB = (b.rank && b.rank > 0) ? b.rank : 999;
+                    // 現在選ばれているマップのデータを個別に取得
+                    const vsA = getVsMapData(a, currentMap);
+                    const vsB = getVsMapData(b, currentMap);
+
+                    const rA = (vsA.rank && vsA.rank > 0) ? vsA.rank : -999;
+                    const rB = (vsB.rank && vsB.rank > 0) ? vsB.rank : -999;
                     
-                    if (rA !== rB) return rA - rB;
+                    // 💡 降順ソート：選んだマップのRankの数値が大きい人を上にする
+                    if (rA !== rB) return rB - rA;
                     
-                    const rateA = calcWinRate(a);
-                    const rateB = calcWinRate(b);
+                    // 💡 同率Rankの場合：選んだマップの勝率が高い方を上にする
+                    const rateA = calcWinRate(a, currentMap);
+                    const rateB = calcWinRate(b, currentMap);
                     if (rateB !== rateA) return rateB - rateA;
 
-                    return (b.rating || 0) - (a.rating || 0);
+                    return (vsB.rating || 0) - (vsA.rating || 0);
                 } else {
                     if (currentMap === 'Overall') {
                         return getOverallSum(a) - getOverallSum(b);
@@ -242,22 +263,58 @@
                 }
             });
 
+            // --- ⚙️ 同率順位の計算ロジック (VSモード用) ---
+            let displayRankArray = [];
+            let currentRankNum = 1;
+            
+            if (currentCategory === 'vs') {
+                let lastRankValue = null;
+                let tieCount = 0;
+
+                filtered.forEach((p, idx) => {
+                    const vsData = getVsMapData(p, currentMap);
+                    const pRank = vsData.rank || 0;
+                    
+                    if (pRank <= 0) {
+                        displayRankArray.push("OUT");
+                    } else {
+                        if (lastRankValue === null) {
+                            displayRankArray.push(currentRankNum);
+                        } else if (pRank === lastRankValue) {
+                            tieCount++;
+                            displayRankArray.push(currentRankNum);
+                        } else {
+                            currentRankNum = currentRankNum + 1 + tieCount;
+                            tieCount = 0;
+                            displayRankArray.push(currentRankNum);
+                        }
+                        lastRankValue = pRank;
+                    }
+                });
+            }
+
             filtered.forEach((p, i) => {
-                const isOut = (currentCategory === 'vs' && (!p.rank || p.rank <= 0));
-                const displayRank = i + 1;
-                const isTop = !isOut && (p.rank && p.rank <= 3); 
-                
-                const rankClass = isTop ? `top-rank rank-${p.rank}` : '';
+                const vsData = getCategory === 'vs' ? getVsMapData(p, currentMap) : null;
+                const isOut = (currentCategory === 'vs' && (!vsData || vsData.rank <= 0));
                 const retiredClass = !p.active ? 'retired' : '';
                 
                 let rankNumberHtml = '';
+                let rankClass = '';
+
                 if (currentCategory === 'rta') {
-                    rankNumberHtml = `<div class="rank-number">${displayRank}</div>`;
+                    const rtaRank = i + 1;
+                    rankNumberHtml = `<div class="rank-number">${rtaRank}</div>`;
+                    if (rtaRank <= 3) rankClass = `top-rank rank-${rtaRank}`;
                 } else {
+                    const vsRank = displayRankArray[i];
+                    const activeRankVal = vsData ? vsData.rank : 0;
                     if (isOut) {
                         rankNumberHtml = `<div class="rank-number out-rank">OUT</div>`;
                     } else {
-                        rankNumberHtml = `<div class="rank-number">${p.rank}</div>`;
+                        rankNumberHtml = `<div class="rank-number">${activeRankVal}</div>`;
+                        if (vsRank === 1) rankClass = 'top-rank rank-1';
+                        if (vsRank === 2) rankClass = 'top-rank rank-2';
+                        if (vsRank === 3) rankClass = 'top-rank rank-3';
                     }
                 }
 
@@ -295,12 +352,14 @@
                             ${TiersInnerHtml}
                         </div>`;
                 } else {
-                    const winPercent = (calcWinRate(p) * 100).toFixed(1);
+                    // VSモードの表示
+                    const currentVs = getVsMapData(p, currentMap);
+                    const winPercent = (calcWinRate(p, currentMap) * 100).toFixed(1);
                     const pureMapName = currentMap.replace('_VS', '');
                     
                     const rankLabelHtml = isOut 
                         ? `<span class="time-value out-color" style="font-size:1.1rem;">OUT</span>` 
-                        : `<span class="time-value purple">Top ${p.rank}</span>`;
+                        : `<span class="time-value purple">Top ${currentVs.rank}</span>`;
 
                     statusSectionHtml = `
                         <div class="time-box">
@@ -310,8 +369,8 @@
                         <div class="tiers-row" style="min-width: auto;">
                             <div class="vs-stats-grid">
                                 <div class="vs-stat-item">WinRate: <span>${winPercent}%</span></div>
-                                <div class="vs-stat-item">Wins: <span>${p.wins !== undefined ? p.wins : 0}</span></div>
-                                <div class="vs-stat-item">Matches: <span>${p.matches !== undefined ? p.matches : 0}</span></div>
+                                <div class="vs-stat-item">Wins: <span>${currentVs.wins !== undefined ? currentVs.wins : 0}</span></div>
+                                <div class="vs-stat-item">Matches: <span>${currentVs.matches !== undefined ? currentVs.matches : 0}</span></div>
                             </div>
                         </div>`;
                 }
