@@ -61,7 +61,6 @@
         .rank-3::before { background: var(--rank-3); }
 
         .rank-number { font-size: 2.2rem; font-weight: 900; font-style: italic; text-align: center; color: #fff; }
-        /* 💡 ランク外の文字スタイル */
         .rank-number.out-rank { font-size: 1.1rem; color: var(--text-sub); font-style: normal; font-weight: 700; letter-spacing: 1px; }
 
         .skin-img { width: 60px; height: 60px; image-rendering: pixelated; border-radius: 8px; background: #222; border: 1px solid rgba(255,255,255,0.1); }
@@ -76,7 +75,7 @@
         .time-value { font-family: 'Consolas', monospace; font-weight: bold; font-size: 1.4rem; }
         .time-value.cyan { color: var(--accent-cyan); }
         .time-value.purple { color: var(--accent-purple); }
-        .time-value.out-color { color: var(--text-sub); } /* 💡 ランク外用のステータスカラー */
+        .time-value.out-color { color: var(--text-sub); }
 
         .tiers-row { display: flex; gap: 12px; min-width: 280px; justify-content: flex-end; }
         .tier-mini-box { display: flex; flex-direction: column; align-items: center; width: 45px; }
@@ -118,15 +117,4 @@
 
     <div class="section-title">⏱️ Time Attack (RTA Record)</div>
     <div class="map-tabs">
-        <button class="map-tab active rta-mode" data-cat="rta" onclick="updateMap('Overall', this)">
-            <div class="overall-icons">
-                <img src="maps/Cave.png" class="tab-icon">
-                <img src="maps/Flora.png" class="tab-icon">
-                <img src="maps/Gardens.png" class="tab-icon">
-                <img src="maps/Metropolis.png" class="tab-icon">
-                <img src="maps/Primus.png" class="tab-icon">
-            </div>
-            Overall
-        </button>
-        <button class="map-tab rta-mode" data-cat="rta" onclick="updateMap('Cave', this)"><img src="maps/Cave.png" class="tab-icon"> Cave</button>
-        <button class="map-tab rta-mode" data-cat="rta" onclick="updateMap('Flora', this)"><img src="maps/Flora.png" class="tab-icon"> Flora</button>
+        <button class="map-tab
